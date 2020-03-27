@@ -12,6 +12,26 @@ knitr::opts_chunk$set(
 )
 ```
 
+
+```{r badges, results='asis', echo=FALSE}
+suppressPackageStartupMessages(library(badgecreatr))
+acc <- "MarselScheer"
+repo <- "sanityTracker"
+branch <- "master"
+status <- "active"
+lifecycle <- "experimental"
+badges <- list(
+  badge_travis(ghaccount = acc, ghrepo = repo, branch = branch),
+  badge_lifecycle(lifecycle = lifecycle),
+  badge_projectstatus(status = status),
+  badge_cran_version_ago(packagename = repo),
+  badge_cran_downloads(packagename = repo),
+  badge_license()
+  )
+cat(paste(badges, collapse = " "))
+```
+
+
 # sanityTracker
 
 An R-Package that keeps track of all performed sanity checks.

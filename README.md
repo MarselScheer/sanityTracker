@@ -1,6 +1,17 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+[![Build
+Status](https://travis-ci.org/MarselScheer/sanityTracker.svg?branch=master)](https://travis-ci.org/MarselScheer/sanityTracker)
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Project Status: Active – The project has reached a stable, usable
+state and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![CRAN\_Status\_Badge\_version\_ago](https://www.r-pkg.org/badges/version-ago/sanityTracker)](https://cran.r-project.org/package=sanityTracker)
+[![metacran
+downloads](https://cranlogs.r-pkg.org/badges/sanityTracker)](https://cran.r-project.org/package=sanityTracker)
+[![license](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+
 # sanityTracker
 
 An R-Package that keeps track of all performed sanity checks.
