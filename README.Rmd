@@ -126,3 +126,8 @@ You can install it from github with:
 devtools::install_github("MarselScheer/sanityTracker")
 ```
 
+# sessionInfo
+
+```{r}
+sessionInfo()
+```

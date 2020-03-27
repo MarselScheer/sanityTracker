@@ -120,3 +120,39 @@ You can install it from github with:
 ``` r
 devtools::install_github("MarselScheer/sanityTracker")
 ```
+
+# sessionInfo
+
+``` r
+sessionInfo()
+#> R version 3.6.0 (2019-04-26)
+#> Platform: x86_64-pc-linux-gnu (64-bit)
+#> Running under: Debian GNU/Linux 9 (stretch)
+#> 
+#> Matrix products: default
+#> BLAS/LAPACK: /usr/lib/libopenblasp-r0.2.19.so
+#> 
+#> locale:
+#>  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
+#>  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    
+#>  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             
+#>  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 
+#>  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+#> [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       
+#> 
+#> attached base packages:
+#> [1] stats     graphics  grDevices utils     datasets  methods   base     
+#> 
+#> other attached packages:
+#> [1] badgecreatr_0.2.0
+#> 
+#> loaded via a namespace (and not attached):
+#>  [1] compiler_3.6.0           magrittr_1.5            
+#>  [3] tools_3.6.0              htmltools_0.3.6         
+#>  [5] yaml_2.2.0               Rcpp_1.0.1              
+#>  [7] stringi_1.4.3            rmarkdown_1.13          
+#>  [9] data.table_1.12.2        sanityTracker_0.0.0.9000
+#> [11] knitr_1.23               git2r_0.26.1            
+#> [13] stringr_1.4.0            xfun_0.8                
+#> [15] digest_0.6.20            evaluate_0.14
+```
