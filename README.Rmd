@@ -1,0 +1,108 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+# sanityTracker
+
+An R-Package that keeps track of all performed sanity checks.
+
+During the preparation of data set(s) one usually performs
+some sanity checks. The idea is that irrespective of where the 
+checks are performed, they are centralized by this package in order
+to list all at once with examples if a check failed.
+    
+## Example 
+
+Assume you process a data set and you have different functions for certain
+aspects. Within those functions you can make some checks, document
+what you did, what the outcome of the check was and store some examples
+where the check failed. At the end you can summarize 
+the performed checks (that might be scattered all over our source code) 
+and their outcomes.
+
+```{r, echo = FALSE}
+raw_data <- data.frame(
+  id = 1:4, 
+  start = c("2020-04-12", "2010-01-20", "2020-02-20", "2020-01-23"),
+  end = c("2020-03-13", "2020-01-26", "2020-03-01", "2020-01-26"),
+  height_m = c(1.77, 144, 1.89, 1.74),
+  stringsAsFactors = FALSE)
+```
+
+For illustration we consider a very simple data set:
+```{r}
+raw_data
+```
+
+We have a simple data-preparation function for our raw-data-set:
+```{r}
+prep <- function(raw_data) {
+  
+  sanityTracker::add_sanity_check(
+    fail_vec = duplicated(raw_data$id),
+    description = "prep(): No duplicated ids",
+    counter_meas = "None",
+    data = raw_data
+  )
+  
+  raw_data$start <- as.Date(raw_data$start)
+  raw_data$end <- as.Date(raw_data$end)
+  sanityTracker::add_sanity_check(
+    fail_vec = raw_data$end < raw_data$start,
+    description = "prep(): start-date <= end-date",
+    counter_meas = "None",
+    data = raw_data
+  )
+
+  idx <- 100 < raw_data$height_m
+  sanityTracker::add_sanity_check(
+    fail_vec = 100 < raw_data$height_m,
+    description = "prep(): Persons are smaller than 100m",
+    counter_meas = "Divide by 100. Assume height is given in cm",
+    data = raw_data
+  )
+  raw_data$height_m[idx] <- raw_data$height_m[idx] / 100
+  
+  sanityTracker::add_sanity_check(
+    fail_vec = 2.5 < raw_data$height_m,
+    description = "prep(): Persons are smaller than 2.5m",
+    counter_meas = "None",
+    data = raw_data
+  )
+}
+```
+
+After applying the prep-function we can summarize the sanity checks
+```{r label, options}
+wrangled_data <- prep(raw_data = raw_data)
+sanity_checks <- sanityTracker::get_sanity_checks()
+sanity_checks
+```
+
+This directly gives an overview of what was performed which check failed how often
+what counter measure was done and in case of a fail also random rows (by default at most 3)
+of the data set where the check failed.
+
+```{r}
+sanity_checks[2, ]
+sanity_checks[2, ]$example
+```
+
+## Installation
+
+You can install it from github with:
+
+```{r gh-installation, eval = FALSE}
+devtools::install_github("MarselScheer/sanityTracker")
+```
+
