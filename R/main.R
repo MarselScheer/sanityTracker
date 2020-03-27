@@ -22,7 +22,7 @@ TRACKER_ENV <- new.env()
 #' add_sanity_check(d$bmi > 30, description = "bmi too high", counter_meas = "none")
 #' get_sanity_checks()
 add_sanity_check <- function(
-  fail_vec, description, counter_meas, data, example_size = 3) {
+  fail_vec, description, counter_meas = "None", data, example_size = 3) {
 
   row <- data.table::data.table(
     description = description,
@@ -42,7 +42,9 @@ add_sanity_check <- function(
       fail_example <- sample(which(fail_vec), size = min(example_size, row$n_fail))
     }
 
-    row$example <- list(data[fail_example,])
+    # drop = FALSE is for the case that fail_example contains only 1 number
+    # a data.frame may reduce otherwise to a vector.
+    row$example <- list(data[fail_example, , drop = FALSE])
   }
 
   TRACKER_ENV[["checks"]] <- data.table::rbindlist(
@@ -62,3 +64,10 @@ get_sanity_checks <- function() {
   return(TRACKER_ENV[["checks"]])
 }
 
+#' Removes all tracked sanity checks
+#'
+#' @return NULL
+#' @export
+clear_sanity_checks <- function() {
+  TRACKER_ENV[["checks"]] <- NULL
+}
