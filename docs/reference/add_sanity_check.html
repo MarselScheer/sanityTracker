@@ -109,7 +109,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>add_sanity_check</span>(<span class='no'>fail_vec</span>, <span class='no'>description</span>, <span class='kw'>counter_meas</span> <span class='kw'>=</span> <span class='st'>"None"</span>, <span class='no'>data</span>,
-  <span class='kw'>example_size</span> <span class='kw'>=</span> <span class='fl'>3</span>)</pre>
+  <span class='kw'>example_size</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>call</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/deparse'>deparse</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sys.parent'>sys.call</a></span>(<span class='kw'>which</span> <span class='kw'>=</span> -<span class='fl'>1</span>)))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,6 +137,10 @@ of failures</p></td>
       <td><p>number failures to be extracted from the object passed to the parameter
 data. By default 3 random examples are extracted.</p></td>
     </tr>
+    <tr>
+      <th>call</th>
+      <td><p>by default tracks the function that called add_sanity_check.</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -150,9 +154,12 @@ data. By default 3 random examples are extracted.</p></td>
 <span class='fu'>add_sanity_check</span>(<span class='no'>d</span>$<span class='no'>bmi</span> <span class='kw'>&lt;</span> <span class='fl'>15</span>, <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"bmi too low"</span>, <span class='kw'>counter_meas</span> <span class='kw'>=</span> <span class='st'>"none"</span>,
   <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>d</span>)
 <span class='fu'>add_sanity_check</span>(<span class='no'>d</span>$<span class='no'>bmi</span> <span class='kw'>&gt;</span> <span class='fl'>30</span>, <span class='kw'>description</span> <span class='kw'>=</span> <span class='st'>"bmi too high"</span>, <span class='kw'>counter_meas</span> <span class='kw'>=</span> <span class='st'>"none"</span>)
-<span class='fu'><a href='get_sanity_checks.html'>get_sanity_checks</a></span>()</div><div class='output co'>#&gt;     description n n_fail n_na counter_meas      example
-#&gt; 1:  bmi too low 4      1    0         none &lt;data.frame&gt;
-#&gt; 2: bmi too high 4      1    0         none             </div></pre>
+<span class='fu'><a href='get_sanity_checks.html'>get_sanity_checks</a></span>()</div><div class='output co'>#&gt;     description n n_fail n_na counter_meas                      call
+#&gt; 1:  bmi too low 4      1    0         none eval(expr, envir, enclos)
+#&gt; 2: bmi too high 4      1    0         none eval(expr, envir, enclos)
+#&gt;         example
+#&gt; 1: &lt;data.frame&gt;
+#&gt; 2:             </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

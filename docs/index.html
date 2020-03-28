@@ -87,10 +87,10 @@
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; 4  4 2020-01-23 2020-01-26     1.74</span></a></code></pre></div>
 <p>We have a simple data-preparation function for our raw-data-set:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">prep &lt;-<span class="st"> </span><span class="cf">function</span>(raw_data) {</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  </a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sanityTracker/topics/add_sanity_check">add_sanity_check</a></span>(</a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">fail_vec =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/duplicated">duplicated</a></span>(raw_data<span class="op">$</span>id),</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">description =</span> <span class="st">"prep(): No duplicated ids"</span>,</a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">description =</span> <span class="st">"No duplicated ids"</span>,</a>
 <a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">counter_meas =</span> <span class="st">"None"</span>,</a>
 <a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="dt">data =</span> raw_data</a>
 <a class="sourceLine" id="cb2-8" data-line-number="8">  )</a>
@@ -99,7 +99,7 @@
 <a class="sourceLine" id="cb2-11" data-line-number="11">  raw_data<span class="op">$</span>end &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(raw_data<span class="op">$</span>end)</a>
 <a class="sourceLine" id="cb2-12" data-line-number="12">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sanityTracker/topics/add_sanity_check">add_sanity_check</a></span>(</a>
 <a class="sourceLine" id="cb2-13" data-line-number="13">    <span class="dt">fail_vec =</span> raw_data<span class="op">$</span>end <span class="op">&lt;</span><span class="st"> </span>raw_data<span class="op">$</span>start,</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">    <span class="dt">description =</span> <span class="st">"prep(): start-date &lt;= end-date"</span>,</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">    <span class="dt">description =</span> <span class="st">"start-date &lt;= end-date"</span>,</a>
 <a class="sourceLine" id="cb2-15" data-line-number="15">    <span class="dt">counter_meas =</span> <span class="st">"None"</span>,</a>
 <a class="sourceLine" id="cb2-16" data-line-number="16">    <span class="dt">data =</span> raw_data</a>
 <a class="sourceLine" id="cb2-17" data-line-number="17">  )</a>
@@ -107,7 +107,7 @@
 <a class="sourceLine" id="cb2-19" data-line-number="19">  idx &lt;-<span class="st"> </span><span class="dv">100</span> <span class="op">&lt;</span><span class="st"> </span>raw_data<span class="op">$</span>height_m</a>
 <a class="sourceLine" id="cb2-20" data-line-number="20">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sanityTracker/topics/add_sanity_check">add_sanity_check</a></span>(</a>
 <a class="sourceLine" id="cb2-21" data-line-number="21">    <span class="dt">fail_vec =</span> <span class="dv">100</span> <span class="op">&lt;</span><span class="st"> </span>raw_data<span class="op">$</span>height_m,</a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">    <span class="dt">description =</span> <span class="st">"prep(): Persons are smaller than 100m"</span>,</a>
+<a class="sourceLine" id="cb2-22" data-line-number="22">    <span class="dt">description =</span> <span class="st">"Persons are smaller than 100m"</span>,</a>
 <a class="sourceLine" id="cb2-23" data-line-number="23">    <span class="dt">counter_meas =</span> <span class="st">"Divide by 100. Assume height is given in cm"</span>,</a>
 <a class="sourceLine" id="cb2-24" data-line-number="24">    <span class="dt">data =</span> raw_data</a>
 <a class="sourceLine" id="cb2-25" data-line-number="25">  )</a>
@@ -115,7 +115,7 @@
 <a class="sourceLine" id="cb2-27" data-line-number="27">  </a>
 <a class="sourceLine" id="cb2-28" data-line-number="28">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sanityTracker/topics/add_sanity_check">add_sanity_check</a></span>(</a>
 <a class="sourceLine" id="cb2-29" data-line-number="29">    <span class="dt">fail_vec =</span> <span class="fl">2.5</span> <span class="op">&lt;</span><span class="st"> </span>raw_data<span class="op">$</span>height_m,</a>
-<a class="sourceLine" id="cb2-30" data-line-number="30">    <span class="dt">description =</span> <span class="st">"prep(): Persons are smaller than 2.5m"</span>,</a>
+<a class="sourceLine" id="cb2-30" data-line-number="30">    <span class="dt">description =</span> <span class="st">"Persons are smaller than 2.5m"</span>,</a>
 <a class="sourceLine" id="cb2-31" data-line-number="31">    <span class="dt">counter_meas =</span> <span class="st">"None"</span>,</a>
 <a class="sourceLine" id="cb2-32" data-line-number="32">    <span class="dt">data =</span> raw_data</a>
 <a class="sourceLine" id="cb2-33" data-line-number="33">  )</a>
@@ -124,24 +124,31 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">wrangled_data &lt;-<span class="st"> </span><span class="kw">prep</span>(<span class="dt">raw_data =</span> raw_data)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">sanity_checks &lt;-<span class="st"> </span>sanityTracker<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sanityTracker/topics/get_sanity_checks">get_sanity_checks</a></span>()</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">sanity_checks</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;                              description n n_fail n_na</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1:             prep(): No duplicated ids 4      0    0</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2:        prep(): start-date &lt;= end-date 4      1    0</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3: prep(): Persons are smaller than 100m 4      1    0</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 4: prep(): Persons are smaller than 2.5m 4      0    0</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;                                   counter_meas      example</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; 1:                                        None             </span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; 2:                                        None &lt;data.frame&gt;</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; 3: Divide by 100. Assume height is given in cm &lt;data.frame&gt;</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; 4:                                        None</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;                      description n n_fail n_na</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1:             No duplicated ids 4      0    0</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2:        start-date &lt;= end-date 4      1    0</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3: Persons are smaller than 100m 4      1    0</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 4: Persons are smaller than 2.5m 4      0    0</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;                                   counter_meas                      call</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; 1:                                        None prep(raw_data = raw_data)</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; 2:                                        None prep(raw_data = raw_data)</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; 3: Divide by 100. Assume height is given in cm prep(raw_data = raw_data)</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; 4:                                        None prep(raw_data = raw_data)</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;         example</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 1:             </span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; 2: &lt;data.frame&gt;</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; 3: &lt;data.frame&gt;</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; 4:</span></a></code></pre></div>
 <p>This directly gives an overview of what was performed which check failed how often what counter measure was done and in case of a fail also random rows (by default at most 3) of the data set where the check failed.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">sanity_checks[<span class="dv">2</span>, ]</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;                       description n n_fail n_na counter_meas      example</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; 1: prep(): start-date &lt;= end-date 4      1    0         None &lt;data.frame&gt;</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">sanity_checks[<span class="dv">2</span>, ]<span class="op">$</span>example</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;   id      start        end height_m</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; 1  1 2020-04-12 2020-03-13     1.77</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;               description n n_fail n_na counter_meas</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; 1: start-date &lt;= end-date 4      1    0         None</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;                         call      example</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; 1: prep(raw_data = raw_data) &lt;data.frame&gt;</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">sanity_checks[<span class="dv">2</span>, ]<span class="op">$</span>example</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt;   id      start        end height_m</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; 1  1 2020-04-12 2020-03-13     1.77</span></a></code></pre></div>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">

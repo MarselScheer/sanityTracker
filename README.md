@@ -45,10 +45,10 @@ We have a simple data-preparation function for our raw-data-set:
 
 ``` r
 prep <- function(raw_data) {
-  
+
   sanityTracker::add_sanity_check(
     fail_vec = duplicated(raw_data$id),
-    description = "prep(): No duplicated ids",
+    description = "No duplicated ids",
     counter_meas = "None",
     data = raw_data
   )
@@ -57,7 +57,7 @@ prep <- function(raw_data) {
   raw_data$end <- as.Date(raw_data$end)
   sanityTracker::add_sanity_check(
     fail_vec = raw_data$end < raw_data$start,
-    description = "prep(): start-date <= end-date",
+    description = "start-date <= end-date",
     counter_meas = "None",
     data = raw_data
   )
@@ -65,7 +65,7 @@ prep <- function(raw_data) {
   idx <- 100 < raw_data$height_m
   sanityTracker::add_sanity_check(
     fail_vec = 100 < raw_data$height_m,
-    description = "prep(): Persons are smaller than 100m",
+    description = "Persons are smaller than 100m",
     counter_meas = "Divide by 100. Assume height is given in cm",
     data = raw_data
   )
@@ -73,7 +73,7 @@ prep <- function(raw_data) {
   
   sanityTracker::add_sanity_check(
     fail_vec = 2.5 < raw_data$height_m,
-    description = "prep(): Persons are smaller than 2.5m",
+    description = "Persons are smaller than 2.5m",
     counter_meas = "None",
     data = raw_data
   )
@@ -86,16 +86,21 @@ After applying the prep-function we can summarize the sanity checks
 wrangled_data <- prep(raw_data = raw_data)
 sanity_checks <- sanityTracker::get_sanity_checks()
 sanity_checks
-#>                              description n n_fail n_na
-#> 1:             prep(): No duplicated ids 4      0    0
-#> 2:        prep(): start-date <= end-date 4      1    0
-#> 3: prep(): Persons are smaller than 100m 4      1    0
-#> 4: prep(): Persons are smaller than 2.5m 4      0    0
-#>                                   counter_meas      example
-#> 1:                                        None             
-#> 2:                                        None <data.frame>
-#> 3: Divide by 100. Assume height is given in cm <data.frame>
-#> 4:                                        None
+#>                      description n n_fail n_na
+#> 1:             No duplicated ids 4      0    0
+#> 2:        start-date <= end-date 4      1    0
+#> 3: Persons are smaller than 100m 4      1    0
+#> 4: Persons are smaller than 2.5m 4      0    0
+#>                                   counter_meas                      call
+#> 1:                                        None prep(raw_data = raw_data)
+#> 2:                                        None prep(raw_data = raw_data)
+#> 3: Divide by 100. Assume height is given in cm prep(raw_data = raw_data)
+#> 4:                                        None prep(raw_data = raw_data)
+#>         example
+#> 1:             
+#> 2: <data.frame>
+#> 3: <data.frame>
+#> 4:
 ```
 
 This directly gives an overview of what was performed which check failed
@@ -105,8 +110,10 @@ failed.
 
 ``` r
 sanity_checks[2, ]
-#>                       description n n_fail n_na counter_meas      example
-#> 1: prep(): start-date <= end-date 4      1    0         None <data.frame>
+#>               description n n_fail n_na counter_meas
+#> 1: start-date <= end-date 4      1    0         None
+#>                         call      example
+#> 1: prep(raw_data = raw_data) <data.frame>
 sanity_checks[2, ]$example
 #> [[1]]
 #>   id      start        end height_m
