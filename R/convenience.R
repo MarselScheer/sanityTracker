@@ -1,0 +1,81 @@
+#' Checks that the elements of a column belong to a certain set
+#'
+#' @param object 
+#' @param col 
+#' @param feasible_elements 
+#' @param ... 
+#'
+#' @return logical vector where TRUE indicates where the check failed.
+#'   This might be helpful if one wants to apply a counter-measure.
+#' @export
+#'
+#' @examples
+sc_col_elements <- function(object, col, feasible_elements, ...){
+  
+}
+
+#' Checks that all elements from the specified columns are positive
+#'
+#' @param object 
+#' @param cols 
+#' @param zero_feasible 
+#' @param ... 
+#'
+#' @return list of logical vectors where TRUE indicates where the check failed.
+#'   Every list entry represents one of the columns specified in cols.
+#'   This might be helpful if one wants to apply a counter-measure.
+#' @export
+#'
+#' @examples
+sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...){
+  
+}
+
+#' Checks that all elements from the specified columns are not NA
+#'
+#' @param object 
+#' @param cols 
+#' @param ... 
+#'
+#' @return logical vector where TRUE indicates where the check failed.
+#'   This might be helpful if one wants to apply a counter-measure.
+#' @export
+#'
+#' @examples
+sc_cols_non_NA <- function(object, cols, ...){
+  
+}
+
+#' Checks that the combination of the specified columns is unique
+#'
+#' @param object 
+#' @param cols 
+#' @param ... 
+#'
+#' @return logical vector where TRUE indicates where the check failed.
+#'   This might be helpful if one wants to apply a counter-measure.
+#' @export
+#'
+#' @examples
+sc_cols_unique <- function(object, cols, ...){
+  
+}
+
+
+#' Performs various checks after a left-join was performed
+#'
+#' @param joined 
+#' @param left 
+#' @param right 
+#' @param by 
+#' @param ... 
+#'
+#' @return NULL
+#' @export
+#'
+#' @examples
+sc_left_join <- function(joined, left, right, by, ...){
+  
+}
+
+
