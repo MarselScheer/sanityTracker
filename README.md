@@ -41,14 +41,34 @@ raw_data
 #> 4  4 2020-01-23 2020-01-26     1.74
 ```
 
-We have a simple data-preparation function for our raw-data-set:
+We have two simple data-preparation function for our raw-data-set:
 
 ``` r
-prep <- function(raw_data) {
+correct_height <- function(raw_data) {
+  ret <- raw_data
+  idx <- 100 < ret$height_m
+  sanityTracker::add_sanity_check(
+    fail_vec = idx,
+    description = "Persons are smaller than 100m",
+    counter_meas = "Divide by 100. Assume height is given in cm",
+    data = ret
+  )
+  ret$height_m[idx] <- ret$height_m[idx] / 100
   
   sanityTracker::add_sanity_check(
+    fail_vec = 2.5 < ret$height_m,
+    description = "Persons are smaller than 2.5m",
+    counter_meas = "None",
+    data = ret
+  )  
+  return(ret)
+}
+
+prep <- function(raw_data) {
+
+  sanityTracker::add_sanity_check(
     fail_vec = duplicated(raw_data$id),
-    description = "prep(): No duplicated ids",
+    description = "No duplicated ids",
     counter_meas = "None",
     data = raw_data
   )
@@ -57,26 +77,13 @@ prep <- function(raw_data) {
   raw_data$end <- as.Date(raw_data$end)
   sanityTracker::add_sanity_check(
     fail_vec = raw_data$end < raw_data$start,
-    description = "prep(): start-date <= end-date",
+    description = "start-date <= end-date",
     counter_meas = "None",
     data = raw_data
   )
 
-  idx <- 100 < raw_data$height_m
-  sanityTracker::add_sanity_check(
-    fail_vec = 100 < raw_data$height_m,
-    description = "prep(): Persons are smaller than 100m",
-    counter_meas = "Divide by 100. Assume height is given in cm",
-    data = raw_data
-  )
-  raw_data$height_m[idx] <- raw_data$height_m[idx] / 100
-  
-  sanityTracker::add_sanity_check(
-    fail_vec = 2.5 < raw_data$height_m,
-    description = "prep(): Persons are smaller than 2.5m",
-    counter_meas = "None",
-    data = raw_data
-  )
+  ret <- correct_height(raw_data = raw_data)  
+  return(ret)
 }
 ```
 
@@ -86,16 +93,21 @@ After applying the prep-function we can summarize the sanity checks
 wrangled_data <- prep(raw_data = raw_data)
 sanity_checks <- sanityTracker::get_sanity_checks()
 sanity_checks
-#>                              description n n_fail n_na
-#> 1:             prep(): No duplicated ids 4      0    0
-#> 2:        prep(): start-date <= end-date 4      1    0
-#> 3: prep(): Persons are smaller than 100m 4      1    0
-#> 4: prep(): Persons are smaller than 2.5m 4      0    0
-#>                                   counter_meas      example
-#> 1:                                        None             
-#> 2:                                        None <data.frame>
-#> 3: Divide by 100. Assume height is given in cm <data.frame>
+#>                      description n n_fail n_na
+#> 1:             No duplicated ids 4      0    0
+#> 2:        start-date <= end-date 4      1    0
+#> 3: Persons are smaller than 100m 4      1    0
+#> 4: Persons are smaller than 2.5m 4      0    0
+#>                                   counter_meas
+#> 1:                                        None
+#> 2:                                        None
+#> 3: Divide by 100. Assume height is given in cm
 #> 4:                                        None
+#>                                   call      example
+#> 1:           prep(raw_data = raw_data)             
+#> 2:           prep(raw_data = raw_data) <data.frame>
+#> 3: correct_height(raw_data = raw_data) <data.frame>
+#> 4: correct_height(raw_data = raw_data)
 ```
 
 This directly gives an overview of what was performed which check failed
@@ -105,8 +117,10 @@ failed.
 
 ``` r
 sanity_checks[2, ]
-#>                       description n n_fail n_na counter_meas      example
-#> 1: prep(): start-date <= end-date 4      1    0         None <data.frame>
+#>               description n n_fail n_na counter_meas
+#> 1: start-date <= end-date 4      1    0         None
+#>                         call      example
+#> 1: prep(raw_data = raw_data) <data.frame>
 sanity_checks[2, ]$example
 #> [[1]]
 #>   id      start        end height_m
@@ -125,7 +139,7 @@ devtools::install_github("MarselScheer/sanityTracker")
 
 ``` r
 sessionInfo()
-#> R version 3.6.0 (2019-04-26)
+#> R version 3.6.1 (2019-07-05)
 #> Platform: x86_64-pc-linux-gnu (64-bit)
 #> Running under: Debian GNU/Linux 9 (stretch)
 #> 
@@ -147,12 +161,12 @@ sessionInfo()
 #> [1] badgecreatr_0.2.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] compiler_3.6.0           magrittr_1.5            
-#>  [3] tools_3.6.0              htmltools_0.3.6         
-#>  [5] yaml_2.2.0               Rcpp_1.0.1              
-#>  [7] stringi_1.4.3            rmarkdown_1.13          
+#>  [1] compiler_3.6.1           magrittr_1.5            
+#>  [3] tools_3.6.1              htmltools_0.3.6         
+#>  [5] yaml_2.2.0               Rcpp_1.0.2              
+#>  [7] stringi_1.4.3            rmarkdown_1.15          
 #>  [9] data.table_1.12.2        sanityTracker_0.0.0.9000
-#> [11] knitr_1.23               git2r_0.26.1            
-#> [13] stringr_1.4.0            xfun_0.8                
-#> [15] digest_0.6.20            evaluate_0.14
+#> [11] knitr_1.25               git2r_0.26.1            
+#> [13] stringr_1.4.0            xfun_0.9                
+#> [15] digest_0.6.21            evaluate_0.14
 ```

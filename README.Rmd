@@ -64,13 +64,33 @@ For illustration we consider a very simple data set:
 raw_data
 ```
 
-We have a simple data-preparation function for our raw-data-set:
+We have two simple data-preparation function for our raw-data-set:
 ```{r}
-prep <- function(raw_data) {
+correct_height <- function(raw_data) {
+  ret <- raw_data
+  idx <- 100 < ret$height_m
+  sanityTracker::add_sanity_check(
+    fail_vec = idx,
+    description = "Persons are smaller than 100m",
+    counter_meas = "Divide by 100. Assume height is given in cm",
+    data = ret
+  )
+  ret$height_m[idx] <- ret$height_m[idx] / 100
   
   sanityTracker::add_sanity_check(
+    fail_vec = 2.5 < ret$height_m,
+    description = "Persons are smaller than 2.5m",
+    counter_meas = "None",
+    data = ret
+  )  
+  return(ret)
+}
+
+prep <- function(raw_data) {
+
+  sanityTracker::add_sanity_check(
     fail_vec = duplicated(raw_data$id),
-    description = "prep(): No duplicated ids",
+    description = "No duplicated ids",
     counter_meas = "None",
     data = raw_data
   )
@@ -79,26 +99,13 @@ prep <- function(raw_data) {
   raw_data$end <- as.Date(raw_data$end)
   sanityTracker::add_sanity_check(
     fail_vec = raw_data$end < raw_data$start,
-    description = "prep(): start-date <= end-date",
+    description = "start-date <= end-date",
     counter_meas = "None",
     data = raw_data
   )
 
-  idx <- 100 < raw_data$height_m
-  sanityTracker::add_sanity_check(
-    fail_vec = 100 < raw_data$height_m,
-    description = "prep(): Persons are smaller than 100m",
-    counter_meas = "Divide by 100. Assume height is given in cm",
-    data = raw_data
-  )
-  raw_data$height_m[idx] <- raw_data$height_m[idx] / 100
-  
-  sanityTracker::add_sanity_check(
-    fail_vec = 2.5 < raw_data$height_m,
-    description = "prep(): Persons are smaller than 2.5m",
-    counter_meas = "None",
-    data = raw_data
-  )
+  ret <- correct_height(raw_data = raw_data)  
+  return(ret)
 }
 ```
 

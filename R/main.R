@@ -10,6 +10,7 @@ TRACKER_ENV <- new.env()
 #'   of failures
 #' @param example_size number failures to be extracted from the object passed to the parameter
 #'   data. By default 3 random examples are extracted.
+#' @param call by default tracks the function that called add_sanity_check.
 #'
 #' @return invisibly the sanity check that is stored internally with the other sanity checks.
 #'   All performed sanity checks can be fetched via \link{get_sanity_checks}
@@ -22,15 +23,16 @@ TRACKER_ENV <- new.env()
 #' add_sanity_check(d$bmi > 30, description = "bmi too high", counter_meas = "none")
 #' get_sanity_checks()
 add_sanity_check <- function(
-  fail_vec, description, counter_meas = "None", data, example_size = 3) {
+  fail_vec, description, counter_meas = "None", data, example_size = 3, 
+  call = deparse(sys.call(which = -1))) {
 
   row <- data.table::data.table(
     description = description,
     n = length(fail_vec),
     n_fail = sum(fail_vec, na.rm = TRUE),
     n_na = sum(is.na(fail_vec)),
-    counter_meas = counter_meas
-    )
+    counter_meas = counter_meas,
+    call = call)
 
   if (!missing(data) & any(fail_vec)) {
     # add some examples where the fail occured
