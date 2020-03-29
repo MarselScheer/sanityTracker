@@ -41,9 +41,29 @@ raw_data
 #> 4  4 2020-01-23 2020-01-26     1.74
 ```
 
-We have a simple data-preparation function for our raw-data-set:
+We have two simple data-preparation function for our raw-data-set:
 
 ``` r
+correct_height <- function(raw_data) {
+  ret <- raw_data
+  idx <- 100 < ret$height_m
+  sanityTracker::add_sanity_check(
+    fail_vec = idx,
+    description = "Persons are smaller than 100m",
+    counter_meas = "Divide by 100. Assume height is given in cm",
+    data = ret
+  )
+  ret$height_m[idx] <- ret$height_m[idx] / 100
+  
+  sanityTracker::add_sanity_check(
+    fail_vec = 2.5 < ret$height_m,
+    description = "Persons are smaller than 2.5m",
+    counter_meas = "None",
+    data = ret
+  )  
+  return(ret)
+}
+
 prep <- function(raw_data) {
 
   sanityTracker::add_sanity_check(
@@ -62,21 +82,8 @@ prep <- function(raw_data) {
     data = raw_data
   )
 
-  idx <- 100 < raw_data$height_m
-  sanityTracker::add_sanity_check(
-    fail_vec = 100 < raw_data$height_m,
-    description = "Persons are smaller than 100m",
-    counter_meas = "Divide by 100. Assume height is given in cm",
-    data = raw_data
-  )
-  raw_data$height_m[idx] <- raw_data$height_m[idx] / 100
-  
-  sanityTracker::add_sanity_check(
-    fail_vec = 2.5 < raw_data$height_m,
-    description = "Persons are smaller than 2.5m",
-    counter_meas = "None",
-    data = raw_data
-  )
+  ret <- correct_height(raw_data = raw_data)  
+  return(ret)
 }
 ```
 
@@ -91,16 +98,16 @@ sanity_checks
 #> 2:        start-date <= end-date 4      1    0
 #> 3: Persons are smaller than 100m 4      1    0
 #> 4: Persons are smaller than 2.5m 4      0    0
-#>                                   counter_meas                      call
-#> 1:                                        None prep(raw_data = raw_data)
-#> 2:                                        None prep(raw_data = raw_data)
-#> 3: Divide by 100. Assume height is given in cm prep(raw_data = raw_data)
-#> 4:                                        None prep(raw_data = raw_data)
-#>         example
-#> 1:             
-#> 2: <data.frame>
-#> 3: <data.frame>
-#> 4:
+#>                                   counter_meas
+#> 1:                                        None
+#> 2:                                        None
+#> 3: Divide by 100. Assume height is given in cm
+#> 4:                                        None
+#>                                   call      example
+#> 1:           prep(raw_data = raw_data)             
+#> 2:           prep(raw_data = raw_data) <data.frame>
+#> 3: correct_height(raw_data = raw_data) <data.frame>
+#> 4: correct_height(raw_data = raw_data)
 ```
 
 This directly gives an overview of what was performed which check failed
@@ -132,7 +139,7 @@ devtools::install_github("MarselScheer/sanityTracker")
 
 ``` r
 sessionInfo()
-#> R version 3.6.0 (2019-04-26)
+#> R version 3.6.1 (2019-07-05)
 #> Platform: x86_64-pc-linux-gnu (64-bit)
 #> Running under: Debian GNU/Linux 9 (stretch)
 #> 
@@ -154,12 +161,12 @@ sessionInfo()
 #> [1] badgecreatr_0.2.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] compiler_3.6.0           magrittr_1.5            
-#>  [3] tools_3.6.0              htmltools_0.3.6         
-#>  [5] yaml_2.2.0               Rcpp_1.0.1              
-#>  [7] stringi_1.4.3            rmarkdown_1.13          
+#>  [1] compiler_3.6.1           magrittr_1.5            
+#>  [3] tools_3.6.1              htmltools_0.3.6         
+#>  [5] yaml_2.2.0               Rcpp_1.0.2              
+#>  [7] stringi_1.4.3            rmarkdown_1.15          
 #>  [9] data.table_1.12.2        sanityTracker_0.0.0.9000
-#> [11] knitr_1.23               git2r_0.26.1            
-#> [13] stringr_1.4.0            xfun_0.8                
-#> [15] digest_0.6.20            evaluate_0.14
+#> [11] knitr_1.25               git2r_0.26.1            
+#> [13] stringr_1.4.0            xfun_0.9                
+#> [15] digest_0.6.21            evaluate_0.14
 ```
