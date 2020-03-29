@@ -31,6 +31,61 @@ sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...){
   
 }
 
+#' Checks that all elements from the specified columns are above a certain number
+#'
+#' @param object 
+#' @param cols 
+#' @param include_lower_bound 
+#' @param ... 
+#'
+#' @return list of logical vectors where TRUE indicates where the check failed.
+#'   Every list entry represents one of the columns specified in cols.
+#'   This might be helpful if one wants to apply a counter-measure
+#' @export
+#'
+#' @examples
+sc_cols_bounded_below <- function(object, cols, include_lower_bound = TRUE, ...) {
+  
+}
+
+#' Checks that all elements from the specified columns are above a certain number
+#'
+#' @param object 
+#' @param cols 
+#' @param include_upper_bound 
+#' @param ... 
+#'
+#' @return list of logical vectors where TRUE indicates where the check failed.
+#'   Every list entry represents one of the columns specified in cols.
+#'   This might be helpful if one wants to apply a counter-measure
+#' @export
+#'
+#' @examples
+sc_cols_bounded_above <- function(object, cols, include_upper_bound = TRUE, ...) {
+  
+}
+
+
+#' Checks that all elements from the specified columns are in a certain range
+#'
+#' @param object 
+#' @param cols 
+#' @param include_lower_bound 
+#' @param include_upper_bound 
+#' @param ... 
+#'
+#' @return list of logical vectors where TRUE indicates where the check failed.
+#'   Every list entry represents one of the columns specified in cols.
+#'   This might be helpful if one wants to apply a counter-measure
+#' @export
+#'
+#' @examples
+sc_cols_bounded <- function(object, cols, include_lower_bound = TRUE, include_upper_bound = TRUE, ...) {
+  
+}
+
+
+
 #' Checks that all elements from the specified columns are not NA
 #'
 #' @param object 
@@ -60,7 +115,6 @@ sc_cols_non_NA <- function(object, cols, ...){
 sc_cols_unique <- function(object, cols, ...){
   
 }
-
 
 #' Performs various checks after a left-join was performed
 #'
