@@ -2,15 +2,15 @@ TRACKER_ENV <- new.env()
 
 #' Adds a sanity check to the list of already performed sanity checks
 #'
-#' @param fail_vec logical vector where TRUE indicates that a fail has happend
+#' @param fail_vec logical vector where \code{TRUE} indicates that a fail has happend
 #' @param description of the sanity check
 #' @param counter_meas description of the counter measures that were applied
 #'   to correct the problems
 #' @param data optional. Data set where the fails were found. Is used to store examples
 #'   of failures
-#' @param example_size number failures to be extracted from the object passed to the parameter
-#'   data. By default 3 random examples are extracted.
-#' @param call by default tracks the function that called add_sanity_check.
+#' @param example_size number failures to be extracted from the object passed to \code{data}. 
+#'   By default 3 random examples are extracted.
+#' @param call by default tracks the function that called \link{add_sanity_check}.
 #' @param fail_callback user-defined function that is called if \code{any(fail_vec)} is \code{TRUE}.
 #'   This is helpful if an additional warning or error should be thrown or maybe a
 #'   log-entry should be created.
