@@ -26,7 +26,8 @@ sc_col_elements <- function(object, col, feasible_elements, ...){
     name = "description", 
     value = sprintf("Elements in '%s' should contain only %s.",
                        col,
-                       paste0("'", feasible_elements, "'", collapse = ", "))
+                       h_collapse_char_vec(feasible_elements)
+                    )
     )
   
   ell[["fail_vec"]] <- !(object[[col]] %in% feasible_elements)

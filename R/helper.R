@@ -20,3 +20,18 @@ h_complete_list <- function(ell, name, value){
   }
   return(ret)
 }
+
+#' Collapse a vector of characters to a string with separators
+#'
+#' @param v vector of chars to be collapsed
+#' @param collapse character that separates the elements in the returned object
+#' @param qoute character that surronds every element in \code{v} in the
+#'   returned object
+#'
+#' @return collapsed version of \code{v}
+#'
+#' @examples
+#' cat(h_collapse_char_vec(v = letters[1:4]))
+h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
+  paste(qoute, v, qoute, collapse = collapse, sep = "")
+}
