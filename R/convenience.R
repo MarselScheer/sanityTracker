@@ -1,17 +1,46 @@
 #' Checks that the elements of a column belong to a certain set
 #'
-#' @param object 
-#' @param col 
-#' @param feasible_elements 
-#' @param ... 
+#' @param object table with a column specified by \code{col}
+#' @param col name as a character of the column which is checked
+#' @param feasible_elements vector with characters that are feasible for \code{col}
+#' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
 #' @return logical vector where TRUE indicates where the check failed.
 #'   This might be helpful if one wants to apply a counter-measure.
 #' @export
 #'
-#' @examples
+#' @examples 
+#' d <- data.frame(type = letters[1:4], nmb = 1:4)
+#' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
+#' get_sanity_checks()
 sc_col_elements <- function(object, col, feasible_elements, ...){
   
+  if (!(col %in% names(object))){
+    stop(sprintf("Column '%s' does not exist", col))
+  }
+  
+  ell <- list(...)
+  # create a description if the user did not provide one
+  ell <- h_complete_list(
+    ell = ell, 
+    name = "description", 
+    value = sprintf("Elements in '%s' should contain only %s.",
+                       col,
+                       paste0("'", feasible_elements, "'", collapse = ", "))
+    )
+  
+  ell[["fail_vec"]] <- !(object[[col]] %in% feasible_elements)
+  ell <- h_complete_list(
+    ell = ell,
+    name = "data", 
+    value = object
+  )
+  ell <- h_complete_list(
+    ell = ell,
+    name = "call",
+    value = deparse(sys.call(which = -1))
+  )
+  return(do.call(add_sanity_check, ell))
 }
 
 #' Checks that all elements from the specified columns are positive
