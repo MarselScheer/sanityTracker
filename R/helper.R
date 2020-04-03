@@ -6,14 +6,14 @@
 #'
 #' @return if \code{ell} already contained the element \code{name}, then
 #'   \code{ell} is returned without being modified. Otherwise, \code{ell}
-#'   is returned extended by a new element with name \code{name} and value 
+#'   is returned extended by a new element with name \code{name} and value
 #'   \code{value}.
 #'
-#' @examples 
+#' @examples
 #' ell <- list(a = 1, b = 2)
 #' sanityTracker:::h_complete_list(ell = ell, name = "a", value = 100)
 #' sanityTracker:::h_complete_list(ell = ell, name = "d", value = Inf)
-h_complete_list <- function(ell, name, value){
+h_complete_list <- function(ell, name, value) {
   ret <- ell
   if (!name %in% names(ret)) {
     ret[[name]] <- value

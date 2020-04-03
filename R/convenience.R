@@ -2,20 +2,21 @@
 #'
 #' @param object table with a column specified by \code{col}
 #' @param col name as a character of the column which is checked
-#' @param feasible_elements vector with characters that are feasible for \code{col}
+#' @param feasible_elements vector with characters that are feasible
+#'   for \code{col}
 #' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
 #' @return logical vector where TRUE indicates where the check failed.
 #'   This might be helpful if one wants to apply a counter-measure.
 #' @export
 #'
-#' @examples 
+#' @examples
 #' d <- data.frame(type = letters[1:4], nmb = 1:4)
 #' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
 #' get_sanity_checks()
-sc_col_elements <- function(object, col, feasible_elements, ...){
-  
-  if (!(col %in% names(object))){
+sc_col_elements <- function(object, col, feasible_elements, ...) {
+
+  if (!(col %in% names(object))) {
     stop(sprintf("Column '%s' does not exist", col))
   }
 
@@ -33,12 +34,13 @@ sc_col_elements <- function(object, col, feasible_elements, ...){
   return(ret)
 }
 
+
 #' Checks that all elements from the specified columns are positive
 #'
-#' @param object 
-#' @param cols 
-#' @param zero_feasible 
-#' @param ... 
+#' @param object
+#' @param cols
+#' @param zero_feasible
+#' @param ...
 #'
 #' @return list of logical vectors where TRUE indicates where the check failed.
 #'   Every list entry represents one of the columns specified in cols.
@@ -46,16 +48,16 @@ sc_col_elements <- function(object, col, feasible_elements, ...){
 #' @export
 #'
 #' @examples
-sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...){
-  
+sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...) {
+
 }
 
-#' Checks that all elements from the specified columns are above a certain number
+#' Checks that all elements from the given columns are above a certain number
 #'
-#' @param object 
-#' @param cols 
-#' @param include_lower_bound 
-#' @param ... 
+#' @param object
+#' @param cols
+#' @param include_lower_bound
+#' @param ...
 #'
 #' @return list of logical vectors where TRUE indicates where the check failed.
 #'   Every list entry represents one of the columns specified in cols.
@@ -63,16 +65,17 @@ sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...){
 #' @export
 #'
 #' @examples
-sc_cols_bounded_below <- function(object, cols, include_lower_bound = TRUE, ...) {
-  
+sc_cols_bounded_below <- function(object, cols,
+                                  include_lower_bound = TRUE, ...) {
+
 }
 
-#' Checks that all elements from the specified columns are above a certain number
+#' Checks that all elements from the given columns are above a certain number
 #'
-#' @param object 
-#' @param cols 
-#' @param include_upper_bound 
-#' @param ... 
+#' @param object
+#' @param cols
+#' @param include_upper_bound
+#' @param ...
 #'
 #' @return list of logical vectors where TRUE indicates where the check failed.
 #'   Every list entry represents one of the columns specified in cols.
@@ -80,18 +83,19 @@ sc_cols_bounded_below <- function(object, cols, include_lower_bound = TRUE, ...)
 #' @export
 #'
 #' @examples
-sc_cols_bounded_above <- function(object, cols, include_upper_bound = TRUE, ...) {
-  
+sc_cols_bounded_above <- function(object, cols,
+                                  include_upper_bound = TRUE, ...) {
+
 }
 
 
 #' Checks that all elements from the specified columns are in a certain range
 #'
-#' @param object 
-#' @param cols 
-#' @param include_lower_bound 
-#' @param include_upper_bound 
-#' @param ... 
+#' @param object
+#' @param cols
+#' @param include_lower_bound
+#' @param include_upper_bound
+#' @param ...
 #'
 #' @return list of logical vectors where TRUE indicates where the check failed.
 #'   Every list entry represents one of the columns specified in cols.
@@ -99,36 +103,38 @@ sc_cols_bounded_above <- function(object, cols, include_upper_bound = TRUE, ...)
 #' @export
 #'
 #' @examples
-sc_cols_bounded <- function(object, cols, include_lower_bound = TRUE, include_upper_bound = TRUE, ...) {
-  
+sc_cols_bounded <- function(object, cols, include_lower_bound = TRUE,
+                            include_upper_bound = TRUE, ...) {
+
 }
 
 
 
 #' Checks that all elements from the specified columns are not NA
 #'
-#' @param object 
-#' @param cols 
-#' @param ... 
+#' @param object
+#' @param cols
+#' @param ...
 #'
 #' @return logical vector where TRUE indicates where the check failed.
 #'   This might be helpful if one wants to apply a counter-measure.
 #' @export
 #'
 #' @examples
-sc_cols_non_NA <- function(object, cols, ...){
-  
+sc_cols_non_NA <- function(object, cols, ...) {
+
 }
 
 #' Checks that the combination of the specified columns is unique
 #'
-#' @param object 
-#' @param cols 
-#' @param ... 
+#' @param object
+#' @param cols
+#' @param ...
 #'
 #' @return logical vector where TRUE indicates where the check failed.
 #'   This might be helpful if one wants to apply a counter-measure.
 #' @export
+#' @import data.table
 #'
 #' @examples
 sc_cols_unique <- function(object, cols, ...){
@@ -137,18 +143,18 @@ sc_cols_unique <- function(object, cols, ...){
 
 #' Performs various checks after a left-join was performed
 #'
-#' @param joined 
-#' @param left 
-#' @param right 
-#' @param by 
-#' @param ... 
+#' @param joined
+#' @param left
+#' @param right
+#' @param by
+#' @param ...
 #'
 #' @return NULL
 #' @export
 #'
 #' @examples
-sc_left_join <- function(joined, left, right, by, ...){
-  
+sc_left_join <- function(joined, left, right, by, ...) {
+
 }
 
 

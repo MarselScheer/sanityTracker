@@ -7,20 +7,20 @@ add_sanity_check(
   fail_vec = c(NA, NA), #edge-case
   description = "A")
 test_that(
-  "Number of checks, fails and NAs",{
+  "Number of checks, fails and NAs", {
     expect_equivalent(
-      object = get_sanity_checks()[1, c("n", "n_fail", "n_na")], 
+      object = get_sanity_checks()[1, c("n", "n_fail", "n_na")],
       expected = data.table::data.table(n = 3, n_fail = 1, n_na = 1)
     )
     expect_equivalent(
-      object = get_sanity_checks()[2, c("n", "n_fail", "n_na")], 
+      object = get_sanity_checks()[2, c("n", "n_fail", "n_na")],
       expected = data.table::data.table(n = 2, n_fail = 0, n_na = 2)
     )
   }
 )
 
 test_that(
-  "fail_callback is called if any fails happen",{
+  "fail_callback is called if any fails happen", {
     expect_error(
       add_sanity_check(
         fail_vec = c(T, F, NA),
@@ -38,7 +38,7 @@ add_sanity_check(
 test_that(
   "Number of checks, fails and NAs",
   expect_equivalent(
-    object = get_sanity_checks()[["example"]], 
+    object = get_sanity_checks()[["example"]],
     expected = list(data.frame(a = 2))
   )
 )
