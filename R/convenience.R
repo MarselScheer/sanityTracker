@@ -18,30 +18,19 @@ sc_col_elements <- function(object, col, feasible_elements, ...){
   if (!(col %in% names(object))){
     stop(sprintf("Column '%s' does not exist", col))
   }
-  
-  ell <- list(...)
-  # create a description if the user did not provide one
-  ell <- h_complete_list(
-    ell = ell, 
-    name = "description", 
-    value = sprintf("Elements in '%s' should contain only %s.",
-                       col,
-                       h_collapse_char_vec(feasible_elements)
-                    )
-    )
-  
-  ell[["fail_vec"]] <- !(object[[col]] %in% feasible_elements)
-  ell <- h_complete_list(
-    ell = ell,
-    name = "data", 
-    value = object
-  )
-  ell <- h_complete_list(
-    ell = ell,
-    name = "call",
-    value = deparse(sys.call(which = -1))
-  )
-  return(do.call(add_sanity_check, ell))
+
+  ret <-
+    h_add_sanity_check(
+      ellipsis = list(...),
+      fail_vec = !(object[[col]] %in% feasible_elements),
+      description = sprintf(
+        "Elements in '%s' should contain only %s.",
+        col,
+        h_collapse_char_vec(feasible_elements)
+      ),
+      data = object)
+ 
+  return(ret)
 }
 
 #' Checks that all elements from the specified columns are positive
