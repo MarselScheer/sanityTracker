@@ -35,3 +35,57 @@ h_complete_list <- function(ell, name, value) {
 h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
   paste(qoute, v, qoute, collapse = collapse, sep = "")
 }
+
+
+#' Wrapper for \link{add_sanity_check} for internal use
+#'
+#' The convenience function usually provide some defaults
+#' like description that can be overwritten by the user
+#' through the ... argument of the convenience function.
+#' This function manages to set those values that were
+#' NOT overwritten by the user through the ... argument
+#' and then call \link{add_sanity_check}.
+#' 
+#' @param ellipsis usually list(...) of the function that calls this function.
+#'  It contains the parameters defined by the user for add_sanity_check. 
+#' @param fail_vec logical vector where \code{TRUE} indicates that a
+#'   fail has happend
+#' @param description will be passed to \link{add_sanity_check} if ellipsis 
+#'   does not contain a element with name 'description'
+#' @param data will be passed to \link{add_sanity_check} if ellipsis 
+#'   does not contain a element with name 'data'
+#' @param call will be passed to \link{add_sanity_check} if ellipsis 
+#'   does not contain a element with name 'call'
+#'
+#' @return see return value of \link{add_sanity_check}
+#' @example 
+#' d <- data.frame(type = letters[1:4], nmb = 1:4)
+#' # h_add_sanity_check is used on sc_col_elements()
+#' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
+#' get_sanity_checks()
+h_add_sanity_check <- function(ellipsis, fail_vec, description, data,
+                               call = deparse(sys.call(which = -2))) {
+  # NOTE: counter_meas is not parameter because the convenience functions
+  #       that usally call this function do not perform any counter-measures
+  ellipsis[["fail_vec"]] <- fail_vec
+  
+  ellipsis <- h_complete_list(
+    ell = ellipsis,
+    name = "description",
+    value = description
+  )
+  
+  ellipsis <- h_complete_list(
+    ell = ellipsis,
+    name = "data",
+    value = data
+  )
+  
+  ellipsis <- h_complete_list(
+    ell = ellipsis,
+    name = "call",
+    value = call
+  )
+  
+  return(do.call(add_sanity_check, ellipsis))
+}
