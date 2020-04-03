@@ -58,7 +58,7 @@ h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
 #'   does not contain a element with name 'call'
 #'
 #' @return see return value of \link{add_sanity_check}
-#' @example 
+#' @examples 
 #' d <- data.frame(type = letters[1:4], nmb = 1:4)
 #' # h_add_sanity_check is used on sc_col_elements()
 #' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
