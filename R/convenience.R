@@ -127,9 +127,9 @@ sc_cols_non_NA <- function(object, cols, ...) {
 
 #' Checks that the combination of the specified columns is unique
 #'
-#' @param object
-#' @param cols
-#' @param ...
+#' @param object table with a columns specified by \code{cols}
+#' @param cols vector of characters which combination is checked to be unique
+#' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
 #' @return logical vector where TRUE indicates where the check failed.
 #'   This might be helpful if one wants to apply a counter-measure.
@@ -137,8 +137,25 @@ sc_cols_non_NA <- function(object, cols, ...) {
 #' @import data.table
 #'
 #' @examples
-sc_cols_unique <- function(object, cols, ...){
-  
+#' sc_cols_unique(object = iris, cols = c("Species", "Sepal.Length", "Sepal.Width", "Petal.Length"))
+#' get_sanity_checks()
+#' get_sanity_checks()[["example"]]
+sc_cols_unique <- function(object, cols = names(object), ...) {
+  unk_cols <- setdiff(cols, names(object))
+  if (length(unk_cols) > 0) {
+    stop(sprintf("Columns %s not found in object",
+                 h_collapse_char_vec(unk_cols)))
+  }
+
+  dt <- data.table::as.data.table(x = object)
+  dt[, ..sanity_N := .N, by = cols]
+  ret <-
+    h_add_sanity_check(
+      ellipsis = list(...),
+      fail_vec = dt$..sanity_N != 1,
+      description = "desc",
+      data = dt)
+  return(ret)
 }
 
 #' Performs various checks after a left-join was performed
