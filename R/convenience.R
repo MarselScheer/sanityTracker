@@ -9,17 +9,16 @@
 #' @return logical vector where TRUE indicates where the check failed.
 #'   This might be helpful if one wants to apply a counter-measure.
 #' @export
-#'
 #' @examples
 #' d <- data.frame(type = letters[1:4], nmb = 1:4)
 #' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
 #' get_sanity_checks()
 sc_col_elements <- function(object, col, feasible_elements, ...) {
 
-  if (!(col %in% names(object))) {
-    stop(sprintf("Column '%s' does not exist", col))
-  }
-
+  checkmate::assert_data_frame(x = object, min.rows = 1)
+  checkmate::qassert(x = col, rules = "s1")
+  checkmate::assert_subset(x = col, choices = names(object))
+  
   ret <-
     h_add_sanity_check(
       ellipsis = list(...),
@@ -141,12 +140,12 @@ sc_cols_non_NA <- function(object, cols, ...) {
 #' get_sanity_checks()
 #' get_sanity_checks()[["example"]]
 sc_cols_unique <- function(object, cols = names(object), ...) {
-  unk_cols <- setdiff(cols, names(object))
-  if (length(unk_cols) > 0) {
-    stop(sprintf("Columns %s not found in object",
-                 h_collapse_char_vec(unk_cols)))
-  }
 
+  checkmate::assert_data_frame(x = object, min.rows = 1)
+  checkmate::qassert(x = cols, rules = "s+")
+  checkmate::assert_subset(x = cols, choices = names(object))
+  
+  
   dt <- data.table::as.data.table(x = object)
   dt[, ..sanity_N := .N, by = cols]
   ret <-
