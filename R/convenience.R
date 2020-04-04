@@ -111,17 +111,49 @@ sc_cols_bounded <- function(object, cols, include_lower_bound = TRUE,
 
 #' Checks that all elements from the specified columns are not NA
 #'
-#' @param object
-#' @param cols
-#' @param ...
+#' @param object table with a columns specified by \code{cols}
+#' @param cols vector of characters of columns that are checked for NAs
+#' @param ... further parameters that are passed to \link{add_sanity_check}.
+#' @param unk_cols_callback user-defined function that is called if
+#'   some of the \code{cols} are not contained in the \code{object}. 
+#'   This is helpful if an additional warning or error should be thrown 
+#'   or maybe a log-entry should be created. Default is the function 
+#'   \code{stop}
 #'
-#' @return logical vector where TRUE indicates where the check failed.
-#'   This might be helpful if one wants to apply a counter-measure.
+#' @return a list where every element is an object returned by 
+#'   \link{add_sanity_check} for each column specified in \code{cols}
+#'   that exists in \code{object}
 #' @export
 #'
 #' @examples
-sc_cols_non_NA <- function(object, cols, ...) {
+#' iris[c(1,3,5,7,9), 1] <- NA
+#' sc_cols_non_NA(object = iris)
+#' get_sanity_checks()
+sc_cols_non_NA <- function(object, cols = names(object), ...,
+                           unk_cols_callback = stop) {
 
+  checkmate::assert_data_frame(x = object, min.rows = 1)
+  checkmate::qassert(x = cols, rules = "s+")
+  all_cols_known <- checkmate::check_subset(x = cols, choices = names(object))
+  if (!isTRUE(all_cols_known)) {
+    unk_cols_callback(all_cols_known)
+  }
+
+  # treat only the columns that actually exist in object
+  cols <- unique(intersect(cols, names(object)))
+  ret <- lapply(cols, function(col) {
+    h_add_sanity_check(
+      ellipsis = list(...),
+      fail_vec = is.na(object[[col]]),
+      description = "Check that column does not contain NA",
+      data = object,
+      param_name = col,
+      call = deparse(sys.call(which = -3))
+    )
+  })
+  names(ret) <- cols
+  
+  return(invisible(ret))
 }
 
 #' Checks that the combination of the specified columns is unique
