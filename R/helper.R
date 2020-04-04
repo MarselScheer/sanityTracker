@@ -68,7 +68,7 @@ h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
 #' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
 #' get_sanity_checks()
 h_add_sanity_check <- function(ellipsis, fail_vec, description, data,
-                               param_name,
+                               param_name = "",
                                call = deparse(sys.call(which = -2)),
                                .fail_vec_str = checkmate::vname(x = fail_vec)) {
   # NOTE: counter_meas is not parameter because the convenience functions
