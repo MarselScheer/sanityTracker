@@ -6,8 +6,7 @@
 #'   for \code{col}
 #' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
-#' @return logical vector where TRUE indicates where the check failed.
-#'   This might be helpful if one wants to apply a counter-measure.
+#' @return see return object of \link{add_sanity_check}
 #' @export
 #' @examples
 #' d <- data.frame(type = letters[1:4], nmb = 1:4)
@@ -30,7 +29,7 @@ sc_col_elements <- function(object, col, feasible_elements, ...) {
       ),
       data = object)
  
-  return(ret)
+  return(invisible(ret))
 }
 
 
