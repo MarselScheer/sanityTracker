@@ -11,11 +11,15 @@ TRACKER_ENV <- new.env()
 #'   store examples of failures
 #' @param example_size number failures to be extracted from the object passed
 #'   to \code{data}. By default 3 random examples are extracted.
+#' @param param_name name of the parameter(s) that is used. This may be helpful
+#'   for filtering the table of all performed sanity checks.
 #' @param call by default tracks the function that called
 #'   \link{add_sanity_check}.
 #' @param fail_callback user-defined function that is called if
 #'   \code{any(fail_vec)} is \code{TRUE}. This is helpful if an additional
 #'   warning or error should be thrown or maybe a log-entry should be created.
+#' @param .fail_vec_str usually not used by the user. Captures what was passed to 
+#'   \code{fail_vec}.
 #'
 #' @return invisibly the sanity check that is stored internally with the
 #'   other sanity checks. All performed sanity checks can be fetched via
@@ -29,7 +33,8 @@ TRACKER_ENV <- new.env()
 #'   d$bmi < 15,
 #'   description = "bmi above 15",
 #'   counter_meas = "none",
-#'   data = d)
+#'   data = d,
+#'   param_name = "bmi")
 #' add_sanity_check(
 #'   d$bmi > 30,
 #'   description = "bmi below 30",
@@ -42,8 +47,8 @@ TRACKER_ENV <- new.env()
 #'   data = d, fail_callback = warning)
 add_sanity_check <- function(
   fail_vec, description, counter_meas = "None", data, example_size = 3,
-  call = deparse(sys.call(which = -1)),
-  fail_callback) {
+  param_name = "-", call = deparse(sys.call(which = -1)),
+  fail_callback, .fail_vec_str = checkmate::vname(x = fail_vec)) {
 
   if (any(fail_vec, na.rm = TRUE) & !missing(fail_callback)) {
     fail_callback(sprintf("%s: FAILED", description))
@@ -55,6 +60,8 @@ add_sanity_check <- function(
     n_fail = sum(fail_vec, na.rm = TRUE),
     n_na = sum(is.na(fail_vec)),
     counter_meas = counter_meas,
+    fail_vec_str = .fail_vec_str,
+    param_name = param_name,
     call = call)
 
   if (!missing(data) & any(fail_vec, na.rm = TRUE)) {
