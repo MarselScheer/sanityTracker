@@ -16,8 +16,9 @@ TRACKER_ENV <- new.env()
 #' @param call by default tracks the function that called
 #'   \link{add_sanity_check}.
 #' @param fail_callback user-defined function that is called if
-#'   \code{any(fail_vec)} is \code{TRUE}. This is helpful if an additional
-#'   warning or error should be thrown or maybe a log-entry should be created.
+#'   any element of \code{fail_vec} is \code{TRUE}. This is helpful if an 
+#'   additional warning or error should be thrown or maybe a log-entry 
+#'   should be created.
 #' @param .fail_vec_str usually not used by the user. Captures what was passed to 
 #'   \code{fail_vec}.
 #'
