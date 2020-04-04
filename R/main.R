@@ -21,9 +21,14 @@ TRACKER_ENV <- new.env()
 #' @param .fail_vec_str usually not used by the user. Captures what was passed to 
 #'   \code{fail_vec}.
 #'
-#' @return invisibly the sanity check that is stored internally with the
-#'   other sanity checks. All performed sanity checks can be fetched via
-#'   \link{get_sanity_checks}
+#' @return a list with three elements
+#'   \describe{
+#'     \item{entry_sanity_table}{invisibly the sanity check that is stored 
+#'     internally with the other sanity checks}
+#'     \item{fail_vec}{\code{fail_vec} as passed over to this function}
+#'     \item{fail}{TRUE if any element of fail is TRUE. Otherwise FALSE.}
+#'   }
+#'   All performed sanity checks can be fetched via \link{get_sanity_checks}
 #' @export
 #' @import data.table
 #'
@@ -85,8 +90,13 @@ add_sanity_check <- function(
     use.names = TRUE,
     fill = TRUE
   )
-
-  return(invisible(row))
+  
+  return(invisible(list(
+    entry_sanity_table = row,
+    fail_vec = fail_vec,
+    fail = any(fail_vec, na.rm = TRUE)
+    ))
+  )
 }
 
 #' Returns all performed sanity checks

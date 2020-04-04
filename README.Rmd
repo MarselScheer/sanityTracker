@@ -68,19 +68,21 @@ We have two simple data-preparation function for our raw-data-set:
 ```{r}
 correct_height <- function(raw_data) {
   ret <- raw_data
-  idx <- 100 < ret$height_m
-  sanityTracker::add_sanity_check(
-    fail_vec = idx,
+  sc <- sanityTracker::add_sanity_check(
+    fail_vec = 100 < ret$height_m,
     description = "Persons are smaller than 100m",
     counter_meas = "Divide by 100. Assume height is given in cm",
+    param_name = "height_m",
     data = ret
   )
-  ret$height_m[idx] <- ret$height_m[idx] / 100
+  if (sc[["fail"]]) {
+    ret$height_m[sc[["fail_vec"]]] <- ret$height_m[sc[["fail_vec"]]] / 100
+  }
+  
   
   sanityTracker::add_sanity_check(
     fail_vec = 2.5 < ret$height_m,
     description = "Persons are smaller than 2.5m",
-    counter_meas = "None",
     data = ret
   )  
   return(ret)
@@ -91,7 +93,6 @@ prep <- function(raw_data) {
   sanityTracker::add_sanity_check(
     fail_vec = duplicated(raw_data$id),
     description = "No duplicated ids",
-    counter_meas = "None",
     data = raw_data
   )
   
@@ -100,7 +101,6 @@ prep <- function(raw_data) {
   sanityTracker::add_sanity_check(
     fail_vec = raw_data$end < raw_data$start,
     description = "start-date <= end-date",
-    counter_meas = "None",
     data = raw_data
   )
 

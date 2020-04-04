@@ -46,19 +46,21 @@ We have two simple data-preparation function for our raw-data-set:
 ``` r
 correct_height <- function(raw_data) {
   ret <- raw_data
-  idx <- 100 < ret$height_m
-  sanityTracker::add_sanity_check(
-    fail_vec = idx,
+  sc <- sanityTracker::add_sanity_check(
+    fail_vec = 100 < ret$height_m,
     description = "Persons are smaller than 100m",
     counter_meas = "Divide by 100. Assume height is given in cm",
+    param_name = "height_m",
     data = ret
   )
-  ret$height_m[idx] <- ret$height_m[idx] / 100
+  if (sc[["fail"]]) {
+    ret$height_m[sc[["fail_vec"]]] <- ret$height_m[sc[["fail_vec"]]] / 100
+  }
+  
   
   sanityTracker::add_sanity_check(
     fail_vec = 2.5 < ret$height_m,
     description = "Persons are smaller than 2.5m",
-    counter_meas = "None",
     data = ret
   )  
   return(ret)
@@ -69,7 +71,6 @@ prep <- function(raw_data) {
   sanityTracker::add_sanity_check(
     fail_vec = duplicated(raw_data$id),
     description = "No duplicated ids",
-    counter_meas = "None",
     data = raw_data
   )
   
@@ -78,7 +79,6 @@ prep <- function(raw_data) {
   sanityTracker::add_sanity_check(
     fail_vec = raw_data$end < raw_data$start,
     description = "start-date <= end-date",
-    counter_meas = "None",
     data = raw_data
   )
 
@@ -98,16 +98,16 @@ sanity_checks
 #> 2:        start-date <= end-date 4      1    0
 #> 3: Persons are smaller than 100m 4      1    0
 #> 4: Persons are smaller than 2.5m 4      0    0
-#>                                   counter_meas
-#> 1:                                        None
-#> 2:                                        None
-#> 3: Divide by 100. Assume height is given in cm
-#> 4:                                        None
-#>                                   call      example
-#> 1:           prep(raw_data = raw_data)             
-#> 2:           prep(raw_data = raw_data) <data.frame>
-#> 3: correct_height(raw_data = raw_data) <data.frame>
-#> 4: correct_height(raw_data = raw_data)
+#>                                   counter_meas                  fail_vec_str
+#> 1:                                        None       duplicated(raw_data$id)
+#> 2:                                        None raw_data$end < raw_data$start
+#> 3: Divide by 100. Assume height is given in cm            100 < ret$height_m
+#> 4:                                        None            2.5 < ret$height_m
+#>    param_name                                call      example
+#> 1:          -           prep(raw_data = raw_data)             
+#> 2:          -           prep(raw_data = raw_data) <data.frame>
+#> 3:   height_m correct_height(raw_data = raw_data) <data.frame>
+#> 4:          - correct_height(raw_data = raw_data)
 ```
 
 This directly gives an overview of what was performed which check failed
@@ -119,8 +119,10 @@ failed.
 sanity_checks[2, ]
 #>               description n n_fail n_na counter_meas
 #> 1: start-date <= end-date 4      1    0         None
-#>                         call      example
-#> 1: prep(raw_data = raw_data) <data.frame>
+#>                     fail_vec_str param_name                      call
+#> 1: raw_data$end < raw_data$start          - prep(raw_data = raw_data)
+#>         example
+#> 1: <data.frame>
 sanity_checks[2, ]$example
 #> [[1]]
 #>   id      start        end height_m
@@ -139,12 +141,12 @@ devtools::install_github("MarselScheer/sanityTracker")
 
 ``` r
 sessionInfo()
-#> R version 3.6.1 (2019-07-05)
+#> R version 3.6.2 (2019-12-12)
 #> Platform: x86_64-pc-linux-gnu (64-bit)
-#> Running under: Debian GNU/Linux 9 (stretch)
+#> Running under: Debian GNU/Linux 10 (buster)
 #> 
 #> Matrix products: default
-#> BLAS/LAPACK: /usr/lib/libopenblasp-r0.2.19.so
+#> BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.3.5.so
 #> 
 #> locale:
 #>  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -161,12 +163,11 @@ sessionInfo()
 #> [1] badgecreatr_0.2.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] compiler_3.6.1           magrittr_1.5            
-#>  [3] tools_3.6.1              htmltools_0.3.6         
-#>  [5] yaml_2.2.0               Rcpp_1.0.2              
-#>  [7] stringi_1.4.3            rmarkdown_1.15          
-#>  [9] data.table_1.12.2        sanityTracker_0.0.0.9000
-#> [11] knitr_1.25               git2r_0.26.1            
-#> [13] stringr_1.4.0            xfun_0.9                
-#> [15] digest_0.6.21            evaluate_0.14
+#>  [1] Rcpp_1.0.3               digest_0.6.23            backports_1.1.5         
+#>  [4] git2r_0.26.1             magrittr_1.5             evaluate_0.14           
+#>  [7] rlang_0.4.2              stringi_1.4.3            data.table_1.12.8       
+#> [10] checkmate_2.0.0          sanityTracker_0.0.0.9000 rmarkdown_2.1           
+#> [13] tools_3.6.2              stringr_1.4.0            xfun_0.11               
+#> [16] yaml_2.2.0               compiler_3.6.2           htmltools_0.4.0         
+#> [19] knitr_1.26
 ```
