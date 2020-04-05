@@ -185,7 +185,8 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
     h_add_sanity_check(
       ellipsis = list(...),
       fail_vec = dt$..sanity_N != 1,
-      description = "desc",
+      description = sprintf("The combination of %s is unique",
+                            h_collapse_char_vec(v = cols)),
       data = dt)
   return(ret)
 }
