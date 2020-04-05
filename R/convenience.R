@@ -193,18 +193,79 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
 
 #' Performs various checks after a left-join was performed
 #'
-#' @param joined
-#' @param left
-#' @param right
-#' @param by
-#' @param ...
+#' One check is that no rows were duplicated during merge
+#' and the other check is that no columns were duplicated
+#' during merge.
+#' @param joined the result of the left-join
+#' @param left the left table used in the left-join
+#' @param right the right table used in the left-join
+#' @param by the variables used for the left-join
+#' @param ... further parameters that are passed to \link{add_sanity_check}.
+#' @param find_nonunique_key if TRUE a sanity-check is performed
+#'   that finds keys (defined by \code{by}) that are non-unique.
+#'   However this can be a time-consuming step. If FALSE only
+#'   the number of rows of the left table with the merged table
+#'   is compared.
 #'
-#' @return NULL
+#' @return list with two elements for the two sanity checks performed
+#'   by this function. The structure of each element is as the
+#'   return object of \link{add_sanity_check}.
 #' @export
 #'
 #' @examples
-sc_left_join <- function(joined, left, right, by, ...) {
+#' ab <- data.table::data.table(a = 1:4, b = letters[1:4])
+#' abc <- data.table::data.table(a = c(1:4, 2), b = letters[1:5], c = rnorm(5))
+#' j <- merge(x = ab, y = abc, by = "a")
+#' sc_left_join(joined = j, left = ab, right = abc, by = "a")
+#' get_sanity_checks()
+sc_left_join <- function(joined, left, right, by, ..., find_nonunique_key = TRUE) {
 
+  checkmate::assert_data_frame(x = joined, min.rows = 1)
+  checkmate::assert_data_frame(x = left, min.rows = 1)
+  checkmate::assert_data_frame(x = right, min.rows = 1)
+  checkmate::qassert(x = by, rules = "s+")
+  
+  # use param_name in the table of sanity-checks to store
+  # information about the variables that were used for the merge
+  PARAM_NAME <- sprintf("Merge-vars: %s", h_collapse_char_vec(v = by))
+  
+  if (find_nonunique_key) {
+    ret_uniq <- sc_cols_unique(object = joined, cols = by, 
+                   call = deparse(sys.call(which = -2)), 
+                   ...)
+  } else {
+    # if user dont want to find rows where the key is not unique
+    # one should at least know how many additional rows compared to
+    # the "left" table are now present
+    n_joined = nrow(joined)
+    n_left = nrow(left)
+    ret_uniq <- h_add_sanity_check(
+      ellipsis = list(...),
+      fail_vec = n_joined != n_left,
+      description = sprintf(
+        "nrow(joined table) = %i equals nrow(left table) = %i", 
+        n_joined, 
+        n_left),
+      param_name = PARAM_NAME
+    )  
+  }
+  
+  
+  duplicated_columns <- setdiff(names(joined), names(left))
+  duplicated_columns <- setdiff(duplicated_columns, names(right))
+  ret_dbl_col <- h_add_sanity_check(
+    ellipsis = list(...),
+    fail_vec = length(duplicated_columns) > 0,
+    description = "No columns were duplicated by the left join",
+    # make it as data.frame because example extraction assumes that data is a
+    # data.frame
+    data = data.table::data.table(
+      cols = h_collapse_char_vec(v = duplicated_columns)
+    ),
+    param_name = PARAM_NAME
+  )
+  
+  list(ret_uniq, ret_db_col)
 }
 
 
