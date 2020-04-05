@@ -3,7 +3,9 @@
 #' @param object table with a column specified by \code{col}
 #' @param col name as a character of the column which is checked
 #' @param feasible_elements vector with characters that are feasible
-#'   for \code{col}
+#'   for \code{col}. Note that an element that is NA it is always
+#'   counted as a fail if \code{feasible_elements} does not 
+#'   explicitly contains NA.
 #' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
 #' @return see return object of \link{add_sanity_check}
