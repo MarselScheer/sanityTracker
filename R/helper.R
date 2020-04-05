@@ -31,7 +31,7 @@ h_complete_list <- function(ell, name, value) {
 #' @return collapsed version of \code{v}
 #'
 #' @examples
-#' cat(h_collapse_char_vec(v = letters[1:4]))
+#' cat(sanityTracker:::h_collapse_char_vec(v = letters[1:4]))
 h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
   paste(qoute, v, qoute, collapse = collapse, sep = "")
 }
