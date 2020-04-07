@@ -22,6 +22,8 @@ TRACKER_ENV <- new.env()
 #'   should be created.
 #' @param .fail_vec_str usually not used by the user. Captures what was passed to 
 #'   \code{fail_vec}.
+#' @param .generated_desc usually not used by the user but by convenience function
+#'   like \link{sc_col_elements} to provide additional information about the check.
 #'
 #' @return a list with three elements
 #'   \describe{
@@ -57,7 +59,12 @@ add_sanity_check <- function(
   data = NULL, data_name = checkmate::vname(x = data), 
   example_size = 3,
   param_name = "-", call = deparse(sys.call(which = -1)),
-  fail_callback, .fail_vec_str = checkmate::vname(x = fail_vec)) {
+  fail_callback, .fail_vec_str = checkmate::vname(x = fail_vec),
+  .generated_desc = "-") {
+  
+  # TODO: maybe create a non-exported function that is called by this 
+  #       function. This way one could avoid to expose .fail_vec_str 
+  #       and .generated_desc to the user.
 
   if (any(fail_vec, na.rm = TRUE) & !missing(fail_callback)) {
     fail_callback(sprintf("%s: FAILED", description))
@@ -66,6 +73,7 @@ add_sanity_check <- function(
   
   row <- data.table::data.table(
     description = description,
+    additional_desc = .generated_desc,
     data_name = data_name,
     n = length(fail_vec),
     n_fail = sum(fail_vec, na.rm = TRUE),
@@ -82,8 +90,10 @@ add_sanity_check <- function(
     if (length(idx) == 1) {
       fail_example <- idx
     } else {
-      fail_example <- sample(which(fail_vec),
-                             size = min(example_size, row$n_fail))
+      fail_example <- which(fail_vec)
+      # avoid random sampling here in order to not interfere 
+      # with a simulation or sth. similar
+      fail_example <- fail_example[seq_len(min(row$n_fail, example_size))]
     }
 
     # drop = FALSE is for the case that fail_example contains only 1 number
