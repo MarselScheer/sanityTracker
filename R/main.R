@@ -9,6 +9,7 @@ TRACKER_ENV <- new.env()
 #'   to correct the problems
 #' @param data optional. Data set where the fails were found. Is used to
 #'   store examples of failures
+#' @param data_name name of the data set that was used
 #' @param example_size number failures to be extracted from the object passed
 #'   to \code{data}. By default 3 random examples are extracted.
 #' @param param_name name of the parameter(s) that is used. This may be helpful
@@ -52,7 +53,9 @@ TRACKER_ENV <- new.env()
 #'   counter_meas = "none",
 #'   data = d, fail_callback = warning)
 add_sanity_check <- function(
-  fail_vec, description, counter_meas = "None", data, example_size = 3,
+  fail_vec, description = "-", counter_meas = "-", 
+  data = NULL, data_name = checkmate::vname(x = data), 
+  example_size = 3,
   param_name = "-", call = deparse(sys.call(which = -1)),
   fail_callback, .fail_vec_str = checkmate::vname(x = fail_vec)) {
 
@@ -60,8 +63,10 @@ add_sanity_check <- function(
     fail_callback(sprintf("%s: FAILED", description))
   }
 
+  
   row <- data.table::data.table(
     description = description,
+    data_name = data_name,
     n = length(fail_vec),
     n_fail = sum(fail_vec, na.rm = TRUE),
     n_na = sum(is.na(fail_vec)),
@@ -70,7 +75,7 @@ add_sanity_check <- function(
     param_name = param_name,
     call = call)
 
-  if (!missing(data) & any(fail_vec, na.rm = TRUE)) {
+  if (!is.null(data) & any(fail_vec, na.rm = TRUE)) {
     # add some examples where the fail occured
 
     idx <- which(fail_vec)

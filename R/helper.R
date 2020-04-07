@@ -54,6 +54,8 @@ h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
 #'   does not contain a element with name 'description'
 #' @param data will be passed to \link{add_sanity_check} if ellipsis 
 #'   does not contain a element with name 'data'
+#' @param data_name will be passed to \link{add_sanity_check} if ellipsis 
+#'   does not contain a element with name 'data_name'
 #' @param param_name will be passed to \link{add_sanity_check} if ellipsis 
 #'   does not contain a element with name 'param_name'
 #' @param call will be passed to \link{add_sanity_check} if ellipsis 
@@ -68,7 +70,7 @@ h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
 #' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
 #' get_sanity_checks()
 h_add_sanity_check <- function(ellipsis, fail_vec, description, data,
-                               param_name,
+                               data_name, param_name,
                                call = deparse(sys.call(which = -2)),
                                .fail_vec_str = checkmate::vname(x = fail_vec)) {
   # NOTE: counter_meas is not parameter because the convenience functions
@@ -88,6 +90,14 @@ h_add_sanity_check <- function(ellipsis, fail_vec, description, data,
       ell = ellipsis,
       name = "data",
       value = data
+    )  
+  }
+
+  if (!missing(data_name)) {
+    ellipsis <- h_complete_list(
+      ell = ellipsis,
+      name = "data_name",
+      value = data_name
     )  
   }
   
