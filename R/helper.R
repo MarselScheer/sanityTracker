@@ -50,15 +50,15 @@ h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
 #'  It contains the parameters defined by the user for add_sanity_check. 
 #' @param fail_vec logical vector where \code{TRUE} indicates that a
 #'   fail has happend
-#' @param description will be passed to \link{add_sanity_check} if ellipsis 
+#' @param .generated_desc will be passed to \link{.add_sanity_check} if ellipsis 
 #'   does not contain a element with name 'description'
-#' @param data will be passed to \link{add_sanity_check} if ellipsis 
+#' @param data will be passed to \link{.add_sanity_check} if ellipsis 
 #'   does not contain a element with name 'data'
-#' @param data_name will be passed to \link{add_sanity_check} if ellipsis 
+#' @param data_name will be passed to \link{.add_sanity_check} if ellipsis 
 #'   does not contain a element with name 'data_name'
-#' @param param_name will be passed to \link{add_sanity_check} if ellipsis 
+#' @param param_name will be passed to \link{.add_sanity_check} if ellipsis 
 #'   does not contain a element with name 'param_name'
-#' @param call will be passed to \link{add_sanity_check} if ellipsis 
+#' @param call will be passed to \link{.add_sanity_check} if ellipsis 
 #'   does not contain a element with name 'call'
 #' @param .fail_vec_str usually not used by the user. Captures what was passed to 
 #'   \code{fail_vec}.
@@ -69,21 +69,37 @@ h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
 #' # h_add_sanity_check is used on sc_col_elements()
 #' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
 #' get_sanity_checks()
-h_add_sanity_check <- function(ellipsis, fail_vec, description, data,
-                               data_name, param_name,
+h_add_sanity_check <- function(ellipsis, fail_vec, .generated_desc, data,
+                               data_name = "", param_name = "",
                                call = deparse(sys.call(which = -2)),
                                .fail_vec_str = checkmate::vname(x = fail_vec)) {
   # NOTE: counter_meas is not parameter because the convenience functions
   #       that usally call this function do not perform any counter-measures
   ellipsis[["fail_vec"]] <- fail_vec
+  
+  ellipsis <- h_complete_list(
+    ell = ellipsis,
+    name = "description",
+    value = "-"
+  )
 
-  if (!missing(description)) {
-    ellipsis <- h_complete_list(
-      ell = ellipsis,
-      name = "description",
-      value = description
-    )
-  }  
+  ellipsis <- h_complete_list(
+    ell = ellipsis,
+    name = "counter_meas",
+    value = "-"
+  )
+  
+  ellipsis <- h_complete_list(
+    ell = ellipsis,
+    name = "example_size",
+    value = 3
+  )
+  
+  ellipsis <- h_complete_list(
+    ell = ellipsis,
+    name = ".generated_desc",
+    value = .generated_desc
+  )
   
   if (!missing(data)) {
     ellipsis <- h_complete_list(
@@ -93,34 +109,30 @@ h_add_sanity_check <- function(ellipsis, fail_vec, description, data,
     )  
   }
 
-  if (!missing(data_name)) {
-    ellipsis <- h_complete_list(
-      ell = ellipsis,
-      name = "data_name",
-      value = data_name
-    )  
-  }
+  ellipsis <- h_complete_list(
+    ell = ellipsis,
+    name = "data_name",
+    value = data_name
+  )  
   
 
-  if (!missing(param_name)) {
-    ellipsis <- h_complete_list(
-      ell = ellipsis,
-      name = "param_name",
-      value = param_name
-    )
-  }
+  ellipsis <- h_complete_list(
+    ell = ellipsis,
+    name = "param_name",
+    value = param_name
+  )
   
   ellipsis <- h_complete_list(
     ell = ellipsis,
     name = "call",
     value = call
   )  
-
+  
   ellipsis <- h_complete_list(
     ell = ellipsis,
     name = ".fail_vec_str",
     value = .fail_vec_str
   )  
   
-  return(do.call(add_sanity_check, ellipsis))
+  return(do.call(.add_sanity_check, ellipsis))
 }
