@@ -1,5 +1,6 @@
 testthat::context("add and get sanity checks")
 
+clear_sanity_checks()
 add_sanity_check(
   fail_vec = c(T, F, NA),
   description = "A")
@@ -29,16 +30,23 @@ test_that(
     )
   }
 )
-
+ 
 clear_sanity_checks()
 add_sanity_check(
   fail_vec = c(F, T),
   description = "A",
   data = data.frame(a = 1:2))
 test_that(
-  "Number of checks, fails and NAs",
+  "Example is stored",
   expect_equivalent(
     object = get_sanity_checks()[["example"]],
     expected = list(data.frame(a = 2))
+  )
+)
+test_that(
+  "Name of the data set is stored",
+  expect_equal(
+    object = get_sanity_checks()$data_name,
+    expected = "data.frame(a = 1:2)"
   )
 )
