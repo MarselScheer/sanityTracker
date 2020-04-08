@@ -52,8 +52,7 @@ TRACKER_ENV <- new.env()
 #' add_sanity_check(
 #'   d$bmi < 15,
 #'   description = "bmi above 15",
-#'   counter_meas = "none",
-#'   data = d, fail_callback = warning)
+#'   fail_callback = warning)
 add_sanity_check <- function(
   fail_vec, description = "-", counter_meas = "-", 
   data = NULL, data_name = checkmate::vname(x = data), 
@@ -90,6 +89,7 @@ add_sanity_check <- function(
     if (length(idx) == 1) {
       fail_example <- idx
     } else {
+      # TODO: do not pick examples randomly. it may interfere with a simulation!
       fail_example <- which(fail_vec)
       # avoid random sampling here in order to not interfere 
       # with a simulation or sth. similar
