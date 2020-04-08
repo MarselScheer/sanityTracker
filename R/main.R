@@ -4,26 +4,23 @@ TRACKER_ENV <- new.env()
 #'
 #' @param fail_vec logical vector where \code{TRUE} indicates that a
 #'   fail has happend
-#' @param description of the sanity check
-#' @param counter_meas description of the counter measures that were applied
-#'   to correct the problems
-#' @param data optional. Data set where the fails were found. Is used to
-#'   store examples of failures
-#' @param data_name name of the data set that was used
-#' @param example_size number failures to be extracted from the object passed
+#' @param description (optional) of the sanity check. default is "-".
+#' @param counter_meas (optional) description of the counter measures that were applied
+#'   to correct the problems. default is "-".
+#' @param data (optional) where the fails were found. Is used to
+#'   store examples of failures. default is "-".
+#' @param data_name (optional) name of the data set that was used. defaults is
+#'   the name of the object passed to data.
+#' @param example_size (optional) number failures to be extracted from the object passed
 #'   to \code{data}. By default 3 random examples are extracted.
-#' @param param_name name of the parameter(s) that is used. This may be helpful
+#' @param param_name (optional) name of the parameter(s) that is used. This may be helpful
 #'   for filtering the table of all performed sanity checks.
-#' @param call by default tracks the function that called
+#' @param call (optional) by default tracks the function that called
 #'   \link{add_sanity_check}.
-#' @param fail_callback user-defined function that is called if
+#' @param fail_callback (optional) user-defined function that is called if
 #'   any element of \code{fail_vec} is \code{TRUE}. This is helpful if an 
 #'   additional warning or error should be thrown or maybe a log-entry 
 #'   should be created.
-#' @param .fail_vec_str usually not used by the user. Captures what was passed to 
-#'   \code{fail_vec}.
-#' @param .generated_desc usually not used by the user but by convenience function
-#'   like \link{sc_col_elements} to provide additional information about the check.
 #'
 #' @return a list with three elements
 #'   \describe{
@@ -34,7 +31,6 @@ TRACKER_ENV <- new.env()
 #'   }
 #'   All performed sanity checks can be fetched via \link{get_sanity_checks}
 #' @export
-#' @import data.table
 #'
 #' @examples
 #' d <- data.frame(person_id = 1:4, bmi = c(18,23,-1,35), age = 31:34)
@@ -55,20 +51,61 @@ TRACKER_ENV <- new.env()
 #'   fail_callback = warning)
 add_sanity_check <- function(
   fail_vec, description = "-", counter_meas = "-", 
-  data = NULL, data_name = checkmate::vname(x = data), 
+  data, data_name = checkmate::vname(x = data), 
   example_size = 3,
   param_name = "-", call = deparse(sys.call(which = -1)),
-  fail_callback, .fail_vec_str = checkmate::vname(x = fail_vec),
-  .generated_desc = "-") {
+  fail_callback) {
   
-  # TODO: maybe create a non-exported function that is called by this 
-  #       function. This way one could avoid to expose .fail_vec_str 
-  #       and .generated_desc to the user.
+  ret <- 
+    # NOTE: also data and fail_callback can be "missing" it works
+    #       to pass these parameters to the next function
+    .add_sanity_check(
+      fail_vec = fail_vec, description = description,
+      counter_meas = counter_meas, data = data, 
+      data_name = data_name, example_size = example_size,
+      param_name = param_name, call = call, 
+      fail_callback = fail_callback,
+      .fail_vec_str = checkmate::vname(x = fail_vec),
+      .generated_desc = "-"
+    )
+  return(ret)
+}
 
+#' Adds a sanity check to the list of already performed sanity checks
+#'
+#' NOTE the also add_sanity_check calls this function, the parameters
+#' are documented in add_sanity_check because that function gets
+#' exported.
+#' @param fail_vec see \link{add_sanity_check}
+#' @param description see \link{add_sanity_check}
+#' @param counter_meas see \link{add_sanity_check}
+#' @param data see \link{add_sanity_check}
+#' @param data_name see \link{add_sanity_check}
+#' @param example_size see \link{add_sanity_check}
+#' @param param_name see \link{add_sanity_check}
+#' @param call see \link{add_sanity_check}
+#' @param fail_callback see \link{add_sanity_check}
+#' @param .fail_vec_str should capture what was used originally for \code{fail_vec}.
+#' @param .generated_desc for convenience functions like 
+#'   \link{sc_col_elements} to provide additional information about 
+#'   the check.
+#'
+#' @return see \link{add_sanity_check}
+#' @import data.table
+.add_sanity_check <- function(
+  fail_vec, description, counter_meas, 
+  data,
+  data_name, example_size,
+  param_name, call, 
+  fail_callback, 
+  .fail_vec_str,
+  .generated_desc) {
+
+  
   if (any(fail_vec, na.rm = TRUE) & !missing(fail_callback)) {
     fail_callback(sprintf("%s: FAILED", description))
   }
-
+  
   
   row <- data.table::data.table(
     description = description,
@@ -81,26 +118,25 @@ add_sanity_check <- function(
     fail_vec_str = .fail_vec_str,
     param_name = param_name,
     call = call)
-
-  if (!is.null(data) & any(fail_vec, na.rm = TRUE)) {
+  
+  if (!missing(data) & any(fail_vec, na.rm = TRUE)) {
     # add some examples where the fail occured
-
+    
     idx <- which(fail_vec)
     if (length(idx) == 1) {
       fail_example <- idx
     } else {
-      # TODO: do not pick examples randomly. it may interfere with a simulation!
       fail_example <- which(fail_vec)
       # avoid random sampling here in order to not interfere 
       # with a simulation or sth. similar
       fail_example <- fail_example[seq_len(min(row$n_fail, example_size))]
     }
-
+    
     # drop = FALSE is for the case that fail_example contains only 1 number
     # a data.frame may reduce otherwise to a vector.
     row$example <- list(list(data[fail_example, , drop = FALSE]))
   }
-
+  
   TRACKER_ENV[["checks"]] <- data.table::rbindlist(
     list(TRACKER_ENV[["checks"]], row),
     use.names = TRUE,
@@ -111,9 +147,10 @@ add_sanity_check <- function(
     entry_sanity_table = row,
     fail_vec = fail_vec,
     fail = any(fail_vec, na.rm = TRUE)
-    ))
+  ))
   )
-}
+} 
+
 
 #' Returns all performed sanity checks
 #'
