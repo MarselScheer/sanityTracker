@@ -14,7 +14,8 @@
 #' d <- data.frame(type = letters[1:4], nmb = 1:4)
 #' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
 #' get_sanity_checks()
-sc_col_elements <- function(object, col, feasible_elements, ...) {
+sc_col_elements <- function(object, col, feasible_elements,
+                            ...) {
 
   checkmate::assert_data_frame(x = object, min.rows = 1)
   checkmate::qassert(x = col, rules = "s1")
@@ -24,12 +25,14 @@ sc_col_elements <- function(object, col, feasible_elements, ...) {
     h_add_sanity_check(
       ellipsis = list(...),
       fail_vec = !(object[[col]] %in% feasible_elements),
-      description = sprintf(
+      .generated_desc = sprintf(
         "Elements in '%s' should contain only %s.",
         col,
         h_collapse_char_vec(feasible_elements)
       ),
-      data = object)
+      data = object,
+      data_name = checkmate::vname(x = object),
+      param_name = col)
  
   return(invisible(ret))
 }
