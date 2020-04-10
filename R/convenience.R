@@ -191,6 +191,7 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
   
   dt <- data.table::as.data.table(x = object)
   dt[, .n_col_cmb := .N, by = cols]
+
   ret <-
     h_add_sanity_check(
       ellipsis = list(...),
@@ -215,9 +216,7 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
 #' @param ... further parameters that are passed to \link{add_sanity_check}.
 #' @param find_nonunique_key if TRUE a sanity-check is performed
 #'   that finds keys (defined by \code{by}) that are non-unique.
-#'   However this can be a time-consuming step. If FALSE only
-#'   the number of rows of the left table with the merged table
-#'   is compared.
+#'   However this can be a time-consuming step. 
 #'
 #' @return list with two elements for the two sanity checks performed
 #'   by this function. The structure of each element is as the
@@ -228,7 +227,8 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
 #' ab <- data.table::data.table(a = 1:4, b = letters[1:4])
 #' abc <- data.table::data.table(a = c(1:4, 2), b = letters[1:5], c = rnorm(5))
 #' j <- merge(x = ab, y = abc, by = "a")
-#' sc_left_join(joined = j, left = ab, right = abc, by = "a")
+#' sc_left_join(joined = j, left = ab, right = abc, by = "a", 
+#'   description = "Left join outcome to main population")
 #' get_sanity_checks()
 # TODO: encapsulate the sc-functions in all examples in another function to better see the purpose of "call"-column
 sc_left_join <- function(joined, left, right, by, ..., find_nonunique_key = TRUE) {
@@ -241,27 +241,39 @@ sc_left_join <- function(joined, left, right, by, ..., find_nonunique_key = TRUE
   # use param_name in the table of sanity-checks to store
   # information about the variables that were used for the merge
   PARAM_NAME <- sprintf("Merge-vars: %s", h_collapse_char_vec(v = by))
+  DATA_NAME <- sprintf("%s, %s, %s", 
+                       checkmate::vname(x = joined),
+                       checkmate::vname(x = left),
+                       checkmate::vname(x = right)
+                       )
   
   if (find_nonunique_key) {
+    # FIXME: need to use h_complete_list and do("sc_cols_unique", )
+    #        in order to not overwrite param_name and data_name 
+    #        that might be specified by the user
     ret_uniq <- sc_cols_unique(object = joined, cols = by, 
-                   call = deparse(sys.call(which = -2)), 
-                   ...)
-  } else {
-    # if user dont want to find rows where the key is not unique
-    # one should at least know how many additional rows compared to
-    # the "left" table are now present
-    n_joined = nrow(joined)
-    n_left = nrow(left)
-    ret_uniq <- h_add_sanity_check(
-      ellipsis = list(...),
-      fail_vec = n_joined != n_left,
-      description = sprintf(
-        "nrow(joined table) = %i equals nrow(left table) = %i", 
-        n_joined, 
-        n_left),
-      param_name = PARAM_NAME
-    )  
-  }
+                               call = h_deparsed_sys_call(which = -3), 
+                               param_name = PARAM_NAME,
+                               data_name = DATA_NAME,
+                               ...)
+    # TODO: replace other deparse(sys.call with h_deparsed_sys_call)
+  } 
+  
+  # this check does not really provide additional information
+  # if find_nonunique_key is TRUE but it dont hurt and it is
+  # nice to see the number of rows of the data set.
+  n_joined = nrow(joined)
+  n_left = nrow(left)
+  ret_uniq <- h_add_sanity_check(
+    ellipsis = list(...),
+    fail_vec = n_joined != n_left,
+    .generated_desc = sprintf(
+      "nrow(joined table) = %i equals nrow(left table) = %i", 
+      n_joined, 
+      n_left),
+    param_name = PARAM_NAME,
+    data_name = DATA_NAME
+  )  
   
   
   duplicated_columns <- setdiff(names(joined), names(left))
@@ -269,16 +281,17 @@ sc_left_join <- function(joined, left, right, by, ..., find_nonunique_key = TRUE
   ret_dbl_col <- h_add_sanity_check(
     ellipsis = list(...),
     fail_vec = length(duplicated_columns) > 0,
-    description = "No columns were duplicated by the left join",
+    .generated_desc = "No columns were duplicated by the left join",
     # make it as data.frame because example extraction assumes that data is a
     # data.frame
     data = data.table::data.table(
       cols = h_collapse_char_vec(v = duplicated_columns)
     ),
-    param_name = PARAM_NAME
+    param_name = PARAM_NAME,
+    data_name = DATA_NAME
   )
   
-  list(ret_uniq, ret_db_col)
+  list(ret_uniq, ret_dbl_col)
 }
 
 

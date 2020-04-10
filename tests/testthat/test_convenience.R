@@ -147,3 +147,94 @@ test_that("sc_cols_unique correct meta information", {
   )
 })
 
+
+# sc_left_join -----------------------------------------------------
+
+
+clear_sanity_checks()
+left <- data.frame(a = 1:4, b = 4:1, c = 11:14)
+right <- data.frame(a = c(1:4, 1), b = c(4:1, 1), d = 11:15)
+joined <- merge(x = left, y = right, by = c("a", "b"), all.x = TRUE)
+DESC1 <- "Left join OK"
+MERGE_VARS1 <- c("a", "b")
+joined2 <- merge(x = left, y = right, by = c("a"), all.x = TRUE)
+DESC2 <- "Left join with duplicates"
+MERGE_VARS2 <- c("a")
+dummy_call <- function(x) {
+  sc_left_join(joined = joined, left = left, right = right, 
+               description = DESC1, counter_meas = "nada",
+               by = MERGE_VARS1)
+  sc_left_join(joined = joined2, left = left, right = right, 
+               description = DESC2,
+               by = MERGE_VARS2)
+  #sc_cols_unique(object = x, cols = c("col1", "a"), example_size = Inf)
+}
+dummy_call(x = d)
+
+test_that("sc_left_join counts correctly", {
+  expect_equivalent(
+    get_sanity_checks()[,c("n", "n_fail", "n_na")],
+    data.table::data.table(n = c(4, 1, 1,
+                                 5, 1, 1),
+                           n_fail = c(0, 0, 0,
+                                      2, 1, 1),
+                           n_na = 0))
+})
+
+EX <- get_sanity_checks()[["example"]][[4]]
+EX[[".n_col_cmb"]] <- NULL
+test_that("sc_cols_unique extract examples correctly", {
+  expect_equivalent(
+    EX,
+    data.table::as.data.table(joined2[1:2, ])
+  )
+  expect_equivalent(
+    get_sanity_checks()[["example"]][[6]],
+    data.table::data.table(cols = sanityTracker:::h_collapse_char_vec(v = c("b.x", "b.y")))
+  )
+})
+
+
+test_that("sc_cols_unique correct meta information", {
+  expect_equivalent(
+    get_sanity_checks()[1:3,c("description", "additional_desc", "fail_vec_str",
+                              "data_name", "counter_meas", "param_name", "call")],
+    data.table::data.table(
+      description = DESC1,
+      additional_desc = c(
+        sprintf("The combination of %s is unique", 
+                sanityTracker:::h_collapse_char_vec(v = MERGE_VARS1)), 
+        "nrow(joined table) = 4 equals nrow(left table) = 4", 
+        "No columns were duplicated by the left join"
+      ),
+      fail_vec_str = c("dt$.n_col_cmb != 1", "n_joined != n_left", 
+                       "length(duplicated_columns) > 0"),
+      data_name = "joined, left, right",
+      counter_meas = "nada",
+      param_name = sprintf("Merge-vars: %s", sanityTracker:::h_collapse_char_vec(MERGE_VARS1)),
+      call = "dummy_call(x = d)"
+    )
+  )
+  expect_equivalent(
+    get_sanity_checks()[4:6,c("description", "additional_desc", "fail_vec_str",
+                              "data_name", "counter_meas", "param_name", "call")],
+    data.table::data.table(
+      description = DESC2,
+      additional_desc = c(
+        sprintf("The combination of %s is unique", 
+                sanityTracker:::h_collapse_char_vec(v = MERGE_VARS2)), 
+        "nrow(joined table) = 5 equals nrow(left table) = 4", 
+        "No columns were duplicated by the left join"
+      ),
+      fail_vec_str = c("dt$.n_col_cmb != 1", "n_joined != n_left", 
+                       "length(duplicated_columns) > 0"),
+      data_name = "joined2, left, right",
+      counter_meas = "-",
+      param_name = sprintf("Merge-vars: %s", sanityTracker:::h_collapse_char_vec(MERGE_VARS2)),
+      call = "dummy_call(x = d)"
+    )
+  )
+})
+
+
+
