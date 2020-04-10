@@ -172,8 +172,8 @@ sc_cols_non_NA <- function(object, cols = names(object), ...,
 #' @param cols vector of characters which combination is checked to be unique
 #' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
-#' @return logical vector where TRUE indicates where the check failed.
-#'   This might be helpful if one wants to apply a counter-measure.
+#' @return see return object of \link{add_sanity_check}. Note that if a combination
+#'   appears 3 times, then n_fail will increased by 3.
 #' @export
 #' @import data.table
 #'
@@ -189,14 +189,16 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
   
   
   dt <- data.table::as.data.table(x = object)
-  dt[, ..sanity_N := .N, by = cols]
+  dt[, .n_col_cmb := .N, by = cols]
   ret <-
     h_add_sanity_check(
       ellipsis = list(...),
-      fail_vec = dt$..sanity_N != 1,
-      description = sprintf("The combination of %s is unique",
+      fail_vec = dt$.n_col_cmb != 1,
+      .generated_desc = sprintf("The combination of %s is unique",
                             h_collapse_char_vec(v = cols)),
-      data = dt)
+      data = dt,
+      data_name = checkmate::vname(x = object),
+      param_name = h_collapse_char_vec(cols))
   return(ret)
 }
 

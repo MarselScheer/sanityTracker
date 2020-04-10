@@ -110,3 +110,40 @@ test_that("call_back functionality works", {
   )
 })
 
+
+
+# sc_cols_unique -----------------------------------------------------
+
+
+clear_sanity_checks()
+d <- data.frame(col1 = c(1:2, 1:2, NA, NA, NA), a = c(NA, 1, NA, 2, NA, NA, NA), b = c(NA, letters[2:3], NA, NA, NA, NA))
+dummy_call <- function(x) {
+  sc_cols_unique(object = x, description = "Check for duplicate entries", counter_meas = "nada")
+  sc_cols_unique(object = x, cols = c("col1", "a"), example_size = Inf)
+}
+dummy_call(x = d)
+
+test_that("sc_cols_unique counts correctly all columns and subset of columns", {
+  expect_equivalent(
+    get_sanity_checks()[,c("n", "n_fail", "n_na")],
+    data.table::data.table(n = 7,
+                           n_fail = c(3,5),
+                           n_na = 0))
+})
+
+PARAM_NAME <- c(sanityTracker:::h_collapse_char_vec(c("col1", "a", "b")),
+                sanityTracker:::h_collapse_char_vec(c("col1", "a")))
+test_that("sc_cols_unique correct meta information", {
+  expect_equivalent(
+    get_sanity_checks()[,c("description", "additional_desc", "data_name", "counter_meas", "param_name", "call")],
+    data.table::data.table(
+      description = c("Check for duplicate entries", "-"),
+      additional_desc = paste("The combination of", PARAM_NAME, "is unique"),
+      data_name = "x",
+      counter_meas = c("nada", "-"),
+      param_name = PARAM_NAME,
+      call = "dummy_call(x = d)"
+    )
+  )
+})
+
