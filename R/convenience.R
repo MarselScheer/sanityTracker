@@ -182,7 +182,8 @@ sc_cols_non_NA <- function(object, cols = names(object), ...,
 #' get_sanity_checks()
 #' get_sanity_checks()[["example"]]
 sc_cols_unique <- function(object, cols = names(object), ...) {
-
+  # TODO: allow that every entry appears with the same multiplicity
+  
   checkmate::assert_data_frame(x = object, min.rows = 1)
   checkmate::qassert(x = cols, rules = "s+")
   checkmate::assert_subset(x = cols, choices = names(object))
@@ -229,6 +230,7 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
 #' j <- merge(x = ab, y = abc, by = "a")
 #' sc_left_join(joined = j, left = ab, right = abc, by = "a")
 #' get_sanity_checks()
+# TODO: encapsulate the sc-functions in all examples in another function to better see the purpose of "call"-column
 sc_left_join <- function(joined, left, right, by, ..., find_nonunique_key = TRUE) {
 
   checkmate::assert_data_frame(x = joined, min.rows = 1)
