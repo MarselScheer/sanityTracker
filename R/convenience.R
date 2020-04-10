@@ -131,26 +131,32 @@ sc_cols_bounded <- function(object, cols, include_lower_bound = TRUE,
 #'
 #' @examples
 #' iris[c(1,3,5,7,9), 1] <- NA
-#' sc_cols_non_NA(object = iris)
+#' sc_cols_non_NA(object = iris, description = "No NAs expected in iris")
 #' get_sanity_checks()
 sc_cols_non_NA <- function(object, cols = names(object), ...,
                            unk_cols_callback = stop) {
 
   checkmate::assert_data_frame(x = object, min.rows = 1)
   checkmate::qassert(x = cols, rules = "s+")
+  checkmate::assert_function(x = unk_cols_callback)
+  
   all_cols_known <- checkmate::check_subset(x = cols, choices = names(object))
   if (!isTRUE(all_cols_known)) {
     unk_cols_callback(all_cols_known)
   }
+  DATA_NAME <- checkmate::vname(x = object)
 
+  
   # treat only the columns that actually exist in object
   cols <- unique(intersect(cols, names(object)))
   ret <- lapply(cols, function(col) {
     h_add_sanity_check(
       ellipsis = list(...),
       fail_vec = is.na(object[[col]]),
-      description = "Check that column does not contain NA",
+      .generated_desc = sprintf("Check that column '%s' does not contain NA",
+                                col),
       data = object,
+      data_name = DATA_NAME,
       param_name = col,
       call = deparse(sys.call(which = -3))
     )
