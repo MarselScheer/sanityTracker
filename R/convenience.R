@@ -106,9 +106,39 @@ sc_cols_bounded_above <- function(object, cols,
 #' @export
 #'
 #' @examples
-sc_cols_bounded <- function(object, cols, include_lower_bound = TRUE,
-                            include_upper_bound = TRUE, ...) {
-
+#' sc_cols_bounded(object = iris, cols = c("Sepal.Length", "Petal.Length"), 
+#'   rule = "[1, 7.9)")
+#' get_sanity_checks()
+sc_cols_bounded <- function(object, cols, rule = "(-Inf, Inf)", ...) {
+                            #lower_limit, upper_limit, 
+                            #include_lower_bound = TRUE,
+                            #include_upper_bound = TRUE, ...) {
+  
+  checkmate::assert_data_frame(x = object, min.rows = 1)
+  checkmate::qassert(x = cols, rules = "s+")
+  checkmate::assert_subset(x = cols, choices = names(object))
+  checkmate::qassert(x = rule, rules = "s1")
+  user_rule <- rule
+  rule <- paste0("n", rule)
+  
+  ret <- lapply(cols, function(col) {
+    h_add_sanity_check(
+      ellipsis = list(...),
+      fail_vec = sapply(
+        object[[col]], function(x) !checkmate::qtest(x = x, rules = rule)
+      ),
+      .generated_desc = sprintf(
+        "Elements in '%s' should be in %s.",
+        col, user_rule
+      ),
+      data = object,
+      data_name = checkmate::vname(x = object),
+      param_name = col)
+  })
+  names(ret) <- cols
+  
+  return(invisible(ret))
+  
 }
 
 
