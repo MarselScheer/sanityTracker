@@ -45,10 +45,10 @@ sc_col_elements <- function(object, col, feasible_elements,
 
 #' Checks that all elements from the specified columns are positive
 #'
-#' @param object
-#' @param cols
-#' @param zero_feasible
-#' @param ...
+#' @param object table with a columns specified by \code{cols}
+#' @param cols vector of characters of columns that are checked against the specified range
+#' @param zero_feasible if zero is in the range or not
+#' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
 #' @return list of logical vectors where TRUE indicates where the check failed.
 #'   Every list entry represents one of the columns specified in cols.
@@ -56,8 +56,25 @@ sc_col_elements <- function(object, col, feasible_elements,
 #' @export
 #'
 #' @examples
+#' d <- data.frame(a = c(0, 0.2, 3, Inf), b = c(1:4))
+#' dummy_call <- function(x) {
+#'   sc_cols_positive(d, cols = c("a", "b"), zero_feasible = FALSE,
+#'     description = "Measurements are expected to be positive")
+#' }
+#' dummy_call(x = d)
+#' get_sanity_checks()
 sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...) {
 
+  rule <- "(0, Inf)"
+  if (isTRUE(zero_feasible)) {
+    rule <- "[0, Inf)"
+  }
+  CALL <- h_deparsed_sys_call(which = -1)
+  ret <- sc_cols_bounded(object = object, cols = cols, rule = rule, 
+                  call = CALL,
+                  data_name = checkmate::vname(x = object),
+                  ...)
+  return(ret)
 }
 
 #' Checks that all elements from the given columns are above a certain number
