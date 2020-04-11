@@ -94,11 +94,18 @@ sc_cols_bounded_above <- function(object, cols,
 
 #' Checks that all elements from the specified columns are in a certain range
 #'
-#' @param object
-#' @param cols
-#' @param include_lower_bound
-#' @param include_upper_bound
-#' @param ...
+#' @param object table with a columns specified by \code{cols}
+#' @param cols vector of characters of columns that are checked agains the specified range
+#' @param rule check as two numbers separated by a comma, enclosed by square 
+#'   brackets (endpoint included) or parentheses (endpoint excluded). 
+#'   For example, “[0, 3)” results in all(x >= 0 & x < 3). 
+#'   The lower and upper bound may be omitted which is the equivalent 
+#'   of a negative or positive infinite bound, respectively. 
+#'   By definition [0,] contains Inf, while [0,) 
+#'   does not. The same holds for the left (lower) boundary and -Inf. 
+#'   This explanation was copied from \code{checkmate::qtest}. That function
+#'   is also the backbone of the this function.
+#' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
 #' @return list of logical vectors where TRUE indicates where the check failed.
 #'   Every list entry represents one of the columns specified in cols.
@@ -118,8 +125,12 @@ sc_cols_bounded <- function(object, cols, rule = "(-Inf, Inf)", ...) {
   checkmate::qassert(x = cols, rules = "s+")
   checkmate::assert_subset(x = cols, choices = names(object))
   checkmate::qassert(x = rule, rules = "s1")
-  user_rule <- rule
+  
+  USER_RULE <- rule
+  DATA_NAME <- checkmate::vname(x = object)
+  CALL <- h_deparsed_sys_call(which = -1)
   rule <- paste0("n", rule)
+  
   
   ret <- lapply(cols, function(col) {
     h_add_sanity_check(
@@ -129,11 +140,12 @@ sc_cols_bounded <- function(object, cols, rule = "(-Inf, Inf)", ...) {
       ),
       .generated_desc = sprintf(
         "Elements in '%s' should be in %s.",
-        col, user_rule
+        col, USER_RULE
       ),
       data = object,
-      data_name = checkmate::vname(x = object),
-      param_name = col)
+      data_name = DATA_NAME,
+      param_name = col,
+      call = CALL)
   })
   names(ret) <- cols
   

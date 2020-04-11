@@ -216,7 +216,7 @@ test_that("sc_cols_unique correct meta information", {
     )
   )
   expect_equivalent(
-    get_sanity_checks()[4:6,c("description", "additional_desc", "fail_vec_str",
+    get_sanity_checks()[-(1:3),c("description", "additional_desc", "fail_vec_str",
                               "data_name", "counter_meas", "param_name", "call")],
     data.table::data.table(
       description = DESC2,
@@ -236,5 +236,59 @@ test_that("sc_cols_unique correct meta information", {
   )
 })
 
+# sc_cols_bounded -----------------------------------------------------
+
+clear_sanity_checks()
+d <- data.frame(a = c(-Inf, 0, -3L), b = c(-1, 1, 3L), c = c(1, 2, Inf))
+
+dummy_call <- function(x) {
+  sc_cols_bounded(object = x, cols = names(x), rule = "[-Inf, Inf)", description = "all columns", counter_meas = "nada")
+  sc_cols_bounded(object = x, cols = "a", rule = "(-Inf, 0)")
+  sc_cols_bounded(object = x, cols = "b", rule = "[1, 3]")
+  sc_cols_bounded(object = x, cols = "c", rule = "(1, 3)")
+}
+dummy_call(x = d)
+get_sanity_checks()
+
+
+test_that("sc_cols_bounded counts correctly", {
+  expect_equivalent(
+    get_sanity_checks()[,c("n", "n_fail", "n_na")],
+    data.table::data.table(n = 3,
+                           n_fail = c(0, 0, 1,
+                                      2, 
+                                      1, 
+                                      2),
+                           n_na = 0))
+})
+
+
+test_that("sc_cols_bounded correct meta information", {
+  expect_equivalent(
+    get_sanity_checks()[1:3,c("description", "additional_desc", "data_name", "counter_meas", "param_name", "call")],
+    data.table::data.table(
+      description = "all columns",
+      additional_desc = paste0("Elements in '", letters[1:3], "' should be in [-Inf, Inf)."),
+      data_name = "x",
+      counter_meas = "nada",
+      param_name = letters[1:3],
+      call = "dummy_call(x = d)"
+    )
+  )
+  expect_equivalent(
+    get_sanity_checks()[-(1:3),c("description", "additional_desc", "data_name", "counter_meas", "param_name", "call")],
+    data.table::data.table(
+      description = "-",
+      additional_desc = paste0("Elements in '", letters[1:3], 
+                               "' should be in ", 
+                               c("(-Inf, 0)", "[1, 3]", "(1, 3)"),
+                               "."),
+      data_name = "x",
+      counter_meas = "-",
+      param_name = letters[1:3],
+      call = "dummy_call(x = d)"
+    )
+  )
+})
 
 
