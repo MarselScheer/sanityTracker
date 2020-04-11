@@ -123,12 +123,15 @@ sc_cols_bounded_below <- function(object, cols,
   return(ret)
 }
 
-#' Checks that all elements from the given columns are above a certain number
+#' Checks that all elements from the given columns are below a certain number
 #'
-#' @param object
-#' @param cols
-#' @param include_upper_bound
-#' @param ...
+#' @param cols vector of characters of columns that are checked against 
+#'   the specified range
+#' @param upper_bound elements of the specified columns must be below this 
+#'   bound
+#' @param include_upper_bound if TRUE (default), elements are allowed to be
+#'   equal to the \code{upper_bound}
+#' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
 #' @return list of logical vectors where TRUE indicates where the check failed.
 #'   Every list entry represents one of the columns specified in cols.
@@ -137,8 +140,22 @@ sc_cols_bounded_below <- function(object, cols,
 #'
 #' @examples
 sc_cols_bounded_above <- function(object, cols,
+                                  upper_bound, 
                                   include_upper_bound = TRUE, ...) {
-
+  
+  RIGHT <- ")"
+  if (isTRUE(include_upper_bound)) {
+    RIGHT <- "]"
+  }
+  rule <- sprintf("(-Inf, %s%s", upper_bound, RIGHT)
+  
+  CALL <- h_deparsed_sys_call(which = -1)
+  ret <- sc_cols_bounded(object = object, cols = cols, rule = rule, 
+                         call = CALL,
+                         data_name = checkmate::vname(x = object),
+                         ...)
+  return(ret)
+  
 }
 
 
