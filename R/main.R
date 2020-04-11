@@ -31,29 +31,32 @@ TRACKER_ENV <- new.env()
 #'   }
 #'   All performed sanity checks can be fetched via \link{get_sanity_checks}
 #' @export
-#'
+#' 
 #' @examples
 #' d <- data.frame(person_id = 1:4, bmi = c(18,23,-1,35), age = 31:34)
-#' add_sanity_check(
-#'   d$bmi < 15,
-#'   description = "bmi above 15",
-#'   counter_meas = "none",
-#'   data = d,
-#'   param_name = "bmi")
-#' add_sanity_check(
-#'   d$bmi > 30,
-#'   description = "bmi below 30",
-#'   counter_meas = "none")
+#' dummy_call <- function(x) {
+#'   add_sanity_check(
+#'     x$bmi < 15,
+#'     description = "bmi above 15",
+#'     counter_meas = "none",
+#'     data = x,
+#'     param_name = "bmi")
+#'   add_sanity_check(
+#'     x$bmi > 30,
+#'     description = "bmi below 30",
+#'     counter_meas = "none")
+#' }
+#' dummy_call(x = d)
 #' get_sanity_checks()
 #' add_sanity_check(
-#'   d$bmi < 15,
-#'   description = "bmi above 15",
-#'   fail_callback = warning)
+#'    d$bmi < 15,
+#'    description = "bmi above 15",
+#'    fail_callback = warning)
 add_sanity_check <- function(
   fail_vec, description = "-", counter_meas = "-", 
   data, data_name = checkmate::vname(x = data), 
   example_size = 3,
-  param_name = "-", call = deparse(sys.call(which = -1)),
+  param_name = "-", call = h_deparsed_sys_call(which = -3),
   fail_callback) {
   
   ret <- 
