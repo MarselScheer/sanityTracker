@@ -53,7 +53,7 @@ add_sanity_check <- function(
   fail_vec, description = "-", counter_meas = "-", 
   data, data_name = checkmate::vname(x = data), 
   example_size = 3,
-  param_name = "-", call = deparse(sys.call(which = -1)),
+  param_name = "-", call = h_deparsed_sys_call(which = -3),
   fail_callback) {
   
   ret <- 
