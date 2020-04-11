@@ -71,12 +71,12 @@ h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
 #' get_sanity_checks()
 h_add_sanity_check <- function(ellipsis, fail_vec, .generated_desc, data,
                                data_name = "", param_name = "",
-                               call = deparse(sys.call(which = -2)),
+                               call = h_deparsed_sys_call(which = -2),
                                .fail_vec_str = checkmate::vname(x = fail_vec)) {
   # NOTE: counter_meas is not parameter because the convenience functions
   #       that usally call this function do not perform any counter-measures
   ellipsis[["fail_vec"]] <- fail_vec
-  
+
   ellipsis <- h_complete_list(
     ell = ellipsis,
     name = "description",
@@ -135,4 +135,20 @@ h_add_sanity_check <- function(ellipsis, fail_vec, .generated_desc, data,
   )  
   
   return(do.call(.add_sanity_check, ellipsis))
+}
+
+
+#' Simply converts a call into a character
+#'
+#' @param which see \link{sys.call}. However the function bounds it by 
+#'   the number of encolsing environments.
+#'
+#' @return the call of the corresponding environment as character
+h_deparsed_sys_call <- function(which) {
+  n_sys_calls <- -length(sys.calls())
+  # need -1 to skip the call of this function
+  which <- max(n_sys_calls, which - 1) 
+  ret <- deparse(sys.call(which = which))
+  ret <- paste(ret, collapse = " ")
+  return(ret)
 }
