@@ -327,3 +327,44 @@ test_that("sc_cols_positive correct meta information", {
     )
   )
 })
+
+
+# sc_cols_bounded_below -----------------------------------------------------
+
+clear_sanity_checks()
+d <- data.frame(a = c(0, 1))
+
+dummy_call <- function(x) {
+  sc_cols_bounded_below(
+    object = x, cols = "a", 
+    lower_bound = 1, description = "bounded")
+  sc_cols_bounded_below(
+    object = x, cols = "a", 
+    lower_bound = 0, include_lower_bound = FALSE, 
+    counter_meas = "nada")
+}
+dummy_call(x = d)
+get_sanity_checks()
+
+
+test_that("sc_cols_bounded_below counts correctly", {
+  expect_equivalent(
+    get_sanity_checks()[,c("n", "n_fail", "n_na")],
+    data.table::data.table(n = 2,
+                           n_fail = c(1, 1),
+                           n_na = 0))
+})
+
+
+test_that("sc_cols_bounded_below correct meta information", {
+  expect_equivalent(
+    # additional_desc and param_name - come from sc_cols_bounded and test there
+    get_sanity_checks()[,c("description", "data_name", "counter_meas", "call")],
+    data.table::data.table(
+      description = c("bounded", "-"),
+      data_name = "x",
+      counter_meas = c("-", "nada"),
+      call = "dummy_call(x = d)"
+    )
+  )
+})

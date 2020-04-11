@@ -65,6 +65,7 @@ sc_col_elements <- function(object, col, feasible_elements,
 #' get_sanity_checks()
 sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...) {
 
+  # TODO: could use sc_cols_bounded_below
   rule <- "(0, Inf)"
   if (isTRUE(zero_feasible)) {
     rule <- "[0, Inf)"
@@ -79,10 +80,14 @@ sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...) {
 
 #' Checks that all elements from the given columns are above a certain number
 #'
-#' @param object
-#' @param cols
-#' @param include_lower_bound
-#' @param ...
+#' @param object table with a columns specified by \code{cols}
+#' @param cols vector of characters of columns that are checked against 
+#'   the specified range
+#' @param lower_bound elements of the specified columns must be above this 
+#'   bound
+#' @param include_lower_bound if TRUE (default), elements are allowed to be
+#'   equal to the \code{lower_bound}
+#' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
 #' @return list of logical vectors where TRUE indicates where the check failed.
 #'   Every list entry represents one of the columns specified in cols.
@@ -90,9 +95,32 @@ sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...) {
 #' @export
 #'
 #' @examples
+#' d <- data.frame(a = c(0, 0.2, 3, Inf), b = c(1:4))
+#' dummy_call <- function(x) {
+#'   sc_cols_bounded_below(
+#'     object = d, cols = c("a", "b"), 
+#'     lower_bound = 0.2,
+#'     include_lower_bound = FALSE,
+#'     description = "Measurements are expected to be bounded from below")
+#' }
+#' dummy_call(x = d)
+#' get_sanity_checks()
 sc_cols_bounded_below <- function(object, cols,
+                                  lower_bound, 
                                   include_lower_bound = TRUE, ...) {
 
+  LEFT <- "("
+  if (isTRUE(include_lower_bound)) {
+    LEFT <- "["
+  }
+  rule <- sprintf("%s%s, Inf)", LEFT, lower_bound)
+  
+  CALL <- h_deparsed_sys_call(which = -1)
+  ret <- sc_cols_bounded(object = object, cols = cols, rule = rule, 
+                         call = CALL,
+                         data_name = checkmate::vname(x = object),
+                         ...)
+  return(ret)
 }
 
 #' Checks that all elements from the given columns are above a certain number
