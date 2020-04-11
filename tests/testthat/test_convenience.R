@@ -195,7 +195,7 @@ test_that("sc_cols_unique extract examples correctly", {
 })
 
 
-test_that("sc_cols_unique correct meta information", {
+test_that("sc_left_join correct meta information", {
   expect_equivalent(
     get_sanity_checks()[1:3,c("description", "additional_desc", "fail_vec_str",
                               "data_name", "counter_meas", "param_name", "call")],
