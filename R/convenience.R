@@ -65,7 +65,8 @@ sc_col_elements <- function(object, col, feasible_elements,
 #' get_sanity_checks()
 sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...) {
 
-  # TODO: could use sc_cols_bounded_below
+  # TODO: could use sc_cols_bounded_below, but need to refactor how data_name is used
+  #       because sc_cols_bounded_below sets data_name itself
   rule <- "(0, Inf)"
   if (isTRUE(zero_feasible)) {
     rule <- "[0, Inf)"
