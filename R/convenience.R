@@ -12,7 +12,10 @@
 #' @export
 #' @examples
 #' d <- data.frame(type = letters[1:4], nmb = 1:4)
-#' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
+#' dummy_call <- function(x) {
+#'   sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
+#' }
+#' dummy_call(x = d)
 #' get_sanity_checks()
 sc_col_elements <- function(object, col, feasible_elements,
                             ...) {
@@ -115,8 +118,11 @@ sc_cols_bounded_above <- function(object, cols,
 #' @export
 #'
 #' @examples
-#' sc_cols_bounded(object = iris, cols = c("Sepal.Length", "Petal.Length"), 
-#'   rule = "[1, 7.9)")
+#' dummy_call <- function(x) {
+#'   sc_cols_bounded(object = iris, cols = c("Sepal.Length", "Petal.Length"), 
+#'     rule = "[1, 7.9)")
+#' }
+#' dummy_call(x = d)
 #' get_sanity_checks()
 sc_cols_bounded <- function(object, cols, rule = "(-Inf, Inf)", ...) {
                             #lower_limit, upper_limit, 
@@ -175,7 +181,10 @@ sc_cols_bounded <- function(object, cols, rule = "(-Inf, Inf)", ...) {
 #'
 #' @examples
 #' iris[c(1,3,5,7,9), 1] <- NA
-#' sc_cols_non_NA(object = iris, description = "No NAs expected in iris")
+#' dummy_call <- function(x) {
+#'   sc_cols_non_NA(object = iris, description = "No NAs expected in iris")
+#' }
+#' dummy_call(x = iris)
 #' get_sanity_checks()
 sc_cols_non_NA <- function(object, cols = names(object), ...,
                            unk_cols_callback = stop) {
@@ -222,7 +231,13 @@ sc_cols_non_NA <- function(object, cols = names(object), ...,
 #' @import data.table
 #'
 #' @examples
-#' sc_cols_unique(object = iris, cols = c("Species", "Sepal.Length", "Sepal.Width", "Petal.Length"))
+#' dummy_call <- function(x) {
+#'   sc_cols_unique(
+#'     object = x, 
+#'     cols = c("Species", "Sepal.Length", 
+#'              "Sepal.Width", "Petal.Length"))
+#' }
+#' dummy_call(x = iris)
 #' get_sanity_checks()
 #' get_sanity_checks()[["example"]]
 sc_cols_unique <- function(object, cols = names(object), ...) {
@@ -273,10 +288,12 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
 #' ab <- data.table::data.table(a = 1:4, b = letters[1:4])
 #' abc <- data.table::data.table(a = c(1:4, 2), b = letters[1:5], c = rnorm(5))
 #' j <- merge(x = ab, y = abc, by = "a")
-#' sc_left_join(joined = j, left = ab, right = abc, by = "a", 
-#'   description = "Left join outcome to main population")
+#' dummy_call <- function() {
+#'   sc_left_join(joined = j, left = ab, right = abc, by = "a", 
+#'     description = "Left join outcome to main population")
+#' }
+#' dummy_call()
 #' get_sanity_checks()
-# TODO: encapsulate the sc-functions in all examples in another function to better see the purpose of "call"-column
 sc_left_join <- function(joined, left, right, by, ..., find_nonunique_key = TRUE) {
 
   checkmate::assert_data_frame(x = joined, min.rows = 1)
