@@ -14,14 +14,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Core funcionality
+# Core functionality
 
 The package is quite small where the core function is `sanityTracker::add_sanity_check` and
 a few convenience functions (use the prefix *sc_*) that basically call `sanityTracker::add_sanity_check`.
 Some of the convenience functions like `sanityTracker::sc_left_join` perform more than one check
 other can check multiple columns at the same time like `sanityTracker::sc_cols_non_NA`.
 
-The most helpful feature is that no matter how deep your sanity check is burried in your source
+The most helpful feature is that no matter how deep your sanity check is buried in your source
 code, *sanityTracker* will centralize the results AND if the defined check fails a few examples
 of the failed rows are stored for investigation. 
 
@@ -61,7 +61,7 @@ get_sanity_checks()[["example"]][[2]]
 
 If you call the sanity check from within a function the results also appear in the 
 global list of all sanity checks and the table show the function-call where the
-check happend.
+check happened.
 
 ```{r}
 g <- function(x) {
@@ -99,9 +99,24 @@ quite easy.
 sc <- sanityTracker::sc_cols_positive(
   object = mtcars,
   cols = names(mtcars),
-  description = "Examplary sanity checks"
+  description = "Exemplary sanity checks"
 )
 get_sanity_checks()
 ```
 
 
+Note that the although the convenience functions do not explicitly list the parameter
+*description*, *counter_meas*, *data_name*, *example_size*, *param_name*, *call* and
+*fail_callback* can be used via the '...'-argument. 
+```{r}
+clear_sanity_checks()
+sc <- sanityTracker::sc_col_elements(
+  object = mtcars,
+  col = "carb",
+  feasible_elements = 1:4,
+  description = "Only usual number of carburetors",
+  fail_callback = warning,
+  call = "directly from vignette"
+)
+get_sanity_checks()
+```
