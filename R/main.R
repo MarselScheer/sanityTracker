@@ -106,7 +106,7 @@ add_sanity_check <- function(
 
   
   if (any(fail_vec, na.rm = TRUE) & !missing(fail_callback)) {
-    fail_callback(sprintf("%s: FAILED", description))
+    fail_callback(sprintf("%s/%s: FAILED", description, .generated_desc))
   }
   
   
