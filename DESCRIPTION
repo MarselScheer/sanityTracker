@@ -15,4 +15,7 @@ LazyData: true
 RoxygenNote: 7.0.2
 Imports: data.table (>= 1.12.2), checkmate (>= 2.0.0)
 Suggests: 
-    testthat
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
