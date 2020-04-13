@@ -41,12 +41,12 @@ raw_data
 #> 4  4 2020-01-23 2020-01-26     1.74
 ```
 
-We have two simple data-preparation function for our raw-data-set:
+We have two simple data-preparation functions for our raw-data-set:
 
 ``` r
 correct_height <- function(raw_data) {
   ret <- raw_data
-  # functions starting with sc_ are convenience function the package
+  # functions starting with sc_ are convenience functions the package
   # offers for ease of use
   sc <- sanityTracker::sc_cols_bounded_above(
     object = ret,
