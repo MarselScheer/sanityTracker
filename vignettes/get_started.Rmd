@@ -1,0 +1,123 @@
+---
+title: "Get started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{get_started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Core functionality
+
+The package is quite small and contains the core function `sanityTracker::add_sanity_check` and
+a few convenience functions (use the prefix *sc_*) that basically call `sanityTracker::add_sanity_check`.
+Some of the convenience functions like `sanityTracker::sc_left_join` perform more than one check,
+other can check multiple columns at the same time like `sanityTracker::sc_cols_non_NA`.
+
+The most helpful feature is that no matter how deep your sanity check is buried in your source
+code, *sanityTracker* will centralize the results AND if the defined check fails a few examples
+of the failed rows are stored for investigation. 
+
+The functions are more or less self explanatory, therefore we focus on the stored results and examples.
+
+We start with a very simple check.
+```{r}
+library(sanityTracker)
+sc <- sanityTracker::add_sanity_check(
+  fail_vec = mtcars$mpg > 30,
+  description = "mpg should be below 30"
+)
+get_sanity_checks()
+```
+
+We see that from the 32 observations contained in *mtcars* 4 observations have a mpg above 30.
+It also tracked 
+how we actually performed the check in the column *fail_vec_str*. Usually, if failures happen,
+the next step is to actually investigate those cases. For this purpose that package offers
+the parameter *data*:
+
+```{r}
+sc <- sanityTracker::add_sanity_check(
+  fail_vec = mtcars$mpg > 30,
+  description = "mpg should be below 30. extract example ",
+  data = mtcars,
+  param_name = "mpg"
+)
+get_sanity_checks()
+```
+
+First note that we now see two lines where the first one is from our initial sanity check. 
+Furthermore, the second line shows now that the column *example* is not empty:
+
+```{r}
+get_sanity_checks()[["example"]][[2]]
+```
+
+If you call the sanity check from within a function, the results also appear in the 
+global list of all sanity checks and the table shows the function call where the
+check happened.
+
+```{r}
+g <- function(x) {
+  sanityTracker::add_sanity_check(
+    fail_vec = x$mpg > 30,
+    description = "mpg should be below 30. check in function",
+    data = x,
+    param_name = "mpg"
+  )
+}
+f <- function(x) {g(x = x)}
+dummy <- f(x = mtcars)
+get_sanity_checks()
+```
+
+The function `sanityTracker::clear_sanity_checks` discards all sanity checks that are
+currently stored.
+
+```{r}
+sanityTracker::clear_sanity_checks()
+sanityTracker::get_sanity_checks()
+```
+
+# Convenience functions
+
+Doing all checks with `sanityTracker::add_sanity_check` would be cumbersome. Therefore,
+the package provides some convenience functions to perform some standard checks like
+whether columns *a, b, c, x, y, z* are positive or do they contain missing values or
+is their combination unique. All convenience functions start with the prefix *sc_*.
+These functions provide additional information about the check(s) that they perform in
+the column *additional_desc*. So checking that all columns of *mtcars* are positive is 
+quite easy.
+
+```{r}
+sc <- sanityTracker::sc_cols_positive(
+  object = mtcars,
+  cols = names(mtcars),
+  description = "Exemplary sanity checks"
+)
+get_sanity_checks()
+```
+
+
+Note that although the convenience functions do not explicitly list the parameter,
+*description*, *counter_meas*, *data_name*, *example_size*, *param_name*, *call* and
+*fail_callback* can be used via the '...'-argument. 
+```{r}
+clear_sanity_checks()
+sc <- sanityTracker::sc_col_elements(
+  object = mtcars,
+  col = "carb",
+  feasible_elements = 1:4,
+  description = "Only usual number of carburetors",
+  fail_callback = warning,
+  call = "directly from vignette"
+)
+get_sanity_checks()
+```

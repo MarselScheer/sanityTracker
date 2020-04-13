@@ -41,41 +41,48 @@ raw_data
 #> 4  4 2020-01-23 2020-01-26     1.74
 ```
 
-We have two simple data-preparation function for our raw-data-set:
+We have two simple data-preparation functions for our raw-data-set:
 
 ``` r
 correct_height <- function(raw_data) {
   ret <- raw_data
-  sc <- sanityTracker::add_sanity_check(
-    fail_vec = 100 < ret$height_m,
+  # functions starting with sc_ are convenience functions the package
+  # offers for ease of use
+  sc <- sanityTracker::sc_cols_bounded_above(
+    object = ret,
+    cols = "height_m",
+    upper_bound = 100,
     description = "Persons are smaller than 100m",
     counter_meas = "Divide by 100. Assume height is given in cm",
-    param_name = "height_m",
-    data = ret
   )
-  if (sc[["fail"]]) {
-    ret$height_m[sc[["fail_vec"]]] <- ret$height_m[sc[["fail_vec"]]] / 100
+  
+  if (sc[["height_m"]][["fail"]]) {
+    fail_vec <- sc[["height_m"]][["fail_vec"]]
+    ret$height_m[fail_vec] <- ret$height_m[fail_vec] / 100
   }
   
   
-  sanityTracker::add_sanity_check(
-    fail_vec = 2.5 < ret$height_m,
-    description = "Persons are smaller than 2.5m",
-    data = ret
+  sanityTracker::sc_cols_bounded(
+    object = ret, 
+    cols = "height_m",
+    rule = "[0.8, 2.5]",
+    description = "Persons are between 0.8m and 2.5m"
   )  
   return(ret)
 }
 
 prep <- function(raw_data) {
 
-  sanityTracker::add_sanity_check(
-    fail_vec = duplicated(raw_data$id),
-    description = "No duplicated ids",
-    data = raw_data
+  sanityTracker::sc_cols_unique(
+    object = raw_data,
+    cols = "id",
+    description = "No duplicated ids"
   )
   
   raw_data$start <- as.Date(raw_data$start)
   raw_data$end <- as.Date(raw_data$end)
+  # sanity checks can be recoreded as long a
+  # logical vector exists with add_sanity_check()
   sanityTracker::add_sanity_check(
     fail_vec = raw_data$end < raw_data$start,
     description = "start-date <= end-date",
@@ -93,32 +100,42 @@ After applying the prep-function we can summarize the sanity checks
 wrangled_data <- prep(raw_data = raw_data)
 sanity_checks <- sanityTracker::get_sanity_checks()
 sanity_checks
-#>                      description n n_fail n_na
-#> 1:             No duplicated ids 4      0    0
-#> 2:        start-date <= end-date 4      1    0
-#> 3: Persons are smaller than 100m 4      1    0
-#> 4: Persons are smaller than 2.5m 4      0    0
-#>                                   counter_meas                  fail_vec_str
-#> 1:                                        None       duplicated(raw_data$id)
-#> 2:                                        None raw_data$end < raw_data$start
-#> 3: Divide by 100. Assume height is given in cm            100 < ret$height_m
-#> 4:                                        None            2.5 < ret$height_m
+#>                          description
+#> 1:                 No duplicated ids
+#> 2:            start-date <= end-date
+#> 3:     Persons are smaller than 100m
+#> 4: Persons are between 0.8m and 2.5m
+#>                                     additional_desc data_name n n_fail n_na
+#> 1:                The combination of 'id' is unique  raw_data 4      0    0
+#> 2:                                                -  raw_data 4      1    0
+#> 3: Elements in 'height_m' should be in (-Inf, 100].       ret 4      1    0
+#> 4:  Elements in 'height_m' should be in [0.8, 2.5].       ret 4      0    0
+#>                                   counter_meas
+#> 1:                                           -
+#> 2:                                           -
+#> 3: Divide by 100. Assume height is given in cm
+#> 4:                                           -
+#>                                                                 fail_vec_str
+#> 1:                                                        dt$.n_col_cmb != 1
+#> 2:                                             raw_data$end < raw_data$start
+#> 3: sapply(object[[col]], function(x) !checkmate::qtest(x = x, rules = rule))
+#> 4: sapply(object[[col]], function(x) !checkmate::qtest(x = x, rules = rule))
 #>    param_name                                call      example
-#> 1:          -           prep(raw_data = raw_data)             
+#> 1:       'id'           prep(raw_data = raw_data)             
 #> 2:          -           prep(raw_data = raw_data) <data.frame>
 #> 3:   height_m correct_height(raw_data = raw_data) <data.frame>
-#> 4:          - correct_height(raw_data = raw_data)
+#> 4:   height_m correct_height(raw_data = raw_data)
 ```
 
-This directly gives an overview of what was performed which check failed
-how often what counter measure was done and in case of a fail also
-random rows (by default at most 3) of the data set where the check
+This directly gives an overview of what was performed, which check
+failed how often, what counter measure was applied and in case of a fail
+also random rows (by default at most 3) of the data set where the check
 failed.
 
 ``` r
 sanity_checks[2, ]
-#>               description n n_fail n_na counter_meas
-#> 1: start-date <= end-date 4      1    0         None
+#>               description additional_desc data_name n n_fail n_na counter_meas
+#> 1: start-date <= end-date               -  raw_data 4      1    0            -
 #>                     fail_vec_str param_name                      call
 #> 1: raw_data$end < raw_data$start          - prep(raw_data = raw_data)
 #>         example
