@@ -41,44 +41,51 @@ raw_data
 #> 4  4 2020-01-23 2020-01-26     1.74
 ```
 
-We have two simple data-preparation function for our raw-data-set:
+We have two simple data-preparation functions for our raw-data-set:
 
 ``` r
 correct_height <- function(raw_data) {
   ret <- raw_data
-  idx <- 100 < ret$height_m
-  sanityTracker::add_sanity_check(
-    fail_vec = idx,
+  # functions starting with sc_ are convenience functions the package
+  # offers for ease of use
+  sc <- sanityTracker::sc_cols_bounded_above(
+    object = ret,
+    cols = "height_m",
+    upper_bound = 100,
     description = "Persons are smaller than 100m",
     counter_meas = "Divide by 100. Assume height is given in cm",
-    data = ret
   )
-  ret$height_m[idx] <- ret$height_m[idx] / 100
   
-  sanityTracker::add_sanity_check(
-    fail_vec = 2.5 < ret$height_m,
-    description = "Persons are smaller than 2.5m",
-    counter_meas = "None",
-    data = ret
+  if (sc[["height_m"]][["fail"]]) {
+    fail_vec <- sc[["height_m"]][["fail_vec"]]
+    ret$height_m[fail_vec] <- ret$height_m[fail_vec] / 100
+  }
+  
+  
+  sanityTracker::sc_cols_bounded(
+    object = ret, 
+    cols = "height_m",
+    rule = "[0.8, 2.5]",
+    description = "Persons are between 0.8m and 2.5m"
   )  
   return(ret)
 }
 
 prep <- function(raw_data) {
 
-  sanityTracker::add_sanity_check(
-    fail_vec = duplicated(raw_data$id),
-    description = "No duplicated ids",
-    counter_meas = "None",
-    data = raw_data
+  sanityTracker::sc_cols_unique(
+    object = raw_data,
+    cols = "id",
+    description = "No duplicated ids"
   )
   
   raw_data$start <- as.Date(raw_data$start)
   raw_data$end <- as.Date(raw_data$end)
+  # sanity checks can be recoreded as long a
+  # logical vector exists with add_sanity_check()
   sanityTracker::add_sanity_check(
     fail_vec = raw_data$end < raw_data$start,
     description = "start-date <= end-date",
-    counter_meas = "None",
     data = raw_data
   )
 
@@ -93,34 +100,46 @@ After applying the prep-function we can summarize the sanity checks
 wrangled_data <- prep(raw_data = raw_data)
 sanity_checks <- sanityTracker::get_sanity_checks()
 sanity_checks
-#>                      description n n_fail n_na
-#> 1:             No duplicated ids 4      0    0
-#> 2:        start-date <= end-date 4      1    0
-#> 3: Persons are smaller than 100m 4      1    0
-#> 4: Persons are smaller than 2.5m 4      0    0
+#>                          description
+#> 1:                 No duplicated ids
+#> 2:            start-date <= end-date
+#> 3:     Persons are smaller than 100m
+#> 4: Persons are between 0.8m and 2.5m
+#>                                     additional_desc data_name n n_fail n_na
+#> 1:                The combination of 'id' is unique  raw_data 4      0    0
+#> 2:                                                -  raw_data 4      1    0
+#> 3: Elements in 'height_m' should be in (-Inf, 100].       ret 4      1    0
+#> 4:  Elements in 'height_m' should be in [0.8, 2.5].       ret 4      0    0
 #>                                   counter_meas
-#> 1:                                        None
-#> 2:                                        None
+#> 1:                                           -
+#> 2:                                           -
 #> 3: Divide by 100. Assume height is given in cm
-#> 4:                                        None
-#>                                   call      example
-#> 1:           prep(raw_data = raw_data)             
-#> 2:           prep(raw_data = raw_data) <data.frame>
-#> 3: correct_height(raw_data = raw_data) <data.frame>
-#> 4: correct_height(raw_data = raw_data)
+#> 4:                                           -
+#>                                                                 fail_vec_str
+#> 1:                                                        dt$.n_col_cmb != 1
+#> 2:                                             raw_data$end < raw_data$start
+#> 3: sapply(object[[col]], function(x) !checkmate::qtest(x = x, rules = rule))
+#> 4: sapply(object[[col]], function(x) !checkmate::qtest(x = x, rules = rule))
+#>    param_name                                call      example
+#> 1:       'id'           prep(raw_data = raw_data)             
+#> 2:          -           prep(raw_data = raw_data) <data.frame>
+#> 3:   height_m correct_height(raw_data = raw_data) <data.frame>
+#> 4:   height_m correct_height(raw_data = raw_data)
 ```
 
-This directly gives an overview of what was performed which check failed
-how often what counter measure was done and in case of a fail also
-random rows (by default at most 3) of the data set where the check
+This directly gives an overview of what was performed, which check
+failed how often, what counter measure was applied and in case of a fail
+also random rows (by default at most 3) of the data set where the check
 failed.
 
 ``` r
 sanity_checks[2, ]
-#>               description n n_fail n_na counter_meas
-#> 1: start-date <= end-date 4      1    0         None
-#>                         call      example
-#> 1: prep(raw_data = raw_data) <data.frame>
+#>               description additional_desc data_name n n_fail n_na counter_meas
+#> 1: start-date <= end-date               -  raw_data 4      1    0            -
+#>                     fail_vec_str param_name                      call
+#> 1: raw_data$end < raw_data$start          - prep(raw_data = raw_data)
+#>         example
+#> 1: <data.frame>
 sanity_checks[2, ]$example
 #> [[1]]
 #>   id      start        end height_m
@@ -139,12 +158,12 @@ devtools::install_github("MarselScheer/sanityTracker")
 
 ``` r
 sessionInfo()
-#> R version 3.6.1 (2019-07-05)
+#> R version 3.6.2 (2019-12-12)
 #> Platform: x86_64-pc-linux-gnu (64-bit)
-#> Running under: Debian GNU/Linux 9 (stretch)
+#> Running under: Debian GNU/Linux 10 (buster)
 #> 
 #> Matrix products: default
-#> BLAS/LAPACK: /usr/lib/libopenblasp-r0.2.19.so
+#> BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.3.5.so
 #> 
 #> locale:
 #>  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              
@@ -161,12 +180,11 @@ sessionInfo()
 #> [1] badgecreatr_0.2.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] compiler_3.6.1           magrittr_1.5            
-#>  [3] tools_3.6.1              htmltools_0.3.6         
-#>  [5] yaml_2.2.0               Rcpp_1.0.2              
-#>  [7] stringi_1.4.3            rmarkdown_1.15          
-#>  [9] data.table_1.12.2        sanityTracker_0.0.0.9000
-#> [11] knitr_1.25               git2r_0.26.1            
-#> [13] stringr_1.4.0            xfun_0.9                
-#> [15] digest_0.6.21            evaluate_0.14
+#>  [1] Rcpp_1.0.3               digest_0.6.23            backports_1.1.5         
+#>  [4] git2r_0.26.1             magrittr_1.5             evaluate_0.14           
+#>  [7] rlang_0.4.2              stringi_1.4.3            data.table_1.12.8       
+#> [10] checkmate_2.0.0          sanityTracker_0.0.0.9000 rmarkdown_2.1           
+#> [13] tools_3.6.2              stringr_1.4.0            xfun_0.11               
+#> [16] yaml_2.2.0               compiler_3.6.2           htmltools_0.4.0         
+#> [19] knitr_1.26
 ```

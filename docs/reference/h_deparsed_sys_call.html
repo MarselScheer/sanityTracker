@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Removes all tracked sanity checks — clear_sanity_checks • sanityTracker</title>
+<title>Simply converts a call into a character — h_deparsed_sys_call • sanityTracker</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Removes all tracked sanity checks — clear_sanity_checks" />
-<meta property="og:description" content="Removes all tracked sanity checks" />
+<meta property="og:title" content="Simply converts a call into a character — h_deparsed_sys_call" />
+<meta property="og:description" content="Simply converts a call into a character" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -115,23 +115,37 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Removes all tracked sanity checks</h1>
+    <h1>Simply converts a call into a character</h1>
     
-    <div class="hidden name"><code>clear_sanity_checks.Rd</code></div>
+    <div class="hidden name"><code>h_deparsed_sys_call.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Removes all tracked sanity checks</p>
+    <p>Simply converts a call into a character</p>
     </div>
 
-    <pre class="usage"><span class='fu'>clear_sanity_checks</span>()</pre>
+    <pre class="usage"><span class='fu'>h_deparsed_sys_call</span>(<span class='no'>which</span>)</pre>
 
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>which</th>
+      <td><p>see <a href='https://rdrr.io/r/base/sys.parent.html'>sys.call</a>. However the function bounds it by 
+the number of encolsing environments.</p></td>
+    </tr>
+    </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>the call of the corresponding environment as character</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
   </div>
