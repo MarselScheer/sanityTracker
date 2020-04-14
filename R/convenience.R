@@ -23,7 +23,7 @@ sc_col_elements <- function(object, col, feasible_elements,
   checkmate::assert_data_frame(x = object, min.rows = 1)
   checkmate::qassert(x = col, rules = "s1")
   checkmate::assert_subset(x = col, choices = names(object))
-  CALL <- h_deparsed_sys_call(which = -1)
+  .call <- h_deparsed_sys_call(which = -1)
 
   ret <-
     h_add_sanity_check(
@@ -37,7 +37,7 @@ sc_col_elements <- function(object, col, feasible_elements,
       data = object,
       data_name = checkmate::vname(x = object),
       param_name = col,
-      call = CALL)
+      call = .call)
 
   return(invisible(ret))
 }
@@ -73,9 +73,9 @@ sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...) {
   if (isTRUE(zero_feasible)) {
     rule <- "[0, Inf)"
   }
-  CALL <- h_deparsed_sys_call(which = -1)
+  .call <- h_deparsed_sys_call(which = -1)
   ret <- sc_cols_bounded(object = object, cols = cols, rule = rule,
-                  call = CALL,
+                  call = .call,
                   data_name = checkmate::vname(x = object),
                   ...)
   return(ret)
@@ -112,15 +112,15 @@ sc_cols_bounded_below <- function(object, cols,
                                   lower_bound,
                                   include_lower_bound = TRUE, ...) {
 
-  LEFT <- "("
+  .left <- "("
   if (isTRUE(include_lower_bound)) {
-    LEFT <- "["
+    .left <- "["
   }
-  rule <- sprintf("%s%s, Inf)", LEFT, lower_bound)
+  rule <- sprintf("%s%s, Inf)", .left, lower_bound)
 
-  CALL <- h_deparsed_sys_call(which = -1)
+  .call <- h_deparsed_sys_call(which = -1)
   ret <- sc_cols_bounded(object = object, cols = cols, rule = rule,
-                         call = CALL,
+                         call = .call,
                          data_name = checkmate::vname(x = object),
                          ...)
   return(ret)
@@ -146,15 +146,15 @@ sc_cols_bounded_above <- function(object, cols,
                                   upper_bound,
                                   include_upper_bound = TRUE, ...) {
 
-  RIGHT <- ")"
+  .right <- ")"
   if (isTRUE(include_upper_bound)) {
-    RIGHT <- "]"
+    .right <- "]"
   }
-  rule <- sprintf("(-Inf, %s%s", upper_bound, RIGHT)
+  rule <- sprintf("(-Inf, %s%s", upper_bound, .right)
 
-  CALL <- h_deparsed_sys_call(which = -1)
+  .call <- h_deparsed_sys_call(which = -1)
   ret <- sc_cols_bounded(object = object, cols = cols, rule = rule,
-                         call = CALL,
+                         call = .call,
                          data_name = checkmate::vname(x = object),
                          ...)
   return(ret)
@@ -200,9 +200,9 @@ sc_cols_bounded <- function(object, cols, rule = "(-Inf, Inf)", ...) {
   checkmate::assert_subset(x = cols, choices = names(object))
   checkmate::qassert(x = rule, rules = "s1")
 
-  USER_RULE <- rule
-  DATA_NAME <- checkmate::vname(x = object)
-  CALL <- h_deparsed_sys_call(which = -1)
+  .user_rule <- rule
+  .data_name <- checkmate::vname(x = object)
+  .call <- h_deparsed_sys_call(which = -1)
   rule <- paste0("n", rule)
 
 
@@ -214,12 +214,12 @@ sc_cols_bounded <- function(object, cols, rule = "(-Inf, Inf)", ...) {
       ),
       .generated_desc = sprintf(
         "Elements in '%s' should be in %s.",
-        col, USER_RULE
+        col, .user_rule
       ),
       data = object,
-      data_name = DATA_NAME,
+      data_name = .data_name,
       param_name = col,
-      call = CALL)
+      call = .call)
   })
   names(ret) <- cols
 
@@ -263,8 +263,8 @@ sc_cols_non_NA <- function(object, cols = names(object), ...,
   if (!isTRUE(all_cols_known)) {
     unk_cols_callback(all_cols_known)
   }
-  DATA_NAME <- checkmate::vname(x = object)
-  CALL <- h_deparsed_sys_call(which = -1)
+  .data_name <- checkmate::vname(x = object)
+  .call <- h_deparsed_sys_call(which = -1)
 
   # treat only the columns that actually exist in object
   cols <- unique(intersect(cols, names(object)))
@@ -275,9 +275,9 @@ sc_cols_non_NA <- function(object, cols = names(object), ...,
       .generated_desc = sprintf("Check that column '%s' does not contain NA",
                                 col),
       data = object,
-      data_name = DATA_NAME,
+      data_name = .data_name,
       param_name = col,
-      call = CALL
+      call = .call
     )
   })
   names(ret) <- cols
@@ -313,7 +313,7 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
   checkmate::qassert(x = cols, rules = "s+")
   checkmate::assert_subset(x = cols, choices = names(object))
 
-  CALL <- h_deparsed_sys_call(which = -1)
+  .call <- h_deparsed_sys_call(which = -1)
 
   dt <- data.table::as.data.table(x = object)
 
@@ -331,7 +331,7 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
       data = dt,
       data_name = checkmate::vname(x = object),
       param_name = h_collapse_char_vec(cols),
-      call = CALL)
+      call = .call)
   return(ret)
 }
 
@@ -374,22 +374,22 @@ sc_left_join <- function(joined, left, right, by, ...,
 
   # use param_name in the table of sanity-checks to store
   # information about the variables that were used for the merge
-  PARAM_NAME <- sprintf("Merge-vars: %s", h_collapse_char_vec(v = by))
-  DATA_NAME <- sprintf("%s, %s, %s",
+  .param_name <- sprintf("Merge-vars: %s", h_collapse_char_vec(v = by))
+  .data_name <- sprintf("%s, %s, %s",
                        checkmate::vname(x = joined),
                        checkmate::vname(x = left),
                        checkmate::vname(x = right)
                        )
-  CALL <- h_deparsed_sys_call(which = -1)
+  .call <- h_deparsed_sys_call(which = -1)
 
   if (find_nonunique_key) {
     # FIXME: need to use h_complete_list and do("sc_cols_unique", )
     #        in order to not overwrite param_name and data_name
     #        that might be specified by the user
     ret_uniq <- sc_cols_unique(object = joined, cols = by,
-                               call = CALL,
-                               param_name = PARAM_NAME,
-                               data_name = DATA_NAME,
+                               call = .call,
+                               param_name = .param_name,
+                               data_name = .data_name,
                                ...)
   }
 
@@ -405,9 +405,9 @@ sc_left_join <- function(joined, left, right, by, ...,
       "nrow(joined table) = %i equals nrow(left table) = %i",
       n_joined,
       n_left),
-    param_name = PARAM_NAME,
-    data_name = DATA_NAME,
-    call = CALL
+    param_name = .param_name,
+    data_name = .data_name,
+    call = .call
   )
 
 
@@ -422,9 +422,9 @@ sc_left_join <- function(joined, left, right, by, ...,
     data = data.table::data.table(
       cols = h_collapse_char_vec(v = duplicated_columns)
     ),
-    param_name = PARAM_NAME,
-    data_name = DATA_NAME,
-    call = CALL
+    param_name = .param_name,
+    data_name = .data_name,
+    call = .call
   )
 
   list(ret_uniq, ret_dbl_col)
