@@ -392,8 +392,8 @@ sc_left_join <- function(joined, left, right, by, ...,
   # this check does not really provide additional information
   # if find_nonunique_key is TRUE but it dont hurt and it is
   # nice to see the number of rows of the data set.
-  n_joined = nrow(joined)
-  n_left = nrow(left)
+  n_joined <- nrow(joined)
+  n_left <- nrow(left)
   ret_uniq <- h_add_sanity_check(
     ellipsis = list(...),
     fail_vec = n_joined != n_left,

@@ -43,7 +43,7 @@ test_that("sc_col_elements examples are extracted correctly", {
   )
   expect_equivalent(
     get_sanity_checks()[["example"]][[3]],
-    d[c(1,4), , drop = FALSE]
+    d[c(1, 4), , drop = FALSE]
   )
 })
 # TODO: check more meta-information. see sc_cols_non_NA
@@ -186,7 +186,6 @@ dummy_call <- function(x) {
   sc_left_join(joined = joined2, left = left, right = right,
                description = DESC2,
                by = MERGE_VARS2)
-  #sc_cols_unique(object = x, cols = c("col1", "a"), example_size = Inf)
 }
 dummy_call(x = d)
 
@@ -238,7 +237,7 @@ test_that("sc_left_join correct meta information", {
     )
   )
   expect_equivalent(
-    get_sanity_checks()[-(1:3), c("description", "additional_desc",
+    get_sanity_checks()[-c(1:3), c("description", "additional_desc",
                                   "fail_vec_str", "data_name",
                                   "counter_meas", "param_name", "call")],
     data.table::data.table(
@@ -304,7 +303,7 @@ test_that("sc_cols_bounded correct meta information", {
     )
   )
   expect_equivalent(
-    get_sanity_checks()[-(1:3), c("description", "additional_desc",
+    get_sanity_checks()[-c(1:3), c("description", "additional_desc",
                                   "data_name", "counter_meas",
                                   "param_name", "call")],
     data.table::data.table(
