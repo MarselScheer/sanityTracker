@@ -45,26 +45,26 @@ h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
 #' This function manages to set those values that were
 #' NOT overwritten by the user through the ... argument
 #' and then call \link{add_sanity_check}.
-#' 
+#'
 #' @param ellipsis usually list(...) of the function that calls this function.
-#'  It contains the parameters defined by the user for add_sanity_check. 
+#'  It contains the parameters defined by the user for add_sanity_check.
 #' @param fail_vec logical vector where \code{TRUE} indicates that a
 #'   fail has happend
-#' @param .generated_desc will be passed to \link{.add_sanity_check} if ellipsis 
+#' @param .generated_desc will be passed to \link{.add_sanity_check} if ellipsis
 #'   does not contain a element with name 'description'
-#' @param data will be passed to \link{.add_sanity_check} if ellipsis 
+#' @param data will be passed to \link{.add_sanity_check} if ellipsis
 #'   does not contain a element with name 'data'
-#' @param data_name will be passed to \link{.add_sanity_check} if ellipsis 
+#' @param data_name will be passed to \link{.add_sanity_check} if ellipsis
 #'   does not contain a element with name 'data_name'
-#' @param param_name will be passed to \link{.add_sanity_check} if ellipsis 
+#' @param param_name will be passed to \link{.add_sanity_check} if ellipsis
 #'   does not contain a element with name 'param_name'
-#' @param call will be passed to \link{.add_sanity_check} if ellipsis 
+#' @param call will be passed to \link{.add_sanity_check} if ellipsis
 #'   does not contain a element with name 'call'
-#' @param .fail_vec_str usually not used by the user. Captures what was passed to 
-#'   \code{fail_vec}.
+#' @param .fail_vec_str usually not used by the user. Captures what
+#'   was passed to \code{fail_vec}.
 #'
 #' @return see return value of \link{add_sanity_check}
-#' @examples 
+#' @examples
 #' d <- data.frame(type = letters[1:4], nmb = 1:4)
 #' # h_add_sanity_check is used on sc_col_elements()
 #' sc_col_elements(object = d, col = "type", feasible_elements = letters[2:4])
@@ -88,66 +88,66 @@ h_add_sanity_check <- function(ellipsis, fail_vec, .generated_desc, data,
     name = "counter_meas",
     value = "-"
   )
-  
+
   ellipsis <- h_complete_list(
     ell = ellipsis,
     name = "example_size",
     value = 3
   )
-  
+
   ellipsis <- h_complete_list(
     ell = ellipsis,
     name = ".generated_desc",
     value = .generated_desc
   )
-  
+
   if (!missing(data)) {
     ellipsis <- h_complete_list(
       ell = ellipsis,
       name = "data",
       value = data
-    )  
+    )
   }
 
   ellipsis <- h_complete_list(
     ell = ellipsis,
     name = "data_name",
     value = data_name
-  )  
-  
+  )
+
 
   ellipsis <- h_complete_list(
     ell = ellipsis,
     name = "param_name",
     value = param_name
   )
-  
+
   ellipsis <- h_complete_list(
     ell = ellipsis,
     name = "call",
     value = call
-  )  
-  
+  )
+
   ellipsis <- h_complete_list(
     ell = ellipsis,
     name = ".fail_vec_str",
     value = .fail_vec_str
-  )  
-  
+  )
+
   return(do.call(.add_sanity_check, ellipsis))
 }
 
 
 #' Simply converts a call into a character
 #'
-#' @param which see \link{sys.call}. However the function bounds it by 
+#' @param which see \link{sys.call}. However the function bounds it by
 #'   the number of encolsing environments.
 #'
 #' @return the call of the corresponding environment as character
 h_deparsed_sys_call <- function(which) {
   n_sys_calls <- -length(sys.calls())
   # need -1 to skip the call of this function
-  which <- max(n_sys_calls, which - 1) 
+  which <- max(n_sys_calls, which - 1)
   ret <- deparse(sys.call(which = which))
   ret <- paste(ret, collapse = " ")
   return(ret)
