@@ -128,6 +128,7 @@ sc_cols_bounded_below <- function(object, cols,
 
 #' Checks that all elements from the given columns are below a certain number
 #'
+#' @param object table with a columns specified by \code{cols}
 #' @param cols vector of characters of columns that are checked against
 #'   the specified range
 #' @param upper_bound elements of the specified columns must be below this
