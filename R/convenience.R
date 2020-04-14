@@ -316,6 +316,10 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
   CALL <- h_deparsed_sys_call(which = -1)
 
   dt <- data.table::as.data.table(x = object)
+
+  # initialize to avoid 'no visible binding for global variable', see
+  # data.table vignettes datatable-importing.html
+  .n_col_cmb <- NULL
   dt[, .n_col_cmb := .N, by = cols]
 
   ret <-
