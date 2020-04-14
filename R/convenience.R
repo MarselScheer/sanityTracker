@@ -46,7 +46,8 @@ sc_col_elements <- function(object, col, feasible_elements,
 #' Checks that all elements from the specified columns are positive
 #'
 #' @param object table with a columns specified by \code{cols}
-#' @param cols vector of characters of columns that are checked against the specified range
+#' @param cols vector of characters of columns that are checked against the
+#'   specified range
 #' @param zero_feasible if zero is in the range or not
 #' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
@@ -65,8 +66,9 @@ sc_col_elements <- function(object, col, feasible_elements,
 #' get_sanity_checks()
 sc_cols_positive <- function(object, cols, zero_feasible = TRUE, ...) {
 
-  # TODO: could use sc_cols_bounded_below, but need to refactor how data_name is used
-  #       because sc_cols_bounded_below sets data_name itself
+  # TODO: could use sc_cols_bounded_below, but need to refactor how
+  #       data_name is used because sc_cols_bounded_below sets
+  #       data_name itself
   rule <- "(0, Inf)"
   if (isTRUE(zero_feasible)) {
     rule <- "[0, Inf)"
@@ -163,7 +165,8 @@ sc_cols_bounded_above <- function(object, cols,
 #' Checks that all elements from the specified columns are in a certain range
 #'
 #' @param object table with a columns specified by \code{cols}
-#' @param cols vector of characters of columns that are checked against the specified range
+#' @param cols vector of characters of columns that are checked against
+#'   the specified range
 #' @param rule check as two numbers separated by a comma, enclosed by square
 #'   brackets (endpoint included) or parentheses (endpoint excluded).
 #'   For example, “[0, 3)” results in all(x >= 0 & x < 3).
@@ -288,8 +291,8 @@ sc_cols_non_NA <- function(object, cols = names(object), ...,
 #' @param cols vector of characters which combination is checked to be unique
 #' @param ... further parameters that are passed to \link{add_sanity_check}.
 #'
-#' @return see return object of \link{add_sanity_check}. Note that if a combination
-#'   appears 3 times, then n_fail will increased by 3.
+#' @return see return object of \link{add_sanity_check}. Note that if a
+#'   combination appears 3 times, then n_fail will increased by 3.
 #' @export
 #' @import data.table
 #'
@@ -357,7 +360,8 @@ sc_cols_unique <- function(object, cols = names(object), ...) {
 #' }
 #' dummy_call()
 #' get_sanity_checks()
-sc_left_join <- function(joined, left, right, by, ..., find_nonunique_key = TRUE) {
+sc_left_join <- function(joined, left, right, by, ...,
+                         find_nonunique_key = TRUE) {
 
   checkmate::assert_data_frame(x = joined, min.rows = 1)
   checkmate::assert_data_frame(x = left, min.rows = 1)

@@ -49,11 +49,14 @@ test_that("sc_col_elements examples are extracted correctly", {
 # TODO: check more meta-information. see sc_cols_non_NA
 
 test_that("sc_col_elements can set param_name and data_name",  {
-  expect_equal(get_sanity_checks()[["param_name"]], c("a", "a", "user-param-name"))
-  expect_equal(get_sanity_checks()[["data_name"]], c("d", "d", "user-data-name"))
+  expect_equal(get_sanity_checks()[["param_name"]],
+               c("a", "a", "user-param-name"))
+  expect_equal(get_sanity_checks()[["data_name"]],
+               c("d", "d", "user-data-name"))
 })
 
-test_that("sc_col_elements can set description and generates a separate description",  {
+test_that(
+  "sc_col_elements can set description and generates a separate description", {
   expect_equal(get_sanity_checks()[["description"]], c("user desc", "-", "-"))
   expect_true(all(
     grepl(pattern = "Elements in 'a' should contain only",
@@ -67,7 +70,9 @@ test_that("sc_col_elements can set description and generates a separate descript
 clear_sanity_checks()
 d <- data.frame(id = 1:4, a = c(1:3, NA), b = c(NA, letters[2:3], NA))
 dummy_call <- function(x) {
-  sc_cols_non_NA(object = x, description = "Check for all cols", counter_meas = "nada")
+  sc_cols_non_NA(object = x,
+                 description = "Check for all cols",
+                 counter_meas = "nada")
 }
 dummy_call(x = d)
 
@@ -81,10 +86,14 @@ test_that("sc_cols_non_NA counts correctly all columns", {
 
 test_that("sc_cols_non_NA correct meta information", {
   expect_equivalent(
-    get_sanity_checks()[, c("description", "additional_desc", "data_name", "counter_meas", "param_name", "call")],
+    get_sanity_checks()[, c("description", "additional_desc",
+                            "data_name", "counter_meas",
+                            "param_name", "call")],
     data.table::data.table(
       description = "Check for all cols",
-      additional_desc = paste0("Check that column '", c("id", "a", "b"), "' does not contain NA"),
+      additional_desc = paste0("Check that column '",
+                               c("id", "a", "b"),
+                               "' does not contain NA"),
       data_name = "x",
       counter_meas = "nada",
       param_name = c("id", "a", "b"),
@@ -96,9 +105,12 @@ test_that("sc_cols_non_NA correct meta information", {
 clear_sanity_checks()
 msg_regexp <- "subset.*'id'.*'a'.*'b'.*but.*'d'.*'e'"
 test_that("call_back functionality works", {
-  expect_error(sc_cols_non_NA(object = d, cols = c("d", "e")), regexp = msg_regexp)
+  expect_error(sc_cols_non_NA(object = d, cols = c("d", "e")),
+               regexp = msg_regexp)
   expect_warning(
-    sc_cols_non_NA(object = d, cols = c("a", "d", "e"), unk_cols_callback = warning),
+    sc_cols_non_NA(object = d,
+                   cols = c("a", "d", "e"),
+                   unk_cols_callback = warning),
     regexp = msg_regexp
   )
   expect_equivalent(
@@ -116,9 +128,14 @@ test_that("call_back functionality works", {
 
 
 clear_sanity_checks()
-d <- data.frame(col1 = c(1:2, 1:2, NA, NA, NA), a = c(NA, 1, NA, 2, NA, NA, NA), b = c(NA, letters[2:3], NA, NA, NA, NA))
+d <- data.frame(
+  col1 = c(1:2, 1:2, NA, NA, NA),
+  a = c(NA, 1, NA, 2, NA, NA, NA),
+  b = c(NA, letters[2:3], NA, NA, NA, NA))
 dummy_call <- function(x) {
-  sc_cols_unique(object = x, description = "Check for duplicate entries", counter_meas = "nada")
+  sc_cols_unique(object = x,
+                 description = "Check for duplicate entries",
+                 counter_meas = "nada")
   sc_cols_unique(object = x, cols = c("col1", "a"), example_size = Inf)
 }
 dummy_call(x = d)
@@ -135,7 +152,9 @@ PARAM_NAME <- c(sanityTracker:::h_collapse_char_vec(c("col1", "a", "b")),
                 sanityTracker:::h_collapse_char_vec(c("col1", "a")))
 test_that("sc_cols_unique correct meta information", {
   expect_equivalent(
-    get_sanity_checks()[, c("description", "additional_desc", "data_name", "counter_meas", "param_name", "call")],
+    get_sanity_checks()[, c("description", "additional_desc",
+                            "data_name", "counter_meas", "param_name",
+                            "call")],
     data.table::data.table(
       description = c("Check for duplicate entries", "-"),
       additional_desc = paste("The combination of", PARAM_NAME, "is unique"),
@@ -190,15 +209,17 @@ test_that("sc_cols_unique extract examples correctly", {
   )
   expect_equivalent(
     get_sanity_checks()[["example"]][[6]],
-    data.table::data.table(cols = sanityTracker:::h_collapse_char_vec(v = c("b.x", "b.y")))
+    data.table::data.table(
+      cols = sanityTracker:::h_collapse_char_vec(v = c("b.x", "b.y")))
   )
 })
 
 
 test_that("sc_left_join correct meta information", {
   expect_equivalent(
-    get_sanity_checks()[1:3, c("description", "additional_desc", "fail_vec_str",
-                              "data_name", "counter_meas", "param_name", "call")],
+    get_sanity_checks()[1:3, c("description", "additional_desc",
+                               "fail_vec_str", "data_name",
+                               "counter_meas", "param_name", "call")],
     data.table::data.table(
       description = DESC1,
       additional_desc = c(
@@ -211,13 +232,15 @@ test_that("sc_left_join correct meta information", {
                        "length(duplicated_columns) > 0"),
       data_name = "joined, left, right",
       counter_meas = "nada",
-      param_name = sprintf("Merge-vars: %s", sanityTracker:::h_collapse_char_vec(MERGE_VARS1)),
+      param_name = sprintf("Merge-vars: %s",
+                           sanityTracker:::h_collapse_char_vec(MERGE_VARS1)),
       call = "dummy_call(x = d)"
     )
   )
   expect_equivalent(
-    get_sanity_checks()[-(1:3), c("description", "additional_desc", "fail_vec_str",
-                              "data_name", "counter_meas", "param_name", "call")],
+    get_sanity_checks()[-(1:3), c("description", "additional_desc",
+                                  "fail_vec_str", "data_name",
+                                  "counter_meas", "param_name", "call")],
     data.table::data.table(
       description = DESC2,
       additional_desc = c(
@@ -230,7 +253,8 @@ test_that("sc_left_join correct meta information", {
                        "length(duplicated_columns) > 0"),
       data_name = "joined2, left, right",
       counter_meas = "-",
-      param_name = sprintf("Merge-vars: %s", sanityTracker:::h_collapse_char_vec(MERGE_VARS2)),
+      param_name = sprintf("Merge-vars: %s",
+                           sanityTracker:::h_collapse_char_vec(MERGE_VARS2)),
       call = "dummy_call(x = d)"
     )
   )
@@ -242,7 +266,8 @@ clear_sanity_checks()
 d <- data.frame(a = c(-Inf, 0, -3L), b = c(-1, 1, 3L), c = c(1, 2, Inf))
 
 dummy_call <- function(x) {
-  sc_cols_bounded(object = x, cols = names(x), rule = "[-Inf, Inf)", description = "all columns", counter_meas = "nada")
+  sc_cols_bounded(object = x, cols = names(x), rule = "[-Inf, Inf)",
+                  description = "all columns", counter_meas = "nada")
   sc_cols_bounded(object = x, cols = "a", rule = "(-Inf, 0)")
   sc_cols_bounded(object = x, cols = "b", rule = "[1, 3]")
   sc_cols_bounded(object = x, cols = "c", rule = "(1, 3)")
@@ -265,10 +290,13 @@ test_that("sc_cols_bounded counts correctly", {
 
 test_that("sc_cols_bounded correct meta information", {
   expect_equivalent(
-    get_sanity_checks()[1:3, c("description", "additional_desc", "data_name", "counter_meas", "param_name", "call")],
+    get_sanity_checks()[1:3, c("description", "additional_desc",
+                               "data_name", "counter_meas",
+                               "param_name", "call")],
     data.table::data.table(
       description = "all columns",
-      additional_desc = paste0("Elements in '", letters[1:3], "' should be in [-Inf, Inf)."),
+      additional_desc = paste0("Elements in '", letters[1:3],
+                               "' should be in [-Inf, Inf)."),
       data_name = "x",
       counter_meas = "nada",
       param_name = letters[1:3],
@@ -276,7 +304,9 @@ test_that("sc_cols_bounded correct meta information", {
     )
   )
   expect_equivalent(
-    get_sanity_checks()[-(1:3), c("description", "additional_desc", "data_name", "counter_meas", "param_name", "call")],
+    get_sanity_checks()[-(1:3), c("description", "additional_desc",
+                                  "data_name", "counter_meas",
+                                  "param_name", "call")],
     data.table::data.table(
       description = "-",
       additional_desc = paste0("Elements in '", letters[1:3],
@@ -318,7 +348,8 @@ test_that("sc_cols_positive counts correctly", {
 test_that("sc_cols_positive correct meta information", {
   expect_equivalent(
     # additional_desc and param_name - come from sc_cols_bounded and test there
-    get_sanity_checks()[, c("description", "data_name", "counter_meas", "call")],
+    get_sanity_checks()[, c("description", "data_name",
+                            "counter_meas", "call")],
     data.table::data.table(
       description = c("pos", "-"),
       data_name = "x",
@@ -359,7 +390,8 @@ test_that("sc_cols_bounded_below counts correctly", {
 test_that("sc_cols_bounded_below correct meta information", {
   expect_equivalent(
     # additional_desc and param_name - come from sc_cols_bounded and test there
-    get_sanity_checks()[, c("description", "data_name", "counter_meas", "call")],
+    get_sanity_checks()[, c("description", "data_name",
+                            "counter_meas", "call")],
     data.table::data.table(
       description = c("bounded", "-"),
       data_name = "x",
@@ -401,7 +433,8 @@ test_that("sc_cols_bounded_above counts correctly", {
 test_that("sc_cols_bounded_above correct meta information", {
   expect_equivalent(
     # additional_desc and param_name - come from sc_cols_bounded and test there
-    get_sanity_checks()[, c("description", "data_name", "counter_meas", "call")],
+    get_sanity_checks()[, c("description", "data_name",
+                            "counter_meas", "call")],
     data.table::data.table(
       description = c("bounded", "-"),
       data_name = "x",

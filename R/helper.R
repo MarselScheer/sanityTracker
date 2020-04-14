@@ -60,8 +60,8 @@ h_collapse_char_vec <- function(v, collapse = ", ", qoute = "'") {
 #'   does not contain a element with name 'param_name'
 #' @param call will be passed to \link{.add_sanity_check} if ellipsis
 #'   does not contain a element with name 'call'
-#' @param .fail_vec_str usually not used by the user. Captures what was passed to
-#'   \code{fail_vec}.
+#' @param .fail_vec_str usually not used by the user. Captures what
+#'   was passed to \code{fail_vec}.
 #'
 #' @return see return value of \link{add_sanity_check}
 #' @examples
