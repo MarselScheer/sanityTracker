@@ -1,8 +1,8 @@
 Package: sanityTracker
 Type: Package
 Title: Keeps track of all performed sanity checks
-Version: 0.0.0.9000
-Date: 2020-03-26
+Version: 0.1.0
+Date: 2020-04-14
 Authors@R: person("Marsel", "Scheer", role = c("aut", "cre"), email = "scheer@freescience.de") 
 Maintainer: Marsel Scheer <scheer@freescience.de>
 Description: During the preparation of data set(s) one usually performs
