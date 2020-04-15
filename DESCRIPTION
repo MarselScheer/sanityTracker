@@ -1,6 +1,6 @@
 Package: sanityTracker
 Type: Package
-Title: Keeps track of all performed sanity checks
+Title: Keeps Track of all Performed Sanity Checks
 Version: 0.1.0
 Date: 2020-04-14
 Authors@R: person("Marsel", "Scheer", role = c("aut", "cre"), email = "scheer@freescience.de") 
