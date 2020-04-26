@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • sanityTracker</title>
+<title>Collapse a vector of characters to a string with separators — h_collapse_char_vec • sanityTracker</title>
 
 
 <!-- jquery -->
@@ -35,7 +35,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Collapse a vector of characters to a string with separators — h_collapse_char_vec" />
+<meta property="og:description" content="Collapse a vector of characters to a string with separators" />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -54,7 +56,7 @@
   </head>
 
   <body>
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -116,132 +118,52 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Collapse a vector of characters to a string with separators</h1>
+    <small class="dont-index">Source: <a href='https://github.com/MarselScheer/sanityTracker/blob/master/R/helper.R'><code>R/helper.R</code></a></small>
+    <div class="hidden name"><code>h_collapse_char_vec.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Collapse a vector of characters to a string with separators</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>h_collapse_char_vec</span>(<span class='no'>v</span>, <span class='kw'>collapse</span> <span class='kw'>=</span> <span class='st'>", "</span>, <span class='kw'>qoute</span> <span class='kw'>=</span> <span class='st'>"'"</span>)</pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      <tr>
-        
-        <td>
-          <p><code><a href="add_sanity_check.html">add_sanity_check()</a></code> </p>
-        </td>
-        <td><p>Adds a sanity check to the list of already performed sanity checks</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="clear_sanity_checks.html">clear_sanity_checks()</a></code> </p>
-        </td>
-        <td><p>Removes all tracked sanity checks</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="dot-add_sanity_check.html">.add_sanity_check()</a></code> </p>
-        </td>
-        <td><p>Adds a sanity check to the list of already performed sanity checks</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="get_sanity_checks.html">get_sanity_checks()</a></code> </p>
-        </td>
-        <td><p>Returns all performed sanity checks</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="h_add_sanity_check.html">h_add_sanity_check()</a></code> </p>
-        </td>
-        <td><p>Wrapper for add_sanity_check for internal use</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="h_collapse_char_vec.html">h_collapse_char_vec()</a></code> </p>
-        </td>
-        <td><p>Collapse a vector of characters to a string with separators</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="h_complete_list.html">h_complete_list()</a></code> </p>
-        </td>
-        <td><p>Extends a list with an named element if the element does not exist</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="h_deparsed_sys_call.html">h_deparsed_sys_call()</a></code> </p>
-        </td>
-        <td><p>Simply converts a call into a character</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sc_col_elements.html">sc_col_elements()</a></code> </p>
-        </td>
-        <td><p>Checks that the elements of a column belong to a certain set</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sc_cols_bounded.html">sc_cols_bounded()</a></code> </p>
-        </td>
-        <td><p>Checks that all elements from the specified columns are in a certain range</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sc_cols_bounded_above.html">sc_cols_bounded_above()</a></code> </p>
-        </td>
-        <td><p>Checks that all elements from the given columns are below a certain number</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sc_cols_bounded_below.html">sc_cols_bounded_below()</a></code> </p>
-        </td>
-        <td><p>Checks that all elements from the given columns are above a certain number</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sc_cols_non_NA.html">sc_cols_non_NA()</a></code> </p>
-        </td>
-        <td><p>Checks that all elements from the specified columns are not NA</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sc_cols_positive.html">sc_cols_positive()</a></code> </p>
-        </td>
-        <td><p>Checks that all elements from the specified columns are positive</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sc_cols_unique.html">sc_cols_unique()</a></code> </p>
-        </td>
-        <td><p>Checks that the combination of the specified columns is unique</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sc_left_join.html">sc_left_join()</a></code> </p>
-        </td>
-        <td><p>Performs various checks after a left-join was performed</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>v</th>
+      <td><p>vector of chars to be collapsed</p></td>
+    </tr>
+    <tr>
+      <th>collapse</th>
+      <td><p>character that separates the elements in the returned object</p></td>
+    </tr>
+    <tr>
+      <th>qoute</th>
+      <td><p>character that surronds every element in <code>v</code> in the
+returned object</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>collapsed version of <code>v</code></p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/cat.html'>cat</a></span>(<span class='kw pkg'>sanityTracker</span><span class='kw ns'>:::</span><span class='fu'><a href='https://rdrr.io/pkg/sanityTracker/man/h_collapse_char_vec.html'>h_collapse_char_vec</a></span>(<span class='kw'>v</span> <span class='kw'>=</span> <span class='no'>letters</span>[<span class='fl'>1</span>:<span class='fl'>4</span>]))</div><div class='output co'>#&gt; 'a', 'b', 'c', 'd'</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
+
   </div>
 </div>
 

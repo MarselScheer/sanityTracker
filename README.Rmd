@@ -64,41 +64,55 @@ For illustration we consider a very simple data set:
 raw_data
 ```
 
-We have a simple data-preparation function for our raw-data-set:
+We have two simple data-preparation functions for our raw-data-set:
 ```{r}
-prep <- function(raw_data) {
+correct_height <- function(raw_data) {
+  ret <- raw_data
+  # functions starting with sc_ are convenience functions the package
+  # offers for ease of use
+  sc <- sanityTracker::sc_cols_bounded_above(
+    object = ret,
+    cols = "height_m",
+    upper_bound = 100,
+    description = "Persons are smaller than 100m",
+    counter_meas = "Divide by 100. Assume height is given in cm",
+  )
   
-  sanityTracker::add_sanity_check(
-    fail_vec = duplicated(raw_data$id),
-    description = "prep(): No duplicated ids",
-    counter_meas = "None",
-    data = raw_data
+  if (sc[["height_m"]][["fail"]]) {
+    fail_vec <- sc[["height_m"]][["fail_vec"]]
+    ret$height_m[fail_vec] <- ret$height_m[fail_vec] / 100
+  }
+  
+  
+  sanityTracker::sc_cols_bounded(
+    object = ret, 
+    cols = "height_m",
+    rule = "[0.8, 2.5]",
+    description = "Persons are between 0.8m and 2.5m"
+  )  
+  return(ret)
+}
+
+prep <- function(raw_data) {
+
+  sanityTracker::sc_cols_unique(
+    object = raw_data,
+    cols = "id",
+    description = "No duplicated ids"
   )
   
   raw_data$start <- as.Date(raw_data$start)
   raw_data$end <- as.Date(raw_data$end)
+  # sanity checks can be recoreded as long a
+  # logical vector exists with add_sanity_check()
   sanityTracker::add_sanity_check(
     fail_vec = raw_data$end < raw_data$start,
-    description = "prep(): start-date <= end-date",
-    counter_meas = "None",
+    description = "start-date <= end-date",
     data = raw_data
   )
 
-  idx <- 100 < raw_data$height_m
-  sanityTracker::add_sanity_check(
-    fail_vec = 100 < raw_data$height_m,
-    description = "prep(): Persons are smaller than 100m",
-    counter_meas = "Divide by 100. Assume height is given in cm",
-    data = raw_data
-  )
-  raw_data$height_m[idx] <- raw_data$height_m[idx] / 100
-  
-  sanityTracker::add_sanity_check(
-    fail_vec = 2.5 < raw_data$height_m,
-    description = "prep(): Persons are smaller than 2.5m",
-    counter_meas = "None",
-    data = raw_data
-  )
+  ret <- correct_height(raw_data = raw_data)  
+  return(ret)
 }
 ```
 
@@ -109,8 +123,8 @@ sanity_checks <- sanityTracker::get_sanity_checks()
 sanity_checks
 ```
 
-This directly gives an overview of what was performed which check failed how often
-what counter measure was done and in case of a fail also random rows (by default at most 3)
+This directly gives an overview of what was performed, which check failed how often,
+what counter measure was applied and in case of a fail also random rows (by default at most 3)
 of the data set where the check failed.
 
 ```{r}
@@ -120,7 +134,13 @@ sanity_checks[2, ]$example
 
 ## Installation
 
-You can install it from github with:
+You can install it from CRAN
+
+```{r, eval = FALSE}
+install.packages("sanityTracker")
+```
+
+or github
 
 ```{r gh-installation, eval = FALSE}
 devtools::install_github("MarselScheer/sanityTracker")

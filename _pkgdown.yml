@@ -1,1 +1,6 @@
 destination: docs
+title: sanityTracker
+url: http://MarselScheer.github.io/sanityTracker
+template:
+  params:
+    bootswatch: flatly

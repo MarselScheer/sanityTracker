@@ -1,4 +1,5 @@
-Version 0.0.0.9000
+Version 0.1.0
 =========================
 
-* basic function to add and get sanity-checks
+* basic function to add, get and clean sanity-checks
+* convenience-functions added that perform some standard checks like checking for NAs or negative values, etc.

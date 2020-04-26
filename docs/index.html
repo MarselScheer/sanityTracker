@@ -5,13 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Keeps track of all performed sanity checks • sanityTracker</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Keeps track of all performed sanity checks">
+<title>Keeps Track of all Performed Sanity Checks • sanityTracker</title>
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<script src="pkgdown.js"></script><meta property="og:title" content="Keeps Track of all Performed Sanity Checks">
 <meta property="og:description" content="During the preparation of data set(s) one usually performs
-    some sanity checks. The idea is that irrespective of where the 
+    some sanity checks. The idea is that irrespective of where the
     checks are performed, they are centralized by this package in order
     to list all at once with examples if a check failed.">
 <meta name="twitter:card" content="summary">
@@ -21,7 +22,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-article">
+    <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -33,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">sanityTracker</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
@@ -41,18 +42,37 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/get_started.html">Get started</a>
+    </li>
+  </ul>
+</li>
 <li>
   <a href="news/index.html">Changelog</a>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/MarselScheer/sanityTracker">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -61,13 +81,10 @@
 <!--/.navbar -->
 
       
-      </header><div class="row">
-  <div class="col-md-9 contents">
-    
 
-    
-    
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+      </header><div class="row">
+  <div class="contents col-md-9">
+
 
 <div id="sanitytracker" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
@@ -85,118 +102,156 @@
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#&gt; 2  2 2010-01-20 2020-01-26   144.00</span></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#&gt; 3  3 2020-02-20 2020-03-01     1.89</span></a>
 <a class="sourceLine" id="cb1-6" data-line-number="6"><span class="co">#&gt; 4  4 2020-01-23 2020-01-26     1.74</span></a></code></pre></div>
-<p>We have a simple data-preparation function for our raw-data-set:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">prep &lt;-<span class="st"> </span><span class="cf">function</span>(raw_data) {</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  </a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sanityTracker/topics/add_sanity_check">add_sanity_check</a></span>(</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">fail_vec =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/duplicated">duplicated</a></span>(raw_data<span class="op">$</span>id),</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">    <span class="dt">description =</span> <span class="st">"prep(): No duplicated ids"</span>,</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">counter_meas =</span> <span class="st">"None"</span>,</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="dt">data =</span> raw_data</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">  )</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">  </a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">  raw_data<span class="op">$</span>start &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(raw_data<span class="op">$</span>start)</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">  raw_data<span class="op">$</span>end &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/as.Date">as.Date</a></span>(raw_data<span class="op">$</span>end)</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sanityTracker/topics/add_sanity_check">add_sanity_check</a></span>(</a>
-<a class="sourceLine" id="cb2-13" data-line-number="13">    <span class="dt">fail_vec =</span> raw_data<span class="op">$</span>end <span class="op">&lt;</span><span class="st"> </span>raw_data<span class="op">$</span>start,</a>
-<a class="sourceLine" id="cb2-14" data-line-number="14">    <span class="dt">description =</span> <span class="st">"prep(): start-date &lt;= end-date"</span>,</a>
-<a class="sourceLine" id="cb2-15" data-line-number="15">    <span class="dt">counter_meas =</span> <span class="st">"None"</span>,</a>
-<a class="sourceLine" id="cb2-16" data-line-number="16">    <span class="dt">data =</span> raw_data</a>
-<a class="sourceLine" id="cb2-17" data-line-number="17">  )</a>
-<a class="sourceLine" id="cb2-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb2-19" data-line-number="19">  idx &lt;-<span class="st"> </span><span class="dv">100</span> <span class="op">&lt;</span><span class="st"> </span>raw_data<span class="op">$</span>height_m</a>
-<a class="sourceLine" id="cb2-20" data-line-number="20">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sanityTracker/topics/add_sanity_check">add_sanity_check</a></span>(</a>
-<a class="sourceLine" id="cb2-21" data-line-number="21">    <span class="dt">fail_vec =</span> <span class="dv">100</span> <span class="op">&lt;</span><span class="st"> </span>raw_data<span class="op">$</span>height_m,</a>
-<a class="sourceLine" id="cb2-22" data-line-number="22">    <span class="dt">description =</span> <span class="st">"prep(): Persons are smaller than 100m"</span>,</a>
-<a class="sourceLine" id="cb2-23" data-line-number="23">    <span class="dt">counter_meas =</span> <span class="st">"Divide by 100. Assume height is given in cm"</span>,</a>
-<a class="sourceLine" id="cb2-24" data-line-number="24">    <span class="dt">data =</span> raw_data</a>
-<a class="sourceLine" id="cb2-25" data-line-number="25">  )</a>
-<a class="sourceLine" id="cb2-26" data-line-number="26">  raw_data<span class="op">$</span>height_m[idx] &lt;-<span class="st"> </span>raw_data<span class="op">$</span>height_m[idx] <span class="op">/</span><span class="st"> </span><span class="dv">100</span></a>
-<a class="sourceLine" id="cb2-27" data-line-number="27">  </a>
-<a class="sourceLine" id="cb2-28" data-line-number="28">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sanityTracker/topics/add_sanity_check">add_sanity_check</a></span>(</a>
-<a class="sourceLine" id="cb2-29" data-line-number="29">    <span class="dt">fail_vec =</span> <span class="fl">2.5</span> <span class="op">&lt;</span><span class="st"> </span>raw_data<span class="op">$</span>height_m,</a>
-<a class="sourceLine" id="cb2-30" data-line-number="30">    <span class="dt">description =</span> <span class="st">"prep(): Persons are smaller than 2.5m"</span>,</a>
-<a class="sourceLine" id="cb2-31" data-line-number="31">    <span class="dt">counter_meas =</span> <span class="st">"None"</span>,</a>
-<a class="sourceLine" id="cb2-32" data-line-number="32">    <span class="dt">data =</span> raw_data</a>
-<a class="sourceLine" id="cb2-33" data-line-number="33">  )</a>
-<a class="sourceLine" id="cb2-34" data-line-number="34">}</a></code></pre></div>
+<p>We have two simple data-preparation functions for our raw-data-set:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">correct_height &lt;-<span class="st"> </span><span class="cf">function</span>(raw_data) {</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">  ret &lt;-<span class="st"> </span>raw_data</a>
+<a class="sourceLine" id="cb2-3" data-line-number="3">  <span class="co"># functions starting with sc_ are convenience functions the package</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4">  <span class="co"># offers for ease of use</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  sc &lt;-<span class="st"> </span>sanityTracker<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/sanityTracker/man/sc_cols_bounded_above.html">sc_cols_bounded_above</a></span>(</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">    <span class="dt">object =</span> ret,</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">    <span class="dt">cols =</span> <span class="st">"height_m"</span>,</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">    <span class="dt">upper_bound =</span> <span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">    <span class="dt">description =</span> <span class="st">"Persons are smaller than 100m"</span>,</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10">    <span class="dt">counter_meas =</span> <span class="st">"Divide by 100. Assume height is given in cm"</span>,</a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">  )</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12">  </a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">  <span class="cf">if</span> (sc[[<span class="st">"height_m"</span>]][[<span class="st">"fail"</span>]]) {</a>
+<a class="sourceLine" id="cb2-14" data-line-number="14">    fail_vec &lt;-<span class="st"> </span>sc[[<span class="st">"height_m"</span>]][[<span class="st">"fail_vec"</span>]]</a>
+<a class="sourceLine" id="cb2-15" data-line-number="15">    ret<span class="op">$</span>height_m[fail_vec] &lt;-<span class="st"> </span>ret<span class="op">$</span>height_m[fail_vec] <span class="op">/</span><span class="st"> </span><span class="dv">100</span></a>
+<a class="sourceLine" id="cb2-16" data-line-number="16">  }</a>
+<a class="sourceLine" id="cb2-17" data-line-number="17">  </a>
+<a class="sourceLine" id="cb2-18" data-line-number="18">  </a>
+<a class="sourceLine" id="cb2-19" data-line-number="19">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/sanityTracker/man/sc_cols_bounded.html">sc_cols_bounded</a></span>(</a>
+<a class="sourceLine" id="cb2-20" data-line-number="20">    <span class="dt">object =</span> ret, </a>
+<a class="sourceLine" id="cb2-21" data-line-number="21">    <span class="dt">cols =</span> <span class="st">"height_m"</span>,</a>
+<a class="sourceLine" id="cb2-22" data-line-number="22">    <span class="dt">rule =</span> <span class="st">"[0.8, 2.5]"</span>,</a>
+<a class="sourceLine" id="cb2-23" data-line-number="23">    <span class="dt">description =</span> <span class="st">"Persons are between 0.8m and 2.5m"</span></a>
+<a class="sourceLine" id="cb2-24" data-line-number="24">  )  </a>
+<a class="sourceLine" id="cb2-25" data-line-number="25">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(ret)</a>
+<a class="sourceLine" id="cb2-26" data-line-number="26">}</a>
+<a class="sourceLine" id="cb2-27" data-line-number="27"></a>
+<a class="sourceLine" id="cb2-28" data-line-number="28">prep &lt;-<span class="st"> </span><span class="cf">function</span>(raw_data) {</a>
+<a class="sourceLine" id="cb2-29" data-line-number="29"></a>
+<a class="sourceLine" id="cb2-30" data-line-number="30">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/sanityTracker/man/sc_cols_unique.html">sc_cols_unique</a></span>(</a>
+<a class="sourceLine" id="cb2-31" data-line-number="31">    <span class="dt">object =</span> raw_data,</a>
+<a class="sourceLine" id="cb2-32" data-line-number="32">    <span class="dt">cols =</span> <span class="st">"id"</span>,</a>
+<a class="sourceLine" id="cb2-33" data-line-number="33">    <span class="dt">description =</span> <span class="st">"No duplicated ids"</span></a>
+<a class="sourceLine" id="cb2-34" data-line-number="34">  )</a>
+<a class="sourceLine" id="cb2-35" data-line-number="35">  </a>
+<a class="sourceLine" id="cb2-36" data-line-number="36">  raw_data<span class="op">$</span>start &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(raw_data<span class="op">$</span>start)</a>
+<a class="sourceLine" id="cb2-37" data-line-number="37">  raw_data<span class="op">$</span>end &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/as.Date.html">as.Date</a></span>(raw_data<span class="op">$</span>end)</a>
+<a class="sourceLine" id="cb2-38" data-line-number="38">  <span class="co"># sanity checks can be recoreded as long a</span></a>
+<a class="sourceLine" id="cb2-39" data-line-number="39">  <span class="co"># logical vector exists with add_sanity_check()</span></a>
+<a class="sourceLine" id="cb2-40" data-line-number="40">  sanityTracker<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/sanityTracker/man/add_sanity_check.html">add_sanity_check</a></span>(</a>
+<a class="sourceLine" id="cb2-41" data-line-number="41">    <span class="dt">fail_vec =</span> raw_data<span class="op">$</span>end <span class="op">&lt;</span><span class="st"> </span>raw_data<span class="op">$</span>start,</a>
+<a class="sourceLine" id="cb2-42" data-line-number="42">    <span class="dt">description =</span> <span class="st">"start-date &lt;= end-date"</span>,</a>
+<a class="sourceLine" id="cb2-43" data-line-number="43">    <span class="dt">data =</span> raw_data</a>
+<a class="sourceLine" id="cb2-44" data-line-number="44">  )</a>
+<a class="sourceLine" id="cb2-45" data-line-number="45"></a>
+<a class="sourceLine" id="cb2-46" data-line-number="46">  ret &lt;-<span class="st"> </span><span class="kw">correct_height</span>(<span class="dt">raw_data =</span> raw_data)  </a>
+<a class="sourceLine" id="cb2-47" data-line-number="47">  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span>(ret)</a>
+<a class="sourceLine" id="cb2-48" data-line-number="48">}</a></code></pre></div>
 <p>After applying the prep-function we can summarize the sanity checks</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">wrangled_data &lt;-<span class="st"> </span><span class="kw">prep</span>(<span class="dt">raw_data =</span> raw_data)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">sanity_checks &lt;-<span class="st"> </span>sanityTracker<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/sanityTracker/topics/get_sanity_checks">get_sanity_checks</a></span>()</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">sanity_checks &lt;-<span class="st"> </span>sanityTracker<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/sanityTracker/man/get_sanity_checks.html">get_sanity_checks</a></span>()</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3">sanity_checks</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;                              description n n_fail n_na</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1:             prep(): No duplicated ids 4      0    0</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2:        prep(): start-date &lt;= end-date 4      1    0</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3: prep(): Persons are smaller than 100m 4      1    0</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 4: prep(): Persons are smaller than 2.5m 4      0    0</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;                                   counter_meas      example</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; 1:                                        None             </span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; 2:                                        None &lt;data.frame&gt;</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; 3: Divide by 100. Assume height is given in cm &lt;data.frame&gt;</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; 4:                                        None</span></a></code></pre></div>
-<p>This directly gives an overview of what was performed which check failed how often what counter measure was done and in case of a fail also random rows (by default at most 3) of the data set where the check failed.</p>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;                          description</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1:                 No duplicated ids</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2:            start-date &lt;= end-date</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3:     Persons are smaller than 100m</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 4: Persons are between 0.8m and 2.5m</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt;                                     additional_desc data_name n n_fail n_na</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; 1:                The combination of 'id' is unique  raw_data 4      0    0</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; 2:                                                -  raw_data 4      1    0</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; 3: Elements in 'height_m' should be in (-Inf, 100].       ret 4      1    0</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; 4:  Elements in 'height_m' should be in [0.8, 2.5].       ret 4      0    0</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt;                                   counter_meas</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; 1:                                           -</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; 2:                                           -</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; 3: Divide by 100. Assume height is given in cm</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; 4:                                           -</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt;                                                                 fail_vec_str</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt; 1:                                                        dt$.n_col_cmb != 1</span></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt; 2:                                             raw_data$end &lt; raw_data$start</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; 3: sapply(object[[col]], function(x) !checkmate::qtest(x = x, rules = rule))</span></a>
+<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; 4: sapply(object[[col]], function(x) !checkmate::qtest(x = x, rules = rule))</span></a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt;    param_name                                call      example</span></a>
+<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt; 1:       'id'           prep(raw_data = raw_data)             </span></a>
+<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt; 2:          -           prep(raw_data = raw_data) &lt;data.frame&gt;</span></a>
+<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co">#&gt; 3:   height_m correct_height(raw_data = raw_data) &lt;data.frame&gt;</span></a>
+<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co">#&gt; 4:   height_m correct_height(raw_data = raw_data)</span></a></code></pre></div>
+<p>This directly gives an overview of what was performed, which check failed how often, what counter measure was applied and in case of a fail also random rows (by default at most 3) of the data set where the check failed.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">sanity_checks[<span class="dv">2</span>, ]</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;                       description n n_fail n_na counter_meas      example</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; 1: prep(): start-date &lt;= end-date 4      1    0         None &lt;data.frame&gt;</span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">sanity_checks[<span class="dv">2</span>, ]<span class="op">$</span>example</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; [[1]]</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;   id      start        end height_m</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; 1  1 2020-04-12 2020-03-13     1.77</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co">#&gt;               description additional_desc data_name n n_fail n_na counter_meas</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; 1: start-date &lt;= end-date               -  raw_data 4      1    0            -</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt;                     fail_vec_str param_name                      call</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; 1: raw_data$end &lt; raw_data$start          - prep(raw_data = raw_data)</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt;         example</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; 1: &lt;data.frame&gt;</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8">sanity_checks[<span class="dv">2</span>, ]<span class="op">$</span>example</a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; [[1]]</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt;   id      start        end height_m</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; 1  1 2020-04-12 2020-03-13     1.77</span></a></code></pre></div>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install it from github with:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"MarselScheer/sanityTracker"</span>)</a></code></pre></div>
+<p>You can install it from CRAN</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"sanityTracker"</span>)</a></code></pre></div>
+<p>or github</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"MarselScheer/sanityTracker"</span>)</a></code></pre></div>
 </div>
 </div>
 <div id="sessioninfo" class="section level1">
 <h1 class="hasAnchor">
 <a href="#sessioninfo" class="anchor"></a>sessionInfo</h1>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/sessionInfo">sessionInfo</a></span>()</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; R version 3.6.0 (2019-04-26)</span></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; Running under: Debian GNU/Linux 9 (stretch)</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; Matrix products: default</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; BLAS/LAPACK: /usr/lib/libopenblasp-r0.2.19.so</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; locale:</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             </span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; attached base packages:</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; other attached packages:</span></a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; [1] badgecreatr_0.2.0</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; loaded via a namespace (and not attached):</span></a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt;  [1] Rcpp_1.0.1               rstudioapi_0.10         </span></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt;  [3] knitr_1.23               xml2_1.2.0              </span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt;  [5] magrittr_1.5             roxygen2_6.1.1          </span></a>
-<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">#&gt;  [7] MASS_7.3-51.4            R6_2.4.0                </span></a>
-<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">#&gt;  [9] rlang_0.4.0              stringr_1.4.0           </span></a>
-<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; [11] tools_3.6.0              data.table_1.12.2       </span></a>
-<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">#&gt; [13] xfun_0.8                 git2r_0.26.1            </span></a>
-<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co">#&gt; [15] htmltools_0.3.6          commonmark_1.7          </span></a>
-<a class="sourceLine" id="cb6-32" data-line-number="32"><span class="co">#&gt; [17] yaml_2.2.0               digest_0.6.20           </span></a>
-<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt; [19] assertthat_0.2.1         rprojroot_1.3-2         </span></a>
-<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt; [21] pkgdown_1.3.0            crayon_1.3.4            </span></a>
-<a class="sourceLine" id="cb6-35" data-line-number="35"><span class="co">#&gt; [23] sanityTracker_0.0.0.9000 fs_1.3.1                </span></a>
-<a class="sourceLine" id="cb6-36" data-line-number="36"><span class="co">#&gt; [25] memoise_1.1.0            evaluate_0.14           </span></a>
-<a class="sourceLine" id="cb6-37" data-line-number="37"><span class="co">#&gt; [27] rmarkdown_1.13           stringi_1.4.3           </span></a>
-<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="co">#&gt; [29] compiler_3.6.0           desc_1.2.0              </span></a>
-<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="co">#&gt; [31] backports_1.1.4</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/sessionInfo.html">sessionInfo</a></span>()</a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; R version 3.6.2 (2019-12-12)</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt; Platform: x86_64-pc-linux-gnu (64-bit)</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; Running under: Debian GNU/Linux 10 (buster)</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt; Matrix products: default</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; BLAS/LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.3.5.so</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; locale:</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  [3] LC_TIME=en_US.UTF-8        LC_COLLATE=en_US.UTF-8    </span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  [5] LC_MONETARY=en_US.UTF-8    LC_MESSAGES=C             </span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  [7] LC_PAPER=en_US.UTF-8       LC_NAME=C                 </span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt;  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; [11] LC_MEASUREMENT=en_US.UTF-8 LC_IDENTIFICATION=C       </span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; attached base packages:</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; [1] stats     graphics  grDevices utils     datasets  methods   base     </span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; other attached packages:</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; [1] badgecreatr_0.2.0</span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt; loaded via a namespace (and not attached):</span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt;  [1] Rcpp_1.0.3          digest_0.6.23       backports_1.1.5    </span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt;  [4] git2r_0.26.1        magrittr_1.5        evaluate_0.14      </span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt;  [7] rlang_0.4.2         stringi_1.4.3       data.table_1.12.8  </span></a>
+<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt; [10] checkmate_2.0.0     sanityTracker_0.1.0 rmarkdown_2.1      </span></a>
+<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt; [13] tools_3.6.2         stringr_1.4.0       xfun_0.11          </span></a>
+<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co">#&gt; [16] yaml_2.2.0          compiler_3.6.2      htmltools_0.4.0    </span></a>
+<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">#&gt; [19] knitr_1.26</span></a></code></pre></div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=sanityTracker">https://​cloud.r-project.org/​package=sanityTracker</a>
+</li>
+<li>Browse source code at <br><a href="https://github.com/MarselScheer/sanityTracker">https://​github.com/​MarselScheer/​sanityTracker</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/MarselScheer/sanityTracker/issues">https://​github.com/​MarselScheer/​sanityTracker/​issues</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
@@ -209,7 +264,7 @@
 </ul>
 </div>
 
-      <div class="dev-status">
+  <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://travis-ci.org/MarselScheer/sanityTracker"><img src="https://travis-ci.org/MarselScheer/sanityTracker.svg?branch=master" alt="Build Status"></a></li>
@@ -221,7 +276,6 @@
 </ul>
 </div>
 </div>
-
 </div>
 
 
@@ -230,12 +284,14 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
   
+
 
   </body>
 </html>
