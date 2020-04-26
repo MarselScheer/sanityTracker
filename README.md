@@ -148,7 +148,13 @@ sanity_checks[2, ]$example
 
 ## Installation
 
-You can install it from github with:
+You can install it from CRAN
+
+``` r
+install.packages("sanityTracker")
+```
+
+or github
 
 ``` r
 devtools::install_github("MarselScheer/sanityTracker")
