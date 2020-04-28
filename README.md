@@ -148,7 +148,13 @@ sanity_checks[2, ]$example
 
 ## Installation
 
-You can install it from github with:
+You can install it from CRAN
+
+``` r
+install.packages("sanityTracker")
+```
+
+or github
 
 ``` r
 devtools::install_github("MarselScheer/sanityTracker")
@@ -180,11 +186,11 @@ sessionInfo()
 #> [1] badgecreatr_0.2.0
 #> 
 #> loaded via a namespace (and not attached):
-#>  [1] Rcpp_1.0.3               digest_0.6.23            backports_1.1.5         
-#>  [4] git2r_0.26.1             magrittr_1.5             evaluate_0.14           
-#>  [7] rlang_0.4.2              stringi_1.4.3            data.table_1.12.8       
-#> [10] checkmate_2.0.0          sanityTracker_0.0.0.9000 rmarkdown_2.1           
-#> [13] tools_3.6.2              stringr_1.4.0            xfun_0.11               
-#> [16] yaml_2.2.0               compiler_3.6.2           htmltools_0.4.0         
+#>  [1] Rcpp_1.0.3          digest_0.6.23       backports_1.1.5    
+#>  [4] git2r_0.26.1        magrittr_1.5        evaluate_0.14      
+#>  [7] rlang_0.4.2         stringi_1.4.3       data.table_1.12.8  
+#> [10] checkmate_2.0.0     sanityTracker_0.1.0 rmarkdown_2.1      
+#> [13] tools_3.6.2         stringr_1.4.0       xfun_0.11          
+#> [16] yaml_2.2.0          compiler_3.6.2      htmltools_0.4.0    
 #> [19] knitr_1.26
 ```

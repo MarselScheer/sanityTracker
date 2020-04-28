@@ -1,12 +1,12 @@
 Package: sanityTracker
 Type: Package
-Title: Keeps track of all performed sanity checks
-Version: 0.0.0.9000
-Date: 2020-03-26
+Title: Keeps Track of all Performed Sanity Checks
+Version: 0.1.0
+Date: 2020-04-14
 Authors@R: person("Marsel", "Scheer", role = c("aut", "cre"), email = "scheer@freescience.de") 
 Maintainer: Marsel Scheer <scheer@freescience.de>
 Description: During the preparation of data set(s) one usually performs
-    some sanity checks. The idea is that irrespective of where the 
+    some sanity checks. The idea is that irrespective of where the
     checks are performed, they are centralized by this package in order
     to list all at once with examples if a check failed.
 License: GPL-3
@@ -19,3 +19,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.com/MarselScheer/sanityTracker
+BugReports: https://github.com/MarselScheer/sanityTracker/issues
