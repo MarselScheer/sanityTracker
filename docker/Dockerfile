@@ -1,4 +1,4 @@
-FROM rocker/verse
+FROM rocker/verse:4.0.0
 
 RUN apt-get update && apt-get install -y \
     ranger \
@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
        data.table \
        checkmate \
        badgecreatr \
+       ttdo \
     && ln -sf /usr/share/zoneinfo/Europe/Berlin /etc/localtime \
     && git config --global user.email "scheer@freescience.de" \
     && git config --global user.name "Marsel Scheer" \
