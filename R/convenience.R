@@ -253,7 +253,7 @@ sc_cols_bounded <- function(object, cols, rule = "(-Inf, Inf)", ...) {
 #' }
 #' dummy_call(x = iris)
 #' get_sanity_checks()
-sc_cols_non_NA <- function(object, cols = names(object), ...,
+sc_cols_non_NA <- function(object, cols = names(object), ..., # nolint
                            unk_cols_callback = stop) {
 
   checkmate::assert_data_frame(x = object, min.rows = 1)
