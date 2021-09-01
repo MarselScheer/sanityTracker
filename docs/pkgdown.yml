@@ -1,9 +1,0 @@
-pandoc: 2.3.1
-pkgdown: 1.4.1
-pkgdown_sha: ~
-articles:
-  get_started: get_started.html
-urls:
-  reference: http://MarselScheer.github.io/sanityTracker/reference
-  article: http://MarselScheer.github.io/sanityTracker/articles
-
