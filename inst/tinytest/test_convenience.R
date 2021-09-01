@@ -45,23 +45,27 @@ expect_equivalent(
   info = "sc_col_elements examples are extracted correctly"
 )
 # TODO: check more meta-information. see sc_cols_non_NA
-# 
+#
 expect_equal(get_sanity_checks()[["param_name"]],
              c("a", "a", "user-param-name"),
              info = "sc_col_elements can set param_name and data_name")
 expect_equal(get_sanity_checks()[["data_name"]],
-             c("d", "d", "user-data-name"), 
+             c("d", "d", "user-data-name"),
              info = "sc_col_elements can set param_name and data_name")
-# 
+#
 expect_equal(
-  get_sanity_checks()[["description"]], 
+  get_sanity_checks()[["description"]],
   c("user desc", "-", "-"),
-  info = "sc_col_elements can set description and generates a separate description")
+  info = paste(
+    "sc_col_elements can set description and generates",
+    "a separate description"))
 expect_true(all(
   grepl(pattern = "Elements in 'a' should contain only",
         x = get_sanity_checks()[["additional_desc"]]
   )),
-  info = "sc_col_elements can set description and generates a separate description")
+  info = paste(
+    "sc_col_elements can set description and generates",
+    "a separate description"))
 
 # sc_cols_non_NA -----------------------------------------------------
 
@@ -424,5 +428,5 @@ expect_equivalent(
     counter_meas = c("-", "nada"),
     call = "dummy_call(x = d)"
   ),
-  info ="sc_cols_bounded_above correct meta information"
+  info = "sc_cols_bounded_above correct meta information"
 )

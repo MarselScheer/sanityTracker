@@ -1,4 +1,4 @@
-TRACKER_ENV <- new.env()
+TRACKER_ENV <- new.env() # nolint
 
 #' Adds a sanity check to the list of already performed sanity checks
 #'
