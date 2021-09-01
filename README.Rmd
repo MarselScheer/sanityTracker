@@ -13,23 +13,11 @@ knitr::opts_chunk$set(
 ```
 
 
-```{r badges, results='asis', echo=FALSE}
-suppressPackageStartupMessages(library(badgecreatr))
-acc <- "MarselScheer"
-repo <- "sanityTracker"
-branch <- "master"
-status <- "active"
-lifecycle <- "experimental"
-badges <- list(
-  badge_travis(ghaccount = acc, ghrepo = repo, branch = branch),
-  badge_lifecycle(lifecycle = lifecycle),
-  badge_projectstatus(status = status),
-  badge_cran_version_ago(packagename = repo),
-  badge_cran_downloads(packagename = repo),
-  badge_license()
-  )
-cat(paste(badges, collapse = " "))
-```
+[![R build status](https://github.com/MarselScheer/sanityTracker/workflows/R-CMD-check/badge.svg)](https://github.com/MarselScheer/Rpkgtemplate/actions)
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![Coverage Status](https://img.shields.io/codecov/c/github/MarselScheer/sanityTracker/develop.svg)](https://codecov.io/github/MarselScheer/sanityTracker?branch=develop)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/sanityTracker)](https://cran.r-project.org/package=sanityTracker)
+[![metacran downloads](https://cranlogs.r-pkg.org/badges/sanityTracker)](https://cran.r-project.org/package=sanityTracker)
 
 
 # sanityTracker
@@ -143,7 +131,7 @@ install.packages("sanityTracker")
 or github
 
 ```{r gh-installation, eval = FALSE}
-devtools::install_github("MarselScheer/sanityTracker")
+remotes::install_github("MarselScheer/sanityTracker")
 ```
 
 # sessionInfo
