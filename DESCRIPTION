@@ -17,6 +17,7 @@ Suggests:
     knitr,
     rmarkdown,
     lintr,
+    covr,
     tinytest,
     roxygen2
 VignetteBuilder: knitr
